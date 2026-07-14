@@ -133,6 +133,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share your spot. Help the next driver.'**
   String get welcomeSubtitle;
+
+  /// No description provided for @welcomeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time truck parking availability\npowered by the driver community.'**
+  String get welcomeDescription;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @signInPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign In'**
+  String get signInPrompt;
+
+  /// No description provided for @languageDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'TruckPark Share is available\nin multiple languages.'**
+  String get languageDescription;
 }
 
 class _AppLocalizationsDelegate

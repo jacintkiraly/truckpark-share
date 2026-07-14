@@ -11,5 +11,13 @@
 
   "welcomeTitle": "TruckPark Share",
 
-  "welcomeSubtitle": "Share your spot. Help the next driver."
+  "welcomeSubtitle": "Share your spot. Help the next driver.",
+
+  "welcomeDescription": "Real-time truck parking availability\npowered by the driver community.",
+
+  "getStarted": "Get Started",
+
+  "signInPrompt": "Already have an account? Sign In",
+
+  "languageDescription": "TruckPark Share is available\nin multiple languages."
 }

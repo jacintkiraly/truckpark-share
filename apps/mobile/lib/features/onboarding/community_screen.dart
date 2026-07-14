@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../shared/widgets/primary_button.dart';
+import '../auth/register_screen.dart';
 
 class CommunityScreen extends StatelessWidget {
   const CommunityScreen({super.key});
@@ -47,8 +48,12 @@ class CommunityScreen extends StatelessWidget {
               PrimaryButton(
                 text: 'Join the Community',
                 onPressed: () {
-                  debugPrint('Join Community');
-                },
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (_) => const RegisterScreen(),
+    ),
+  );
+},
               ),
 
               const SizedBox(height: 24),

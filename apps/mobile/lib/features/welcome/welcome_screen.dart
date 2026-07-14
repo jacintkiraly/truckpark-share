@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../shared/widgets/primary_button.dart';
 
 import '../onboarding/language_screen.dart';
+import '../../localization/generated/app_localizations.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -24,9 +25,9 @@ class WelcomeScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              const Text(
-                'TruckPark Share',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.appTitle,
+                style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                 ),
@@ -34,20 +35,20 @@ class WelcomeScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              const Text(
-                'Share your spot.\nHelp the next driver.',
+              Text(
+                AppLocalizations.of(context)!.welcomeSubtitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                 ),
               ),
 
               const SizedBox(height: 20),
 
-              const Text(
-                'Real-time truck parking availability\npowered by the driver community.',
+              Text(
+                AppLocalizations.of(context)!.welcomeDescription,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 16,
                 ),
@@ -56,7 +57,7 @@ class WelcomeScreen extends StatelessWidget {
               const Spacer(),
 
               PrimaryButton(
-                text: 'Get Started',
+                text: AppLocalizations.of(context)!.getStarted,
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -72,7 +73,9 @@ class WelcomeScreen extends StatelessWidget {
                 onPressed: () {
                   debugPrint('Sign In pressed');
                 },
-                child: const Text('Already have an account? Sign In'),
+                child: Text(
+                  AppLocalizations.of(context)!.signInPrompt,
+                ),
               ),
 
               const SizedBox(height: 16),

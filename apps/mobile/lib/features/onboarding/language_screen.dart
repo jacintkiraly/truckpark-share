@@ -4,6 +4,7 @@ import '../../shared/widgets/primary_button.dart';
 import 'community_screen.dart';
 import '../../localization/supported_languages.dart';
 import '../../localization/generated/app_localizations.dart';
+import '../../app/app.dart';
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({super.key});
@@ -19,7 +20,13 @@ class _LanguageScreenState extends State<LanguageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Choose your language'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.chooseLanguage,
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -46,10 +53,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
               const SizedBox(height: 12),
 
-              const Text(
-                'TruckPark Share is available\nin multiple languages.',
+              Text(
+                AppLocalizations.of(context)!.languageDescription,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
               ),
 
               const SizedBox(height: 24),
@@ -81,6 +87,10 @@ class _LanguageScreenState extends State<LanguageScreen> {
               PrimaryButton(
                 text: AppLocalizations.of(context)!.continueButton,
                 onPressed: () {
+                  TruckParkShareApp.languageController.setLanguage(
+                    _selectedLanguage,
+                  );
+
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => const CommunityScreen(),

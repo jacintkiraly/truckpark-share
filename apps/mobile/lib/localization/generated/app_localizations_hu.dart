@@ -26,4 +26,18 @@ class AppLocalizationsHu extends AppLocalizations {
   @override
   String get welcomeSubtitle =>
       'Oszd meg a parkolóhelyed. Segíts a következő sofőrnek.';
+
+  @override
+  String get welcomeDescription =>
+      'Valós idejű teherautó parkolóhely-információk,\na sofőrök közössége által.';
+
+  @override
+  String get getStarted => 'Kezdjük';
+
+  @override
+  String get signInPrompt => 'Van már fiókod? Jelentkezz be';
+
+  @override
+  String get languageDescription =>
+      'A TruckPark Share\ntöbb nyelven is elérhető.';
 }

@@ -11,5 +11,13 @@
 
   "welcomeTitle": "TruckPark Share",
 
-  "welcomeSubtitle": "Oszd meg a parkolóhelyed. Segíts a következő sofőrnek."
+  "welcomeSubtitle": "Oszd meg a parkolóhelyed. Segíts a következő sofőrnek.",
+
+  "welcomeDescription": "Valós idejű teherautó parkolóhely-információk,\na sofőrök közössége által.",
+
+  "getStarted": "Kezdjük",
+  
+  "signInPrompt": "Van már fiókod? Jelentkezz be",
+
+  "languageDescription": "A TruckPark Share\ntöbb nyelven is elérhető."
 }

@@ -4,11 +4,13 @@ class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
+    this.isLoading = false,
   });
 
   final String text;
-  final VoidCallback onPressed;
+  final bool isLoading;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +18,16 @@ class PrimaryButton extends StatelessWidget {
       width: double.infinity,
       height: 56,
       child: FilledButton(
-        onPressed: onPressed,
-        child: Text(text),
+        onPressed: isLoading ? null : onPressed,
+        child: isLoading
+    ? const SizedBox(
+        height: 20,
+        width: 20,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+        ),
+      )
+    : Text(text),
       ),
     );
   }

@@ -5,33 +5,47 @@ import '../localization/generated/app_localizations.dart';
 import '../features/welcome/welcome_screen.dart';
 
 import 'theme.dart';
+import '../localization/language_controller.dart';
 
-class TruckParkShareApp extends StatelessWidget {
+class TruckParkShareApp extends StatefulWidget {
   const TruckParkShareApp({super.key});
 
+  static final LanguageController languageController =
+      LanguageController();
+
+  @override
+  State<TruckParkShareApp> createState() =>
+      _TruckParkShareAppState();
+}
+
+class _TruckParkShareAppState extends State<TruckParkShareApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-  onGenerateTitle: (context) =>
-      AppLocalizations.of(context)!.appTitle,
+    return AnimatedBuilder(
+      animation: TruckParkShareApp.languageController,
+      builder: (context, child) {
+        return MaterialApp(
+          onGenerateTitle: (context) =>
+              AppLocalizations.of(context)!.appTitle,
 
-  debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
 
-  theme: TPSTheme.light(),
+          theme: TPSTheme.light(),
 
-  localizationsDelegates: const [
-    AppLocalizations.delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-  ],
+          locale: TruckParkShareApp.languageController.locale,
 
-  supportedLocales: const [
-    Locale('en'),
-    Locale('hu'),
-  ],
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
 
-  home: const WelcomeScreen(),
-);
+          supportedLocales: AppLocalizations.supportedLocales,
+
+          home: const WelcomeScreen(),
+        );
+      },
+    );
   }
 }

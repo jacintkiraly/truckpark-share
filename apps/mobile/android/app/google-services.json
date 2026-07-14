@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1025014149435",
+    "project_id": "truckpark-share",
+    "storage_bucket": "truckpark-share.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025014149435:android:c457943153b36d7845871e",
+        "android_client_info": {
+          "package_name": "com.example.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnfx_nK7C3anP5Fth2OjQLivtFY-VZkVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
