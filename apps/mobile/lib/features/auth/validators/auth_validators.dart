@@ -1,57 +1,62 @@
+import '../../../localization/generated/app_localizations.dart';
+
+/// Validation helpers for authentication forms.
+///
+/// This class is intentionally stateless.
+/// All user-facing messages come from AppLocalizations.
 class AuthValidators {
   AuthValidators._();
 
-  static String? validateName(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Please enter your full name.';
+  static String? validateName(
+    String? value,
+    AppLocalizations l10n,
+  ) {
+    final text = value?.trim() ?? '';
+
+    if (text.isEmpty) {
+      return l10n.enterName;
     }
 
-    if (value.trim().length < 2) {
-      return 'Name must be at least 2 characters.';
+    if (text.length < 2) {
+      return l10n.nameTooShort;
     }
 
     return null;
   }
 
-  static String? validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Please enter your email address.';
+  static String? validateEmail(
+    String? value,
+    AppLocalizations l10n,
+  ) {
+    final text = value?.trim() ?? '';
+
+    if (text.isEmpty) {
+      return l10n.enterEmail;
     }
 
     final emailRegex = RegExp(
-      r'^[\w\.\-]+@([\w\-]+\.)+[a-zA-Z]{2,}$',
+      r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$',
     );
 
-    if (!emailRegex.hasMatch(value.trim())) {
-      return 'Please enter a valid email address.';
+    if (!emailRegex.hasMatch(text)) {
+      return l10n.invalidEmail;
     }
 
     return null;
   }
 
-  static String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter a password.';
+  static String? validatePassword(
+    String? value,
+    AppLocalizations l10n,
+  ) {
+    final text = value ?? '';
+
+    if (text.isEmpty) {
+      return l10n.enterPassword;
     }
 
-    if (value.length < 8) {
-      return 'Password must be at least 8 characters.';
-    }
-
-    if (!RegExp(r'[A-Z]').hasMatch(value)) {
-      return 'Password must contain an uppercase letter.';
-    }
-
-    if (!RegExp(r'[a-z]').hasMatch(value)) {
-      return 'Password must contain a lowercase letter.';
-    }
-
-    if (!RegExp(r'\d').hasMatch(value)) {
-      return 'Password must contain a number.';
-    }
-
-    if (!RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(value)) {
-      return 'Password must contain a special character.';
+    if (text.length < 8) {
+      return l10n.passwordTooShort;
     }
 
     return null;
@@ -60,13 +65,16 @@ class AuthValidators {
   static String? validateConfirmPassword(
     String? value,
     String password,
+    AppLocalizations l10n,
   ) {
-    if (value == null || value.isEmpty) {
-      return 'Please confirm your password.';
+    final text = value ?? '';
+
+    if (text.isEmpty) {
+      return l10n.confirmYourPassword;
     }
 
-    if (value != password) {
-      return 'Passwords do not match.';
+    if (text != password) {
+      return l10n.passwordsDoNotMatch;
     }
 
     return null;

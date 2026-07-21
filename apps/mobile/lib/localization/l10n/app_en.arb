@@ -4,20 +4,47 @@
   "appTitle": "TruckPark Share",
 
   "chooseLanguage": "Choose your language",
-
+  "languageDescription": "TruckPark Share is available\nin multiple languages.",
   "continueButton": "Continue",
 
-  "joinCommunity": "Join the Community",
-
   "welcomeTitle": "TruckPark Share",
-
   "welcomeSubtitle": "Share your spot. Help the next driver.",
-
   "welcomeDescription": "Real-time truck parking availability\npowered by the driver community.",
 
   "getStarted": "Get Started",
-
+  "joinCommunity": "Join the Community",
   "signInPrompt": "Already have an account? Sign In",
 
-  "languageDescription": "TruckPark Share is available\nin multiple languages."
+  "createAccount": "Create Account",
+  "createAccountTitle": "Create your account",
+  "createAccountSubtitle": "Join the TruckPark Share community.",
+
+  "fullName": "Full name",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm password",
+
+  "creatingAccount": "Creating account...",
+  "registrationSuccessful": "Registration successful!",
+  "registrationFailed": "Registration failed.",
+
+  "enterName": "Please enter your full name.",
+  "nameTooShort": "Name must contain at least 2 characters.",
+
+  "enterEmail": "Please enter your email address.",
+  "invalidEmail": "Please enter a valid email address.",
+
+  "enterPassword": "Please enter your password.",
+  "passwordTooShort": "Password must contain at least 8 characters.",
+
+  "confirmYourPassword": "Please confirm your password.",
+  "passwordsDoNotMatch": "Passwords do not match.",
+
+  "authErrorEmailAlreadyInUse": "An account already exists with this email.",
+  "authErrorInvalidEmail": "Please enter a valid email address.",
+  "authErrorWeakPassword": "Your password is too weak.",
+  "authErrorInvalidCredentials": "Incorrect email or password.",
+  "authErrorTooManyRequests": "Too many attempts. Please try again later.",
+  "authErrorNetworkError": "Network error. Please check your connection.",
+  "authErrorUnknown": "Something went wrong. Please try again."
 }

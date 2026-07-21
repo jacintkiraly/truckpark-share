@@ -4,20 +4,47 @@
   "appTitle": "TruckPark Share",
 
   "chooseLanguage": "Válassz nyelvet",
-
+  "languageDescription": "A TruckPark Share\ntöbb nyelven is elérhető.",
   "continueButton": "Folytatás",
 
-  "joinCommunity": "Csatlakozás a közösséghez",
-
   "welcomeTitle": "TruckPark Share",
-
-  "welcomeSubtitle": "Oszd meg a parkolóhelyed. Segíts a következő sofőrnek.",
-
-  "welcomeDescription": "Valós idejű teherautó parkolóhely-információk,\na sofőrök közössége által.",
+  "welcomeSubtitle": "Oszd meg a helyed. Segíts a következő sofőrnek.",
+  "welcomeDescription": "Valós idejű kamionparkoló-információ\nkamionosok közösségétől.",
 
   "getStarted": "Kezdjük",
-  
-  "signInPrompt": "Van már fiókod? Jelentkezz be",
+  "joinCommunity": "Csatlakozz a közösséghez",
+  "signInPrompt": "Már van fiókod? Jelentkezz be",
 
-  "languageDescription": "A TruckPark Share\ntöbb nyelven is elérhető."
+  "createAccount": "Fiók létrehozása",
+  "createAccountTitle": "Hozd létre a fiókodat",
+  "createAccountSubtitle": "Csatlakozz a TruckPark Share közösségéhez.",
+
+  "fullName": "Teljes név",
+  "email": "E-mail",
+  "password": "Jelszó",
+  "confirmPassword": "Jelszó megerősítése",
+
+  "creatingAccount": "Fiók létrehozása...",
+  "registrationSuccessful": "A regisztráció sikeres!",
+  "registrationFailed": "A regisztráció sikertelen.",
+
+  "enterName": "Kérjük, add meg a teljes nevedet.",
+  "nameTooShort": "A névnek legalább 2 karakterből kell állnia.",
+
+  "enterEmail": "Kérjük, add meg az e-mail címedet.",
+  "invalidEmail": "Kérjük, adj meg egy érvényes e-mail címet.",
+
+  "enterPassword": "Kérjük, add meg a jelszavadat.",
+  "passwordTooShort": "A jelszónak legalább 8 karakter hosszúnak kell lennie.",
+
+  "confirmYourPassword": "Kérjük, erősítsd meg a jelszavadat.",
+  "passwordsDoNotMatch": "A két jelszó nem egyezik.",
+
+  "authErrorEmailAlreadyInUse": "Már létezik egy fiók ezzel az e-mail címmel.",
+  "authErrorInvalidEmail": "Kérjük, adjon meg egy érvényes e-mail címet.",
+  "authErrorWeakPassword": "A jelszava túl gyenge.",
+  "authErrorInvalidCredentials": "Helytelen e-mail cím vagy jelszó.",
+  "authErrorTooManyRequests": "Túl sok próbálkozás. Kérjük, próbálja újra később.",
+  "authErrorNetworkError": "Hálózati hiba. Kérjük, ellenőrizze a kapcsolatát.",
+  "authErrorUnknown": "Valami hiba történt. Kérjük, próbálja újra."
 }

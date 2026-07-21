@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../localization/generated/app_localizations.dart';
 
-import '../features/welcome/welcome_screen.dart';
+import '../features/onboarding/screens/welcome_screen.dart';
 
 import 'theme.dart';
 import '../localization/language_controller.dart';

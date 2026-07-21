@@ -1,16 +1,19 @@
 import 'package:flutter/foundation.dart';
 
-import '../models/register_result.dart';
+import '../models/auth_error.dart';
+import '../models/auth_result.dart';
 import '../services/auth_service.dart';
 
 class RegisterController extends ChangeNotifier {
+  RegisterController();
+
   final AuthService _authService = AuthService();
 
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
 
-  Future<RegisterResult> register({
+  Future<AuthResult> register({
     required String fullName,
     required String email,
     required String password,
@@ -18,18 +21,17 @@ class RegisterController extends ChangeNotifier {
     _setLoading(true);
 
     try {
-      // TODO: Replace with Firebase Authentication.
-    return await _authService.register(
-      fullName: fullName,
-      email: email,
-      password: password,
-    );
-    } catch (e) {
+      return await _authService.register(
+        fullName: fullName,
+        email: email,
+        password: password,
+      );
+    } catch (e, stackTrace) {
       debugPrint('Registration failed: $e');
+      debugPrintStack(stackTrace: stackTrace);
 
-      return const RegisterResult(
-        success: false,
-        message: 'Registration failed.',
+      return const AuthResult.failure(
+        AuthError.unknown,
       );
     } finally {
       _setLoading(false);
@@ -37,6 +39,8 @@ class RegisterController extends ChangeNotifier {
   }
 
   void _setLoading(bool value) {
+    if (_isLoading == value) return;
+
     _isLoading = value;
     notifyListeners();
   }

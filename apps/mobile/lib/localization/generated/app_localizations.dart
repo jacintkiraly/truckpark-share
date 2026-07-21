@@ -110,17 +110,17 @@ abstract class AppLocalizations {
   /// **'Choose your language'**
   String get chooseLanguage;
 
+  /// No description provided for @languageDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'TruckPark Share is available\nin multiple languages.'**
+  String get languageDescription;
+
   /// No description provided for @continueButton.
   ///
   /// In en, this message translates to:
   /// **'Continue'**
   String get continueButton;
-
-  /// No description provided for @joinCommunity.
-  ///
-  /// In en, this message translates to:
-  /// **'Join the Community'**
-  String get joinCommunity;
 
   /// No description provided for @welcomeTitle.
   ///
@@ -146,17 +146,167 @@ abstract class AppLocalizations {
   /// **'Get Started'**
   String get getStarted;
 
+  /// No description provided for @joinCommunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the Community'**
+  String get joinCommunity;
+
   /// No description provided for @signInPrompt.
   ///
   /// In en, this message translates to:
   /// **'Already have an account? Sign In'**
   String get signInPrompt;
 
-  /// No description provided for @languageDescription.
+  /// No description provided for @createAccount.
   ///
   /// In en, this message translates to:
-  /// **'TruckPark Share is available\nin multiple languages.'**
-  String get languageDescription;
+  /// **'Create Account'**
+  String get createAccount;
+
+  /// No description provided for @createAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get createAccountTitle;
+
+  /// No description provided for @createAccountSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the TruckPark Share community.'**
+  String get createAccountSubtitle;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fullName;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get confirmPassword;
+
+  /// No description provided for @creatingAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating account...'**
+  String get creatingAccount;
+
+  /// No description provided for @registrationSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration successful!'**
+  String get registrationSuccessful;
+
+  /// No description provided for @registrationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration failed.'**
+  String get registrationFailed;
+
+  /// No description provided for @enterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your full name.'**
+  String get enterName;
+
+  /// No description provided for @nameTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must contain at least 2 characters.'**
+  String get nameTooShort;
+
+  /// No description provided for @enterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email address.'**
+  String get enterEmail;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address.'**
+  String get invalidEmail;
+
+  /// No description provided for @enterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password.'**
+  String get enterPassword;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least 8 characters.'**
+  String get passwordTooShort;
+
+  /// No description provided for @confirmYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password.'**
+  String get confirmYourPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match.'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @authErrorEmailAlreadyInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists with this email.'**
+  String get authErrorEmailAlreadyInUse;
+
+  /// No description provided for @authErrorInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address.'**
+  String get authErrorInvalidEmail;
+
+  /// No description provided for @authErrorWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password is too weak.'**
+  String get authErrorWeakPassword;
+
+  /// No description provided for @authErrorInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password.'**
+  String get authErrorInvalidCredentials;
+
+  /// No description provided for @authErrorTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please try again later.'**
+  String get authErrorTooManyRequests;
+
+  /// No description provided for @authErrorNetworkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection.'**
+  String get authErrorNetworkError;
+
+  /// No description provided for @authErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get authErrorUnknown;
 }
 
 class _AppLocalizationsDelegate

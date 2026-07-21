@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/widgets/primary_button.dart';
+import '../../../shared/widgets/primary_button.dart';
 
-import '../onboarding/language_screen.dart';
-import '../../localization/generated/app_localizations.dart';
+import 'language_screen.dart';
+import '../../../localization/generated/app_localizations.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../models/register_result.dart';
+import '../models/auth_error.dart';
+import '../models/auth_result.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<RegisterResult> register({
+  /// Registers a new user.
+  Future<AuthResult> register({
     required String fullName,
     required String email,
     required String password,
@@ -17,43 +19,104 @@ class AuthService {
       );
 
       await credential.user?.updateDisplayName(fullName.trim());
-
       await credential.user?.reload();
 
-      return const RegisterResult(
-        success: true,
-      );
+      return const AuthResult.success();
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'email-already-in-use':
-          return const RegisterResult(
-            success: false,
-            message: 'An account with this email already exists.',
+          return const AuthResult.failure(
+            AuthError.emailAlreadyInUse,
           );
 
         case 'invalid-email':
-          return const RegisterResult(
-            success: false,
-            message: 'The email address is invalid.',
+          return const AuthResult.failure(
+            AuthError.invalidEmail,
           );
 
         case 'weak-password':
-          return const RegisterResult(
-            success: false,
-            message: 'Please choose a stronger password.',
+          return const AuthResult.failure(
+            AuthError.weakPassword,
+          );
+
+        case 'network-request-failed':
+          return const AuthResult.failure(
+            AuthError.networkError,
+          );
+
+        case 'too-many-requests':
+          return const AuthResult.failure(
+            AuthError.tooManyRequests,
           );
 
         default:
-          return RegisterResult(
-            success: false,
-            message: e.message ?? 'Authentication failed.',
+          return const AuthResult.failure(
+            AuthError.unknown,
           );
       }
     } catch (_) {
-      return const RegisterResult(
-        success: false,
-        message: 'Unexpected error occurred.',
+      return const AuthResult.failure(
+        AuthError.unknown,
       );
     }
   }
+
+  /// Signs an existing user in.
+  Future<AuthResult> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password,
+      );
+
+      return const AuthResult.success();
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'invalid-credential':
+        case 'wrong-password':
+        case 'user-not-found':
+          return const AuthResult.failure(
+            AuthError.invalidCredentials,
+          );
+
+        case 'invalid-email':
+          return const AuthResult.failure(
+            AuthError.invalidEmail,
+          );
+
+        case 'network-request-failed':
+          return const AuthResult.failure(
+            AuthError.networkError,
+          );
+
+        case 'too-many-requests':
+          return const AuthResult.failure(
+            AuthError.tooManyRequests,
+          );
+
+        default:
+          return const AuthResult.failure(
+            AuthError.unknown,
+          );
+      }
+    } catch (_) {
+      return const AuthResult.failure(
+        AuthError.unknown,
+      );
+    }
+  }
+
+  /// Signs the current user out.
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
+
+  /// Returns the currently signed-in user, or null.
+  User? get currentUser => _auth.currentUser;
+
+  /// Returns true if a user is signed in.
+  bool get isSignedIn => currentUser != null;
 }

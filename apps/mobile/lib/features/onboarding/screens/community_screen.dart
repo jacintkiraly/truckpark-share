@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/widgets/primary_button.dart';
-import '../auth/register_screen.dart';
+import '../../../shared/widgets/primary_button.dart';
+import '../../auth/screens/register_screen.dart';
 
 class CommunityScreen extends StatelessWidget {
   const CommunityScreen({super.key});

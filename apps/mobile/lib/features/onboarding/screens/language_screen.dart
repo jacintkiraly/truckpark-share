@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/widgets/primary_button.dart';
+import '../../../shared/widgets/primary_button.dart';
 import 'community_screen.dart';
-import '../../localization/supported_languages.dart';
-import '../../localization/generated/app_localizations.dart';
-import '../../app/app.dart';
+import '../../../localization/supported_languages.dart';
+import '../../../localization/generated/app_localizations.dart';
+import '../../../app/app.dart';
 
-class LanguageScreen extends StatefulWidget {
+class LanguageScreen extends StatelessWidget {
   const LanguageScreen({super.key});
 
   @override
-  State<LanguageScreen> createState() => _LanguageScreenState();
-}
-
-class _LanguageScreenState extends State<LanguageScreen> {
-  String _selectedLanguage = 'en';
-
-  @override
   Widget build(BuildContext context) {
+    final languageController = TruckParkShareApp.languageController;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -60,43 +54,42 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
               const SizedBox(height: 24),
 
-              Expanded(
-                child: ListView.builder(
-                  itemCount: supportedLanguages.length,
-                  itemBuilder: (context, index) {
-                    final language = supportedLanguages[index];
+    Expanded(
+  child: AnimatedBuilder(
+    animation: languageController,
+    builder: (context, child) {
+      return RadioGroup<String>(
+        groupValue: languageController.languageCode,
+        onChanged: (value) {
+          if (value == null) return;
 
-                    return RadioListTile<String>(
-                      value: language.languageCode,
-                      groupValue: _selectedLanguage,
-                      title: Text(language.nativeName),
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() {
-                            _selectedLanguage = value;
-                          });
-                        }
-                      },
-                    );
-                  },
-                ),
-              ),
+          languageController.setLanguage(value);
+        },
+        child: ListView.builder(
+          itemCount: supportedLanguages.length,
+          itemBuilder: (context, index) {
+            final language = supportedLanguages[index];
+
+            return RadioListTile<String>(
+              value: language.languageCode,
+              title: Text(language.nativeName),
+            );
+          },
+        ),
+      );
+    },
+  ),
+),
 
               const SizedBox(height: 16),
 
               PrimaryButton(
                 text: AppLocalizations.of(context)!.continueButton,
-                onPressed: () {
-                  TruckParkShareApp.languageController.setLanguage(
-                    _selectedLanguage,
-                  );
-
-                  Navigator.of(context).push(
+                onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => const CommunityScreen(),
                     ),
-                  );
-                },
+                  ),
               ),
             ],
           ),

@@ -5,6 +5,8 @@ class LanguageController extends ChangeNotifier {
 
   Locale _locale = const Locale('en');
 
+  String get languageCode => _locale.languageCode;
+
   Locale get locale => _locale;
 
  void setLanguage(String languageCode) {
