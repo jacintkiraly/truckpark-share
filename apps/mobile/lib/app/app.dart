@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../localization/generated/app_localizations.dart';
 
-import '../features/onboarding/screens/welcome_screen.dart';
-
 import 'theme.dart';
 import '../localization/language_controller.dart';
+import '../features/auth/screens/auth_gate.dart';
 
 class TruckParkShareApp extends StatefulWidget {
   const TruckParkShareApp({super.key});
@@ -43,7 +42,7 @@ class _TruckParkShareAppState extends State<TruckParkShareApp> {
 
           supportedLocales: AppLocalizations.supportedLocales,
 
-          home: const WelcomeScreen(),
+          home: AuthGate(),
         );
       },
     );

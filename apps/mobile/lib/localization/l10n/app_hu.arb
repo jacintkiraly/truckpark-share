@@ -14,6 +14,9 @@
   "getStarted": "Kezdjük",
   "joinCommunity": "Csatlakozz a közösséghez",
   "signInPrompt": "Már van fiókod? Jelentkezz be",
+  "communityTitle": "Ha segítünk egymásnak,\nkönnyebb parkolóhelyet találni.",
+
+  "communityDescription": "Minden megosztott parkolóhely egy másik hivatásos sofőrnek segít.\n\nEgyütt csökkenthetjük a stresszt, időt takaríthatunk meg, és biztonságosabbá tehetjük az utakat.",
 
   "createAccount": "Fiók létrehozása",
   "createAccountTitle": "Hozd létre a fiókodat",
@@ -40,11 +43,31 @@
   "confirmYourPassword": "Kérjük, erősítsd meg a jelszavadat.",
   "passwordsDoNotMatch": "A két jelszó nem egyezik.",
 
-  "authErrorEmailAlreadyInUse": "Már létezik egy fiók ezzel az e-mail címmel.",
-  "authErrorInvalidEmail": "Kérjük, adjon meg egy érvényes e-mail címet.",
-  "authErrorWeakPassword": "A jelszava túl gyenge.",
-  "authErrorInvalidCredentials": "Helytelen e-mail cím vagy jelszó.",
-  "authErrorTooManyRequests": "Túl sok próbálkozás. Kérjük, próbálja újra később.",
-  "authErrorNetworkError": "Hálózati hiba. Kérjük, ellenőrizze a kapcsolatát.",
-  "authErrorUnknown": "Valami hiba történt. Kérjük, próbálja újra."
+  "authErrorEmailAlreadyInUse": "Már létezik fiók ezzel az e-mail címmel.",
+  "authErrorInvalidEmail": "Kérlek, adj meg egy érvényes e-mail címet.",
+  "authErrorWeakPassword": "A jelszó túl gyenge.",
+  "authErrorInvalidCredentials": "Hibás e-mail cím vagy jelszó.",
+  "authErrorTooManyRequests": "Túl sok próbálkozás. Kérlek, próbáld újra később.",
+  "authErrorNetworkError": "Hálózati hiba. Ellenőrizd a internetkapcsolatot.",
+  "authErrorUnknown": "Valami hiba történt. Kérlek, próbáljd újra.",
+
+  "loginTitle": "Üdv újra!",
+  "loginSubtitle": "Jelentkezz be a TruckPark Share folytatásához.",
+  "signIn": "Bejelentkezés",
+  "signingIn": "Bejelentkezés...",
+  "forgotPassword": "Elfelejtetted a jelszavad?",
+  "noAccountPrompt": "Nincs még fiókod? Hozz létre egyet",
+  "loginSuccessful": "Sikeres bejelentkezés.",
+
+  "forgotPasswordTitle": "Jelszó visszaállítása",
+  "forgotPasswordSubtitle": "Add meg az e-mail címedet, és küldünk egy linket a jelszavad visszaállításához.",
+  "sendResetLink": "Visszaállítási link küldése",
+  "sendingResetLink": "Küldés...",
+  "passwordResetEmailSent": "Ha ehhez az e-mail címhez tartozik fiók, elküldtük a jelszó-visszaállítási linket.",
+  "backToSignIn": "Vissza a bejelentkezéshez",
+
+  "homeWelcome": "Üdvözlünk a TruckPark Share-ben!",
+  "homePlaceholderDescription": "Be vagy jelentkezve. Hamarosan érkezik a sofőröknek készült felület.",
+  "signOut": "Kijelentkezés",
+  "signingOut": "Kijelentkezés..."
 }

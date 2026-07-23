@@ -13,6 +13,7 @@ class AuthTextField extends StatelessWidget {
     this.textInputAction = TextInputAction.next,
     this.enabled = true,
     this.onFieldSubmitted,
+    this.autofillHints,
   });
 
   final TextEditingController controller;
@@ -34,6 +35,8 @@ class AuthTextField extends StatelessWidget {
 
   final ValueChanged<String>? onFieldSubmitted;
 
+  final Iterable<String>? autofillHints;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -44,6 +47,7 @@ class AuthTextField extends StatelessWidget {
       textInputAction: textInputAction,
       validator: validator,
       onFieldSubmitted: onFieldSubmitted,
+      autofillHints: autofillHints,
       decoration: InputDecoration(
   labelText: label,
   hintText: hint,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../localization/generated/app_localizations.dart';
 import '../../../shared/widgets/primary_button.dart';
 import '../../auth/screens/register_screen.dart';
 
@@ -8,6 +9,8 @@ class CommunityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -23,10 +26,10 @@ class CommunityScreen extends StatelessWidget {
 
               const SizedBox(height: 32),
 
-              const Text(
-                'Helping each other\nmakes parking easier.',
+              Text(
+                l10n.communityTitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
@@ -34,11 +37,10 @@ class CommunityScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              const Text(
-                'Every shared parking space helps another professional driver.\n\n'
-                'Together we can reduce stress, save time and make the roads safer.',
+              Text(
+                l10n.communityDescription,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),
@@ -46,14 +48,14 @@ class CommunityScreen extends StatelessWidget {
               const Spacer(),
 
               PrimaryButton(
-                text: 'Join the Community',
+                text: l10n.joinCommunity,
                 onPressed: () {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (_) => const RegisterScreen(),
-    ),
-  );
-},
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const RegisterScreen(),
+                    ),
+                  );
+                },
               ),
 
               const SizedBox(height: 24),

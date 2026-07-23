@@ -4,6 +4,7 @@ import '../../../shared/widgets/primary_button.dart';
 
 import 'language_screen.dart';
 import '../../../localization/generated/app_localizations.dart';
+import '../../auth/screens/login_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -71,7 +72,11 @@ class WelcomeScreen extends StatelessWidget {
 
               TextButton(
                 onPressed: () {
-                  debugPrint('Sign In pressed');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const LoginScreen(),
+                    ),
+                  );
                 },
                 child: Text(
                   AppLocalizations.of(context)!.signInPrompt,

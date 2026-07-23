@@ -41,6 +41,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signInPrompt => 'Already have an account? Sign In';
 
   @override
+  String get communityTitle => 'Helping each other\nmakes parking easier.';
+
+  @override
+  String get communityDescription =>
+      'Every shared parking space helps another professional driver.\n\nTogether we can reduce stress, save time and make the roads safer.';
+
+  @override
   String get createAccount => 'Create Account';
 
   @override
@@ -117,4 +124,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authErrorUnknown => 'Something went wrong. Please try again.';
+
+  @override
+  String get loginTitle => 'Welcome back';
+
+  @override
+  String get loginSubtitle => 'Sign in to continue with TruckPark Share.';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get signingIn => 'Signing in...';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get noAccountPrompt => 'Don\'t have an account? Create Account';
+
+  @override
+  String get loginSuccessful => 'Signed in successfully.';
+
+  @override
+  String get forgotPasswordTitle => 'Reset your password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your email address and we\'ll send you a password reset link.';
+
+  @override
+  String get sendResetLink => 'Send Reset Link';
+
+  @override
+  String get sendingResetLink => 'Sending...';
+
+  @override
+  String get passwordResetEmailSent =>
+      'If an account exists for this email, a password reset link has been sent.';
+
+  @override
+  String get backToSignIn => 'Back to Sign In';
+
+  @override
+  String get homeWelcome => 'Welcome to TruckPark Share';
+
+  @override
+  String get homePlaceholderDescription =>
+      'You\'re signed in. The driver experience is coming next.';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get signingOut => 'Signing out...';
 }

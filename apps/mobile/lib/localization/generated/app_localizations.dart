@@ -158,6 +158,18 @@ abstract class AppLocalizations {
   /// **'Already have an account? Sign In'**
   String get signInPrompt;
 
+  /// No description provided for @communityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Helping each other\nmakes parking easier.'**
+  String get communityTitle;
+
+  /// No description provided for @communityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Every shared parking space helps another professional driver.\n\nTogether we can reduce stress, save time and make the roads safer.'**
+  String get communityDescription;
+
   /// No description provided for @createAccount.
   ///
   /// In en, this message translates to:
@@ -307,6 +319,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get authErrorUnknown;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get loginTitle;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to continue with TruckPark Share.'**
+  String get loginSubtitle;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// No description provided for @signingIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in...'**
+  String get signingIn;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPassword;
+
+  /// No description provided for @noAccountPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Create Account'**
+  String get noAccountPrompt;
+
+  /// No description provided for @loginSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in successfully.'**
+  String get loginSuccessful;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address and we\'ll send you a password reset link.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLink;
+
+  /// No description provided for @sendingResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending...'**
+  String get sendingResetLink;
+
+  /// No description provided for @passwordResetEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for this email, a password reset link has been sent.'**
+  String get passwordResetEmailSent;
+
+  /// No description provided for @backToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Sign In'**
+  String get backToSignIn;
+
+  /// No description provided for @homeWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to TruckPark Share'**
+  String get homeWelcome;
+
+  /// No description provided for @homePlaceholderDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re signed in. The driver experience is coming next.'**
+  String get homePlaceholderDescription;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// No description provided for @signingOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing out...'**
+  String get signingOut;
 }
 
 class _AppLocalizationsDelegate

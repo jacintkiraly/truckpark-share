@@ -52,18 +52,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
+    if (!result.success) {
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
       SnackBar(
         content: Text(
-          result.success
-    ? l10n.registrationSuccessful
-    : AuthErrorLocalizer.message(
-        result.error,
-        l10n,
-      )
+          AuthErrorLocalizer.message(
+            result.error,
+            l10n,
+          ),
         ),
       ),
     );
+
+  return;
+}
+
+WidgetsBinding.instance.addPostFrameCallback((_) {
+  if (!mounted) return;
+
+  Navigator.of(context).popUntil(
+    (route) => route.isFirst,
+  );
+});
   }
 
   @override

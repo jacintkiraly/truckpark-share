@@ -1,4 +1,4 @@
-import 'package:truckpark_share/localization/generated/app_localizations.dart';
+import '../../../localization/generated/app_localizations.dart';
 
 import '../models/auth_error.dart';
 

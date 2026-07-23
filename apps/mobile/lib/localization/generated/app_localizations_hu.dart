@@ -42,6 +42,14 @@ class AppLocalizationsHu extends AppLocalizations {
   String get signInPrompt => 'Már van fiókod? Jelentkezz be';
 
   @override
+  String get communityTitle =>
+      'Ha segítünk egymásnak,\nkönnyebb parkolóhelyet találni.';
+
+  @override
+  String get communityDescription =>
+      'Minden megosztott parkolóhely egy másik hivatásos sofőrnek segít.\n\nEgyütt csökkenthetjük a stresszt, időt takaríthatunk meg, és biztonságosabbá tehetjük az utakat.';
+
+  @override
   String get createAccount => 'Fiók létrehozása';
 
   @override
@@ -99,26 +107,80 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get authErrorEmailAlreadyInUse =>
-      'Már létezik egy fiók ezzel az e-mail címmel.';
+      'Már létezik fiók ezzel az e-mail címmel.';
 
   @override
   String get authErrorInvalidEmail =>
-      'Kérjük, adjon meg egy érvényes e-mail címet.';
+      'Kérlek, adj meg egy érvényes e-mail címet.';
 
   @override
-  String get authErrorWeakPassword => 'A jelszava túl gyenge.';
+  String get authErrorWeakPassword => 'A jelszó túl gyenge.';
 
   @override
-  String get authErrorInvalidCredentials => 'Helytelen e-mail cím vagy jelszó.';
+  String get authErrorInvalidCredentials => 'Hibás e-mail cím vagy jelszó.';
 
   @override
   String get authErrorTooManyRequests =>
-      'Túl sok próbálkozás. Kérjük, próbálja újra később.';
+      'Túl sok próbálkozás. Kérlek, próbáld újra később.';
 
   @override
   String get authErrorNetworkError =>
-      'Hálózati hiba. Kérjük, ellenőrizze a kapcsolatát.';
+      'Hálózati hiba. Ellenőrizd a internetkapcsolatot.';
 
   @override
-  String get authErrorUnknown => 'Valami hiba történt. Kérjük, próbálja újra.';
+  String get authErrorUnknown => 'Valami hiba történt. Kérlek, próbáljd újra.';
+
+  @override
+  String get loginTitle => 'Üdv újra!';
+
+  @override
+  String get loginSubtitle => 'Jelentkezz be a TruckPark Share folytatásához.';
+
+  @override
+  String get signIn => 'Bejelentkezés';
+
+  @override
+  String get signingIn => 'Bejelentkezés...';
+
+  @override
+  String get forgotPassword => 'Elfelejtetted a jelszavad?';
+
+  @override
+  String get noAccountPrompt => 'Nincs még fiókod? Hozz létre egyet';
+
+  @override
+  String get loginSuccessful => 'Sikeres bejelentkezés.';
+
+  @override
+  String get forgotPasswordTitle => 'Jelszó visszaállítása';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Add meg az e-mail címedet, és küldünk egy linket a jelszavad visszaállításához.';
+
+  @override
+  String get sendResetLink => 'Visszaállítási link küldése';
+
+  @override
+  String get sendingResetLink => 'Küldés...';
+
+  @override
+  String get passwordResetEmailSent =>
+      'Ha ehhez az e-mail címhez tartozik fiók, elküldtük a jelszó-visszaállítási linket.';
+
+  @override
+  String get backToSignIn => 'Vissza a bejelentkezéshez';
+
+  @override
+  String get homeWelcome => 'Üdvözlünk a TruckPark Share-ben!';
+
+  @override
+  String get homePlaceholderDescription =>
+      'Be vagy jelentkezve. Hamarosan érkezik a sofőröknek készült felület.';
+
+  @override
+  String get signOut => 'Kijelentkezés';
+
+  @override
+  String get signingOut => 'Kijelentkezés...';
 }
