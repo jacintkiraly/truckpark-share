@@ -421,6 +421,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signing out...'**
   String get signingOut;
+
+  /// No description provided for @authErrorEmailNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email address has not been verified yet.'**
+  String get authErrorEmailNotVerified;
+
+  /// No description provided for @verifyEmailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email'**
+  String get verifyEmailTitle;
+
+  /// No description provided for @verifyEmailSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve sent a verification link to your email address.'**
+  String get verifyEmailSubtitle;
+
+  /// No description provided for @verifyEmailInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the verification email and follow the link. Then return here and check your verification status.'**
+  String get verifyEmailInstructions;
+
+  /// No description provided for @sendVerificationEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send verification email'**
+  String get sendVerificationEmail;
+
+  /// No description provided for @sendingVerificationEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending...'**
+  String get sendingVerificationEmail;
+
+  /// No description provided for @verificationEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent. Please check your inbox.'**
+  String get verificationEmailSent;
+
+  /// No description provided for @checkVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve verified my email'**
+  String get checkVerification;
+
+  /// No description provided for @checkingVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking...'**
+  String get checkingVerification;
+
+  /// No description provided for @emailVerifiedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email has been verified successfully.'**
+  String get emailVerifiedSuccessfully;
+
+  /// No description provided for @verificationEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent to:'**
+  String get verificationEmailAddress;
+
+  /// No description provided for @verificationCheckFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email has not been verified yet. Please check your inbox and try again.'**
+  String get verificationCheckFailed;
 }
 
 class _AppLocalizationsDelegate

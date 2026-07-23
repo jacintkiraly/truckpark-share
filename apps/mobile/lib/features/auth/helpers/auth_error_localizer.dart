@@ -28,6 +28,9 @@ class AuthErrorLocalizer {
       case AuthError.networkError:
         return l10n.authErrorNetworkError;
 
+      case AuthError.emailNotVerified:
+        return l10n.authErrorEmailNotVerified;
+
       case AuthError.unknown:
       case null:
         return l10n.authErrorUnknown;

@@ -5,5 +5,6 @@ enum AuthError {
   invalidCredentials,
   tooManyRequests,
   networkError,
+  emailNotVerified,
   unknown,
 }

@@ -71,5 +71,18 @@
   "homeWelcome": "Welcome to TruckPark Share",
   "homePlaceholderDescription": "You're signed in. The driver experience is coming next.",
   "signOut": "Sign Out",
-  "signingOut": "Signing out..."
+  "signingOut": "Signing out...",
+
+  "authErrorEmailNotVerified": "Your email address has not been verified yet.",
+  "verifyEmailTitle": "Verify your email",
+  "verifyEmailSubtitle": "We've sent a verification link to your email address.",
+  "verifyEmailInstructions": "Open the verification email and follow the link. Then return here and check your verification status.",
+  "sendVerificationEmail": "Send verification email",
+  "sendingVerificationEmail": "Sending...",
+  "verificationEmailSent": "Verification email sent. Please check your inbox.",
+  "checkVerification": "I've verified my email",
+  "checkingVerification": "Checking...",
+  "emailVerifiedSuccessfully": "Your email has been verified successfully.",
+  "verificationEmailAddress": "Verification email sent to:",
+  "verificationCheckFailed": "Your email has not been verified yet. Please check your inbox and try again."
 }

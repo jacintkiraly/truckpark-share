@@ -3,40 +3,54 @@ import 'package:flutter/material.dart';
 
 import '../../home/screens/home_screen.dart';
 import '../../onboarding/screens/welcome_screen.dart';
-import '../services/auth_service.dart';
+import 'verify_email_screen.dart';
 
-class AuthGate extends StatelessWidget {
-  AuthGate({
-    super.key,
-    AuthService? authService,
-  }) : _authService = authService ?? AuthService();
+class AuthGate extends StatefulWidget {
+  const AuthGate({super.key});
 
-  final AuthService _authService;
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  void _handleEmailVerified() {
+    if (!mounted) return;
+
+    setState(() {
+      // Rebuild AuthGate using FirebaseAuth.instance.currentUser.
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
-      stream: _authService.authStateChanges,
-      initialData: _authService.currentUser,
+      stream: FirebaseAuth.instance.userChanges(),
+      initialData: FirebaseAuth.instance.currentUser,
       builder: (context, snapshot) {
+        final user =
+            FirebaseAuth.instance.currentUser ?? snapshot.data;
 
-  if (snapshot.connectionState == ConnectionState.waiting &&
-      snapshot.data == null) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
+        if (snapshot.connectionState == ConnectionState.waiting &&
+            user == null) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
 
-  if (snapshot.data != null) {
-    debugPrint('AuthGate -> HomeScreen');
-    return const HomeScreen();
-  }
+        if (user == null) {
+          return const WelcomeScreen();
+        }
 
-  debugPrint('AuthGate -> WelcomeScreen');
-  return const WelcomeScreen();
-},
+        if (!user.emailVerified) {
+          return VerifyEmailScreen(
+            onVerified: _handleEmailVerified,
+          );
+        }
+
+        return const HomeScreen();
+      },
     );
   }
 }

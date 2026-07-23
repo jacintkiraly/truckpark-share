@@ -178,4 +178,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signingOut => 'Signing out...';
+
+  @override
+  String get authErrorEmailNotVerified =>
+      'Your email address has not been verified yet.';
+
+  @override
+  String get verifyEmailTitle => 'Verify your email';
+
+  @override
+  String get verifyEmailSubtitle =>
+      'We\'ve sent a verification link to your email address.';
+
+  @override
+  String get verifyEmailInstructions =>
+      'Open the verification email and follow the link. Then return here and check your verification status.';
+
+  @override
+  String get sendVerificationEmail => 'Send verification email';
+
+  @override
+  String get sendingVerificationEmail => 'Sending...';
+
+  @override
+  String get verificationEmailSent =>
+      'Verification email sent. Please check your inbox.';
+
+  @override
+  String get checkVerification => 'I\'ve verified my email';
+
+  @override
+  String get checkingVerification => 'Checking...';
+
+  @override
+  String get emailVerifiedSuccessfully =>
+      'Your email has been verified successfully.';
+
+  @override
+  String get verificationEmailAddress => 'Verification email sent to:';
+
+  @override
+  String get verificationCheckFailed =>
+      'Your email has not been verified yet. Please check your inbox and try again.';
 }

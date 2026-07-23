@@ -69,5 +69,18 @@
   "homeWelcome": "Üdvözlünk a TruckPark Share-ben!",
   "homePlaceholderDescription": "Be vagy jelentkezve. Hamarosan érkezik a sofőröknek készült felület.",
   "signOut": "Kijelentkezés",
-  "signingOut": "Kijelentkezés..."
+  "signingOut": "Kijelentkezés...",
+
+  "authErrorEmailNotVerified": "Az e-mail címed még nincs megerősítve.",
+  "verifyEmailTitle": "E-mail-cím megerősítése",
+  "verifyEmailSubtitle": "Megerősítő linket küldtünk az e-mail címedre.",
+  "verifyEmailInstructions": "Nyisd meg a megerősítő e-mailt, és kattints a benne található linkre. Ezután térj vissza ide, és ellenőrizd a megerősítés állapotát.",
+  "sendVerificationEmail": "Megerősítő e-mail küldése",
+  "sendingVerificationEmail": "Küldés...",
+  "verificationEmailSent": "A megerősítő e-mailt elküldtük. Ellenőrizd a beérkező leveleidet.",
+  "checkVerification": "Megerősítettem az e-mail címemet",
+  "checkingVerification": "Ellenőrzés...",
+  "emailVerifiedSuccessfully": "Az e-mail címed sikeresen megerősítve.",
+  "verificationEmailAddress": "A megerősítő e-mailt erre a címre küldtük:",
+  "verificationCheckFailed": "Az e-mail címed még nincs megerősítve. Ellenőrizd a beérkező leveleidet, majd próbáld újra."
 }

@@ -42,7 +42,7 @@ class _TruckParkShareAppState extends State<TruckParkShareApp> {
 
           supportedLocales: AppLocalizations.supportedLocales,
 
-          home: AuthGate(),
+          home: const AuthGate(),
         );
       },
     );

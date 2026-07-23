@@ -183,4 +183,47 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get signingOut => 'Kijelentkezés...';
+
+  @override
+  String get authErrorEmailNotVerified =>
+      'Az e-mail címed még nincs megerősítve.';
+
+  @override
+  String get verifyEmailTitle => 'E-mail-cím megerősítése';
+
+  @override
+  String get verifyEmailSubtitle =>
+      'Megerősítő linket küldtünk az e-mail címedre.';
+
+  @override
+  String get verifyEmailInstructions =>
+      'Nyisd meg a megerősítő e-mailt, és kattints a benne található linkre. Ezután térj vissza ide, és ellenőrizd a megerősítés állapotát.';
+
+  @override
+  String get sendVerificationEmail => 'Megerősítő e-mail küldése';
+
+  @override
+  String get sendingVerificationEmail => 'Küldés...';
+
+  @override
+  String get verificationEmailSent =>
+      'A megerősítő e-mailt elküldtük. Ellenőrizd a beérkező leveleidet.';
+
+  @override
+  String get checkVerification => 'Megerősítettem az e-mail címemet';
+
+  @override
+  String get checkingVerification => 'Ellenőrzés...';
+
+  @override
+  String get emailVerifiedSuccessfully =>
+      'Az e-mail címed sikeresen megerősítve.';
+
+  @override
+  String get verificationEmailAddress =>
+      'A megerősítő e-mailt erre a címre küldtük:';
+
+  @override
+  String get verificationCheckFailed =>
+      'Az e-mail címed még nincs megerősítve. Ellenőrizd a beérkező leveleidet, majd próbáld újra.';
 }
