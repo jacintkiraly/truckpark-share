@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../home/screens/home_screen.dart';
+import '../../home/screens/driver_home_screen.dart';
 import '../../onboarding/screens/welcome_screen.dart';
 import 'verify_email_screen.dart';
 
@@ -49,7 +49,7 @@ class _AuthGateState extends State<AuthGate> {
           );
         }
 
-        return const HomeScreen();
+        return const DriverHomeScreen();
       },
     );
   }

@@ -226,4 +226,55 @@ class AppLocalizationsHu extends AppLocalizations {
   @override
   String get verificationCheckFailed =>
       'Az e-mail címed még nincs megerősítve. Ellenőrizd a beérkező leveleidet, majd próbáld újra.';
+
+  @override
+  String get navigationMap => 'Térkép';
+
+  @override
+  String get navigationCommunity => 'Közösség';
+
+  @override
+  String get navigationProfile => 'Profil';
+
+  @override
+  String get parkingMapTitle => 'Parkolótérkép';
+
+  @override
+  String get parkingMapPlaceholder => 'Hamarosan érkezik a parkolótérkép.';
+
+  @override
+  String get driverCommunityTitle => 'Közösség';
+
+  @override
+  String get driverCommunityPlaceholder => 'Hamarosan érkezik a sofőrközösség.';
+
+  @override
+  String get profileTitle => 'Profil';
+
+  @override
+  String get profilePlaceholder => 'Hamarosan érkezik a sofőrprofil.';
+
+  @override
+  String get profileAccount => 'Fiók';
+
+  @override
+  String get profileName => 'Név';
+
+  @override
+  String get profileEmail => 'E-mail';
+
+  @override
+  String get profileEmailStatus => 'E-mail állapota';
+
+  @override
+  String get profileEmailVerified => 'Megerősítve';
+
+  @override
+  String get profileEmailNotVerified => 'Nincs megerősítve';
+
+  @override
+  String get profileLanguage => 'Nyelv';
+
+  @override
+  String get profileNoName => 'Nincs megadva név';
 }

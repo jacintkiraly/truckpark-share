@@ -220,4 +220,55 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get verificationCheckFailed =>
       'Your email has not been verified yet. Please check your inbox and try again.';
+
+  @override
+  String get navigationMap => 'Map';
+
+  @override
+  String get navigationCommunity => 'Community';
+
+  @override
+  String get navigationProfile => 'Profile';
+
+  @override
+  String get parkingMapTitle => 'Parking Map';
+
+  @override
+  String get parkingMapPlaceholder => 'Parking map coming next.';
+
+  @override
+  String get driverCommunityTitle => 'Community';
+
+  @override
+  String get driverCommunityPlaceholder => 'Driver community coming soon.';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get profilePlaceholder => 'Driver profile coming soon.';
+
+  @override
+  String get profileAccount => 'Account';
+
+  @override
+  String get profileName => 'Name';
+
+  @override
+  String get profileEmail => 'Email';
+
+  @override
+  String get profileEmailStatus => 'Email status';
+
+  @override
+  String get profileEmailVerified => 'Verified';
+
+  @override
+  String get profileEmailNotVerified => 'Not verified';
+
+  @override
+  String get profileLanguage => 'Language';
+
+  @override
+  String get profileNoName => 'No name provided';
 }

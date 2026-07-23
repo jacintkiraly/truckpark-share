@@ -82,5 +82,23 @@
   "checkingVerification": "Ellenőrzés...",
   "emailVerifiedSuccessfully": "Az e-mail címed sikeresen megerősítve.",
   "verificationEmailAddress": "A megerősítő e-mailt erre a címre küldtük:",
-  "verificationCheckFailed": "Az e-mail címed még nincs megerősítve. Ellenőrizd a beérkező leveleidet, majd próbáld újra."
+  "verificationCheckFailed": "Az e-mail címed még nincs megerősítve. Ellenőrizd a beérkező leveleidet, majd próbáld újra.",
+  "navigationMap": "Térkép",
+  "navigationCommunity": "Közösség",
+  "navigationProfile": "Profil",
+  "parkingMapTitle": "Parkolótérkép",
+  "parkingMapPlaceholder": "Hamarosan érkezik a parkolótérkép.",
+  "driverCommunityTitle": "Közösség",
+  "driverCommunityPlaceholder": "Hamarosan érkezik a sofőrközösség.",
+  
+  "profileTitle": "Profil",
+  "profilePlaceholder": "Hamarosan érkezik a sofőrprofil.",
+  "profileAccount": "Fiók",
+  "profileName": "Név",
+  "profileEmail": "E-mail",
+  "profileEmailStatus": "E-mail állapota",
+  "profileEmailVerified": "Megerősítve",
+  "profileEmailNotVerified": "Nincs megerősítve",
+  "profileLanguage": "Nyelv",
+  "profileNoName": "Nincs megadva név"
 }

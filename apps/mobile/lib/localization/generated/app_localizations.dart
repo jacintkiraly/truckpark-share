@@ -493,6 +493,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your email has not been verified yet. Please check your inbox and try again.'**
   String get verificationCheckFailed;
+
+  /// No description provided for @navigationMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get navigationMap;
+
+  /// No description provided for @navigationCommunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Community'**
+  String get navigationCommunity;
+
+  /// No description provided for @navigationProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get navigationProfile;
+
+  /// No description provided for @parkingMapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking Map'**
+  String get parkingMapTitle;
+
+  /// No description provided for @parkingMapPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking map coming next.'**
+  String get parkingMapPlaceholder;
+
+  /// No description provided for @driverCommunityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Community'**
+  String get driverCommunityTitle;
+
+  /// No description provided for @driverCommunityPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver community coming soon.'**
+  String get driverCommunityPlaceholder;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// No description provided for @profilePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver profile coming soon.'**
+  String get profilePlaceholder;
+
+  /// No description provided for @profileAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get profileAccount;
+
+  /// No description provided for @profileName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get profileName;
+
+  /// No description provided for @profileEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get profileEmail;
+
+  /// No description provided for @profileEmailStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Email status'**
+  String get profileEmailStatus;
+
+  /// No description provided for @profileEmailVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get profileEmailVerified;
+
+  /// No description provided for @profileEmailNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not verified'**
+  String get profileEmailNotVerified;
+
+  /// No description provided for @profileLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get profileLanguage;
+
+  /// No description provided for @profileNoName.
+  ///
+  /// In en, this message translates to:
+  /// **'No name provided'**
+  String get profileNoName;
 }
 
 class _AppLocalizationsDelegate

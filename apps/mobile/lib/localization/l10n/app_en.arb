@@ -84,5 +84,23 @@
   "checkingVerification": "Checking...",
   "emailVerifiedSuccessfully": "Your email has been verified successfully.",
   "verificationEmailAddress": "Verification email sent to:",
-  "verificationCheckFailed": "Your email has not been verified yet. Please check your inbox and try again."
+  "verificationCheckFailed": "Your email has not been verified yet. Please check your inbox and try again.",
+  "navigationMap": "Map",
+  "navigationCommunity": "Community",
+  "navigationProfile": "Profile",
+  "parkingMapTitle": "Parking Map",
+  "parkingMapPlaceholder": "Parking map coming next.",
+  "driverCommunityTitle": "Community",
+  "driverCommunityPlaceholder": "Driver community coming soon.",
+  
+  "profileTitle": "Profile",
+  "profilePlaceholder": "Driver profile coming soon.",
+  "profileAccount": "Account",
+  "profileName": "Name",
+  "profileEmail": "Email",
+  "profileEmailStatus": "Email status",
+  "profileEmailVerified": "Verified",
+  "profileEmailNotVerified": "Not verified",
+  "profileLanguage": "Language",
+  "profileNoName": "No name provided"
 }
