@@ -102,5 +102,30 @@
   "profileEmailVerified": "Verified",
   "profileEmailNotVerified": "Not verified",
   "profileLanguage": "Language",
-  "profileNoName": "No name provided"
+  "profileNoName": "No name provided",
+
+  "locationLoading": "Finding your location...",
+  "locationServiceDisabledTitle": "Location services are turned off",
+  "locationServiceDisabledMessage": "Turn on location services to see your position and nearby truck parking.",
+  "locationPermissionDeniedTitle": "Location permission needed",
+  "locationPermissionDeniedMessage": "Allow location access so TruckPark Share can show your position and nearby parking.",
+  "locationPermissionPermanentlyDeniedTitle": "Location permission is blocked",
+  "locationPermissionPermanentlyDeniedMessage": "Location access has been blocked. Open app settings to allow location access.",
+  "locationErrorTitle": "Couldn't get your location",
+  "locationErrorMessage": "Something went wrong while finding your location. Please try again.",
+  "locationAvailableTitle": "Location found",
+  "locationAccuracy": "Accuracy",
+  
+  "locationMeters": "{value} m",
+  "@locationMeters": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+
+  "locationRetry": "Try Again",
+  "locationOpenSettings": "Open Location Settings",
+  "locationOpenAppSettings": "Open App Settings"
 }

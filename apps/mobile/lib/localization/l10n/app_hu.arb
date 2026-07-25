@@ -100,5 +100,30 @@
   "profileEmailVerified": "Megerősítve",
   "profileEmailNotVerified": "Nincs megerősítve",
   "profileLanguage": "Nyelv",
-  "profileNoName": "Nincs megadva név"
+  "profileNoName": "Nincs megadva név",
+
+  "locationLoading": "Helyzet meghatározása...",
+  "locationServiceDisabledTitle": "A helymeghatározás ki van kapcsolva",
+  "locationServiceDisabledMessage": "Kapcsold be a helymeghatározást, hogy lásd a pozíciódat és a közeli kamionparkolókat.",
+  "locationPermissionDeniedTitle": "Helyhozzáférés szükséges",
+  "locationPermissionDeniedMessage": "Engedélyezd a helyhozzáférést, hogy a TruckPark Share megmutathassa a pozíciódat és a közeli parkolókat.",
+  "locationPermissionPermanentlyDeniedTitle": "A helyhozzáférés le van tiltva",
+  "locationPermissionPermanentlyDeniedMessage": "A helyhozzáférés le van tiltva. Nyisd meg az alkalmazás beállításait, és engedélyezd a helyhozzáférést.",
+  "locationErrorTitle": "Nem sikerült meghatározni a helyzetedet",
+  "locationErrorMessage": "Hiba történt a helyzeted meghatározása közben. Próbáld újra.",
+  "locationAvailableTitle": "Helyzet meghatározva",
+  "locationAccuracy": "Pontosság",
+
+  "locationMeters": "{value} m",
+  "@locationMeters": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+
+  "locationRetry": "Újrapróbálkozás",
+  "locationOpenSettings": "Helybeállítások megnyitása",
+  "locationOpenAppSettings": "Alkalmazásbeállítások megnyitása"
 }

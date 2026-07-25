@@ -277,4 +277,57 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get profileNoName => 'Nincs megadva név';
+
+  @override
+  String get locationLoading => 'Helyzet meghatározása...';
+
+  @override
+  String get locationServiceDisabledTitle =>
+      'A helymeghatározás ki van kapcsolva';
+
+  @override
+  String get locationServiceDisabledMessage =>
+      'Kapcsold be a helymeghatározást, hogy lásd a pozíciódat és a közeli kamionparkolókat.';
+
+  @override
+  String get locationPermissionDeniedTitle => 'Helyhozzáférés szükséges';
+
+  @override
+  String get locationPermissionDeniedMessage =>
+      'Engedélyezd a helyhozzáférést, hogy a TruckPark Share megmutathassa a pozíciódat és a közeli parkolókat.';
+
+  @override
+  String get locationPermissionPermanentlyDeniedTitle =>
+      'A helyhozzáférés le van tiltva';
+
+  @override
+  String get locationPermissionPermanentlyDeniedMessage =>
+      'A helyhozzáférés le van tiltva. Nyisd meg az alkalmazás beállításait, és engedélyezd a helyhozzáférést.';
+
+  @override
+  String get locationErrorTitle => 'Nem sikerült meghatározni a helyzetedet';
+
+  @override
+  String get locationErrorMessage =>
+      'Hiba történt a helyzeted meghatározása közben. Próbáld újra.';
+
+  @override
+  String get locationAvailableTitle => 'Helyzet meghatározva';
+
+  @override
+  String get locationAccuracy => 'Pontosság';
+
+  @override
+  String locationMeters(String value) {
+    return '$value m';
+  }
+
+  @override
+  String get locationRetry => 'Újrapróbálkozás';
+
+  @override
+  String get locationOpenSettings => 'Helybeállítások megnyitása';
+
+  @override
+  String get locationOpenAppSettings => 'Alkalmazásbeállítások megnyitása';
 }

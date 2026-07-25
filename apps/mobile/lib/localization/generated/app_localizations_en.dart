@@ -271,4 +271,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileNoName => 'No name provided';
+
+  @override
+  String get locationLoading => 'Finding your location...';
+
+  @override
+  String get locationServiceDisabledTitle => 'Location services are turned off';
+
+  @override
+  String get locationServiceDisabledMessage =>
+      'Turn on location services to see your position and nearby truck parking.';
+
+  @override
+  String get locationPermissionDeniedTitle => 'Location permission needed';
+
+  @override
+  String get locationPermissionDeniedMessage =>
+      'Allow location access so TruckPark Share can show your position and nearby parking.';
+
+  @override
+  String get locationPermissionPermanentlyDeniedTitle =>
+      'Location permission is blocked';
+
+  @override
+  String get locationPermissionPermanentlyDeniedMessage =>
+      'Location access has been blocked. Open app settings to allow location access.';
+
+  @override
+  String get locationErrorTitle => 'Couldn\'t get your location';
+
+  @override
+  String get locationErrorMessage =>
+      'Something went wrong while finding your location. Please try again.';
+
+  @override
+  String get locationAvailableTitle => 'Location found';
+
+  @override
+  String get locationAccuracy => 'Accuracy';
+
+  @override
+  String locationMeters(String value) {
+    return '$value m';
+  }
+
+  @override
+  String get locationRetry => 'Try Again';
+
+  @override
+  String get locationOpenSettings => 'Open Location Settings';
+
+  @override
+  String get locationOpenAppSettings => 'Open App Settings';
 }

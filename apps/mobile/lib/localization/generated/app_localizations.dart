@@ -595,6 +595,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No name provided'**
   String get profileNoName;
+
+  /// No description provided for @locationLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding your location...'**
+  String get locationLoading;
+
+  /// No description provided for @locationServiceDisabledTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are turned off'**
+  String get locationServiceDisabledTitle;
+
+  /// No description provided for @locationServiceDisabledMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location services to see your position and nearby truck parking.'**
+  String get locationServiceDisabledMessage;
+
+  /// No description provided for @locationPermissionDeniedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission needed'**
+  String get locationPermissionDeniedTitle;
+
+  /// No description provided for @locationPermissionDeniedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow location access so TruckPark Share can show your position and nearby parking.'**
+  String get locationPermissionDeniedMessage;
+
+  /// No description provided for @locationPermissionPermanentlyDeniedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is blocked'**
+  String get locationPermissionPermanentlyDeniedTitle;
+
+  /// No description provided for @locationPermissionPermanentlyDeniedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access has been blocked. Open app settings to allow location access.'**
+  String get locationPermissionPermanentlyDeniedMessage;
+
+  /// No description provided for @locationErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t get your location'**
+  String get locationErrorTitle;
+
+  /// No description provided for @locationErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while finding your location. Please try again.'**
+  String get locationErrorMessage;
+
+  /// No description provided for @locationAvailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location found'**
+  String get locationAvailableTitle;
+
+  /// No description provided for @locationAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy'**
+  String get locationAccuracy;
+
+  /// No description provided for @locationMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} m'**
+  String locationMeters(String value);
+
+  /// No description provided for @locationRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get locationRetry;
+
+  /// No description provided for @locationOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Location Settings'**
+  String get locationOpenSettings;
+
+  /// No description provided for @locationOpenAppSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open App Settings'**
+  String get locationOpenAppSettings;
 }
 
 class _AppLocalizationsDelegate
