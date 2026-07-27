@@ -5,6 +5,7 @@ import '../../../shared/widgets/primary_button.dart';
 import '../controllers/location_controller.dart';
 import '../models/driver_location.dart';
 import '../models/location_status.dart';
+import '../widgets/parking_google_map.dart';
 
 class ParkingMapScreen extends StatefulWidget {
   const ParkingMapScreen({super.key});
@@ -232,37 +233,8 @@ class _LocationAvailableState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.my_location,
-              size: 64,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              l10n.locationAvailableTitle,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 24),
-            SelectableText(
-              '${location.latitude.toStringAsFixed(6)}, '
-              '${location.longitude.toStringAsFixed(6)}',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              '${l10n.locationAccuracy}: '
-              '${l10n.locationMeters(location.accuracy.toStringAsFixed(0))}',
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+    return ParkingGoogleMap(
+      location: location,
     );
   }
 }

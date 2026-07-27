@@ -16,6 +16,31 @@
       "api_key": [
         {
           "current_key": "AIzaSyCnfx_nK7C3anP5Fth2OjQLivtFY-VZkVs"
+        },
+        {
+          "current_key": "AIzaSyDp7rEJQObw2BE1PY-XMiIUm78riiyc_HI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025014149435:android:38aec23351aa381645871e",
+        "android_client_info": {
+          "package_name": "com.truckparkshare.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnfx_nK7C3anP5Fth2OjQLivtFY-VZkVs"
+        },
+        {
+          "current_key": "AIzaSyDp7rEJQObw2BE1PY-XMiIUm78riiyc_HI"
         }
       ],
       "services": {
