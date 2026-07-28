@@ -4,6 +4,7 @@ import 'package:truckpark_share/core/di/service_locator.dart';
 
 import 'app/app.dart';
 import 'firebase_options.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,5 +14,9 @@ Future<void> main() async {
 );
   await setupServiceLocator();
 
-  runApp(const TruckParkShareApp());
+  runApp(
+  const ProviderScope(
+    child: TruckParkShareApp(),
+  ),
+);
 }
