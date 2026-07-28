@@ -6,6 +6,10 @@ import '../../features/parking/data/mappers/parking_spot_mapper.dart';
 import '../../features/parking/data/repositories/parking_repository_impl.dart';
 import '../../features/parking/domain/repositories/parking_repository.dart';
 
+import '../../features/parking/domain/usecases/watch_parking_spots_use_case.dart';
+import '../../features/parking/domain/usecases/add_parking_spot_use_case.dart';
+import '../../features/parking/domain/usecases/update_parking_spot_use_case.dart';
+import '../../features/parking/domain/usecases/delete_parking_spot_use_case.dart';
 void registerParkingModule(GetIt sl) {
   if (!sl.isRegistered<ParkingSpotMapper>()) {
     sl.registerLazySingleton(
@@ -29,4 +33,20 @@ void registerParkingModule(GetIt sl) {
       ),
     );
   }
+
+sl.registerLazySingleton(
+  () => WatchParkingSpotsUseCase(sl()),
+);
+
+sl.registerLazySingleton(
+  () => AddParkingSpotUseCase(sl()),
+);
+
+sl.registerLazySingleton(
+  () => UpdateParkingSpotUseCase(sl()),
+);
+
+sl.registerLazySingleton(
+  () => DeleteParkingSpotUseCase(sl()),
+);
 }
