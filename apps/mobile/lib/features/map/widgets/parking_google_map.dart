@@ -96,8 +96,8 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
                             right: 36,
                           ),
                           child: ParkingCard(
-                            parkingSpot:
-                                _selectedParkingSpot!,
+                            parkingSpot: _selectedParkingSpot!,
+                            driverLocation: widget.location,
                           ),
                         ),
 
