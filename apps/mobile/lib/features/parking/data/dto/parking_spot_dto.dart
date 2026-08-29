@@ -48,7 +48,7 @@ class ParkingSpotDto {
   final String updatedBy;
   final bool verified;
 
-    factory ParkingSpotDto.fromFirestore(
+  factory ParkingSpotDto.fromFirestore(
     String id,
     Map<String, dynamic> json,
   ) {
@@ -58,14 +58,15 @@ class ParkingSpotDto {
     return ParkingSpotDto(
       id: id,
       name: json['name'] as String,
+
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
 
       type: json['type'] as String,
       status: json['status'] as String,
 
-      totalSpaces: json['totalSpaces'] as int,
-      freeSpaces: json['freeSpaces'] as int,
+      totalSpaces: (json['totalSpaces'] as num).toInt(),
+      freeSpaces: (json['freeSpaces'] as num).toInt(),
 
       toilets: services['toilets'] as bool? ?? false,
       showers: services['showers'] as bool? ?? false,
@@ -73,7 +74,8 @@ class ParkingSpotDto {
       fuel: services['fuel'] as bool? ?? false,
       security: services['security'] as bool? ?? false,
       wifi: services['wifi'] as bool? ?? false,
-      electricity: services['electricity'] as bool? ?? false,
+      electricity:
+          services['electricity'] as bool? ?? false,
       water: services['water'] as bool? ?? false,
 
       lastUpdated:
@@ -84,7 +86,7 @@ class ParkingSpotDto {
     );
   }
 
-    Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toFirestore() {
     return {
       'name': name,
       'latitude': latitude,

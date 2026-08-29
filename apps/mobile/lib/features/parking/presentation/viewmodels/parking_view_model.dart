@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/usecases/watch_parking_spots_use_case.dart';
@@ -15,19 +16,34 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
   StreamSubscription? _subscription;
 
   void watchParkingSpots() {
+    debugPrint('PARKING: watchParkingSpots() START');
+    
     state = state.copyWith(isLoading: true);
 
     _subscription?.cancel();
 
     _subscription = _watchParkingSpotsUseCase().listen(
-      (spots) {
-        state = state.copyWith(
-          isLoading: false,
-          parkingSpots: spots,
-          errorMessage: null,
-        );
-      },
+  (spots) {
+    debugPrint('PARKING: received ${spots.length} parking spots');
+
+    for (final spot in spots) {
+      debugPrint(
+        'PARKING: ${spot.id} | '
+        '${spot.name} | '
+        '${spot.location.latitude}, '
+        '${spot.location.longitude}',
+      );
+    }
+
+    state = state.copyWith(
+      isLoading: false,
+      parkingSpots: spots,
+      errorMessage: null,
+    );
+  },
       onError: (error) {
+        debugPrint('PARKING ERROR: $error');
+
         state = state.copyWith(
           isLoading: false,
           errorMessage: error.toString(),

@@ -1,53 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../localization/generated/app_localizations.dart';
 import '../../../shared/widgets/primary_button.dart';
+
+import '../../parking/presentation/providers/parking_provider.dart';
+import '../../parking/presentation/state/parking_state.dart';
+
 import '../controllers/location_controller.dart';
 import '../models/driver_location.dart';
 import '../models/location_status.dart';
 import '../widgets/parking_google_map.dart';
 
-class ParkingMapScreen extends StatefulWidget {
+class ParkingMapScreen extends ConsumerStatefulWidget {
   const ParkingMapScreen({super.key});
 
   @override
-  State<ParkingMapScreen> createState() =>
+  ConsumerState<ParkingMapScreen> createState() =>
       _ParkingMapScreenState();
 }
 
-class _ParkingMapScreenState extends State<ParkingMapScreen>
+class _ParkingMapScreenState
+    extends ConsumerState<ParkingMapScreen>
     with WidgetsBindingObserver {
   final LocationController _locationController =
       LocationController();
 
   @override
-void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
 
-  WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    _locationController.loadCurrentLocation();
-  });
-}
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _locationController.loadCurrentLocation();
 
-  @override
-void didChangeAppLifecycleState(AppLifecycleState state) {
-  if (state == AppLifecycleState.resumed) {
-    _locationController.loadCurrentLocation();
+      ref
+          .read(parkingViewModelProvider.notifier)
+          .watchParkingSpots();
+    });
   }
-}
 
   @override
-void dispose() {
-  WidgetsBinding.instance.removeObserver(this);
-  _locationController.dispose();
-  super.dispose();
-}
+  void didChangeAppLifecycleState(
+    AppLifecycleState state,
+  ) {
+    if (state == AppLifecycleState.resumed) {
+      _locationController.loadCurrentLocation();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _locationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final parkingState = ref.watch(
+      parkingViewModelProvider,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -60,6 +75,7 @@ void dispose() {
             return _buildContent(
               context,
               l10n,
+              parkingState,
             );
           },
         ),
@@ -70,6 +86,7 @@ void dispose() {
   Widget _buildContent(
     BuildContext context,
     AppLocalizations l10n,
+    ParkingState parkingState,
   ) {
     switch (_locationController.status) {
       case LocationStatus.initial:
@@ -99,7 +116,8 @@ void dispose() {
       case LocationStatus.permissionDeniedForever:
         return _MessageState(
           icon: Icons.settings_outlined,
-          title: l10n.locationPermissionPermanentlyDeniedTitle,
+          title:
+              l10n.locationPermissionPermanentlyDeniedTitle,
           message:
               l10n.locationPermissionPermanentlyDeniedMessage,
           actionText: l10n.locationOpenAppSettings,
@@ -128,9 +146,31 @@ void dispose() {
           );
         }
 
+        if (parkingState.isLoading) {
+          return _LoadingState(
+            message: 'Parkolók betöltése...',
+          );
+        }
+
+        if (parkingState.errorMessage != null) {
+          return _MessageState(
+            icon: Icons.error_outline,
+            title: 'Parkolók betöltése sikertelen',
+            message: parkingState.errorMessage!,
+            actionText: 'Újra',
+            onPressed: () {
+              ref
+                  .read(
+                    parkingViewModelProvider.notifier,
+                  )
+                  .watchParkingSpots();
+            },
+          );
+        }
+
         return _LocationAvailableState(
           location: location,
-          l10n: l10n,
+          parkingState: parkingState,
         );
     }
   }
@@ -203,7 +243,8 @@ class _MessageState extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style:
+                  Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 12),
             Text(
@@ -225,16 +266,17 @@ class _MessageState extends StatelessWidget {
 class _LocationAvailableState extends StatelessWidget {
   const _LocationAvailableState({
     required this.location,
-    required this.l10n,
+    required this.parkingState,
   });
 
   final DriverLocation location;
-  final AppLocalizations l10n;
+  final ParkingState parkingState;
 
   @override
   Widget build(BuildContext context) {
     return ParkingGoogleMap(
       location: location,
+      parkingSpots: parkingState.parkingSpots,
     );
   }
 }

@@ -5,11 +5,10 @@ import 'package:truckpark_share/features/parking/domain/entities/parking_spot.da
 import 'package:truckpark_share/features/parking/domain/repositories/parking_repository.dart';
 
 class ParkingRepositoryImpl implements ParkingRepository {
-  ParkingRepositoryImpl({
-    required FirestoreParkingDataSource dataSource,
-    required ParkingSpotMapper mapper,
-  })  : _dataSource = dataSource,
-        _mapper = mapper;
+ ParkingRepositoryImpl({
+  required this._dataSource,
+  required this._mapper,
+});
 
   @override
   Stream<List<ParkingSpot>> watchParkingSpots() {

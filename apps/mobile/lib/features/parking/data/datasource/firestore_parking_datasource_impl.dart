@@ -6,9 +6,8 @@ import 'package:truckpark_share/features/parking/data/dto/parking_spot_dto.dart'
 class FirestoreParkingDataSourceImpl
     implements FirestoreParkingDataSource {
   FirestoreParkingDataSourceImpl({
-    required FirebaseFirestore firestore,
-  }) : _firestore = firestore;
-
+  required this._firestore,
+});
   final FirebaseFirestore _firestore;
 
   CollectionReference<Map<String, dynamic>> get _parkingSpots =>
