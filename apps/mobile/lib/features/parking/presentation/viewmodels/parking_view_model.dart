@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/usecases/watch_parking_spots_use_case.dart';
+import '../enums/parking_view_mode.dart';
 import '../state/parking_state.dart';
 
 class ParkingViewModel extends StateNotifier<ParkingState> {
@@ -50,6 +51,12 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
         );
       },
     );
+  }
+
+  void setViewMode(ParkingViewMode viewMode) {
+  state = state.copyWith(
+    viewMode: viewMode,
+  );
   }
 
   @override
