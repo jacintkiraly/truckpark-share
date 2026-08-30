@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../parking/domain/entities/parking_spot.dart';
+import '../../parking/presentation/screens/edit_parking_screen.dart';
 import '../../parking/presentation/widgets/parking_card.dart';
 import '../models/driver_location.dart';
 
@@ -96,9 +97,24 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
                             right: 36,
                           ),
                           child: ParkingCard(
-                            parkingSpot: _selectedParkingSpot!,
-                            driverLocation: widget.location,
-                          ),
+  parkingSpot: _selectedParkingSpot!,
+  driverLocation: widget.location,
+ onEdit: () {
+  final parkingSpot = _selectedParkingSpot;
+
+  if (parkingSpot == null) {
+    return;
+  }
+
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (_) => EditParkingScreen(
+        parkingSpot: parkingSpot,
+      ),
+    ),
+  );
+},
+),
                         ),
 
                         Positioned(

@@ -8,13 +8,15 @@ import '../../../map/models/driver_location.dart';
 
 class ParkingCard extends StatelessWidget {
 const ParkingCard({
-super.key,
-required this.parkingSpot,
-this.driverLocation,
+  super.key,
+  required this.parkingSpot,
+  this.driverLocation,
+  this.onEdit,
 });
 
 final ParkingSpot parkingSpot;
 final DriverLocation? driverLocation;
+final VoidCallback? onEdit;
 
 String _statusLabel(ParkingStatus status) {
 switch (status) {
@@ -267,18 +269,33 @@ return Card(
           ),
         ],
         const SizedBox(height: 12),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton.icon(
-            onPressed: _openNavigation,
-            icon: const Icon(
-              Icons.navigation,
-            ),
-            label: const Text(
-              'Navigate here',
-            ),
+Row(
+  children: [
+    if (onEdit != null) ...[
+      Expanded(
+        child: OutlinedButton.icon(
+          onPressed: onEdit,
+          icon: const Icon(
+            Icons.edit_outlined,
           ),
+          label: const Text('Edit'),
         ),
+      ),
+      const SizedBox(width: 12),
+    ],
+    Expanded(
+      child: FilledButton.icon(
+        onPressed: _openNavigation,
+        icon: const Icon(
+          Icons.navigation,
+        ),
+        label: const Text(
+          'Navigate here',
+        ),
+      ),
+    ),
+  ],
+),
       ],
     ),
   ),
