@@ -8,6 +8,7 @@ import '../../parking/presentation/enums/parking_view_mode.dart';
 import '../../parking/presentation/providers/parking_provider.dart';
 import '../../parking/presentation/state/parking_state.dart';
 import '../../parking/presentation/widgets/parking_list.dart';
+import '../../parking/presentation/screens/add_parking_screen.dart';
 
 import '../controllers/location_controller.dart';
 import '../models/driver_location.dart';
@@ -70,37 +71,48 @@ final parkingState = ref.watch(
 return Scaffold(
   appBar: AppBar(
     title: Text(l10n.parkingMapTitle),
-    actions: [
-      Padding(
-        padding: const EdgeInsets.only(
-          right: 8,
+actions: [
+  IconButton(
+    tooltip: 'Parkoló hozzáadása',
+    icon: const Icon(Icons.add_location_alt),
+    onPressed: () {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => const AddParkingScreen(),
         ),
-        child: SegmentedButton<ParkingViewMode>(
-          segments: const [
-            ButtonSegment<ParkingViewMode>(
-              value: ParkingViewMode.map,
-              icon: Icon(Icons.map_outlined),
-              label: Text('Map'),
-            ),
-            ButtonSegment<ParkingViewMode>(
-              value: ParkingViewMode.list,
-              icon: Icon(Icons.list),
-              label: Text('List'),
-            ),
-          ],
-          selected: {
-            parkingState.viewMode,
-          },
-          onSelectionChanged: (selection) {
-            ref
-                .read(
-                  parkingViewModelProvider.notifier,
-                )
-                .setViewMode(selection.first);
-          },
+      );
+    },
+  ),
+  Padding(
+    padding: const EdgeInsets.only(
+      right: 8,
+    ),
+    child: SegmentedButton<ParkingViewMode>(
+      segments: const [
+        ButtonSegment<ParkingViewMode>(
+          value: ParkingViewMode.map,
+          icon: Icon(Icons.map_outlined),
+          label: Text('Map'),
         ),
-      ),
-    ],
+        ButtonSegment<ParkingViewMode>(
+          value: ParkingViewMode.list,
+          icon: Icon(Icons.list),
+          label: Text('List'),
+        ),
+      ],
+      selected: {
+        parkingState.viewMode,
+      },
+      onSelectionChanged: (selection) {
+        ref
+            .read(
+              parkingViewModelProvider.notifier,
+            )
+            .setViewMode(selection.first);
+      },
+    ),
+  ),
+],
   ),
   body: SafeArea(
     child: _buildParkingContent(
