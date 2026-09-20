@@ -12,9 +12,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
 );
-  await setupServiceLocator();
+ await setupServiceLocator();
 
-  runApp(
+await TruckParkShareApp.languageController.load();
+
+runApp(
   const ProviderScope(
     child: TruckParkShareApp(),
   ),
