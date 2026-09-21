@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'login_screen.dart';
 import '../../../localization/generated/app_localizations.dart';
 import '../../../shared/widgets/primary_button.dart';
 
@@ -166,11 +167,15 @@ WidgetsBinding.instance.addPostFrameCallback((_) {
                 const SizedBox(height: 16),
 
                 TextButton(
-                  onPressed: () {
-                    debugPrint('Navigate to Login');
-                  },
-                  child: Text(l10n.signInPrompt),
-                ),
+  onPressed: () {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => const LoginScreen(),
+      ),
+    );
+  },
+  child: Text(l10n.signInPrompt),
+),
 
                 const SizedBox(height: 24),
               ],
