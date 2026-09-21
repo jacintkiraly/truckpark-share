@@ -157,4 +157,10 @@ const supportedLanguages = [
     englishName: 'Turkish',
     countryCode: 'TR',
   ),
+  AppLanguage(
+  languageCode: 'ar',
+  nativeName: 'العربية',
+  englishName: 'Arabic',
+  countryCode: 'SA',
+),
 ];
