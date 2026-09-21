@@ -73,7 +73,7 @@ return Scaffold(
     title: Text(l10n.parkingMapTitle),
 actions: [
   IconButton(
-    tooltip: 'Parkoló hozzáadása',
+    tooltip: l10n.addParking,
     icon: const Icon(Icons.add_location_alt),
     onPressed: () {
       Navigator.of(context).push(
@@ -88,18 +88,18 @@ actions: [
       right: 8,
     ),
     child: SegmentedButton<ParkingViewMode>(
-      segments: const [
-        ButtonSegment<ParkingViewMode>(
-          value: ParkingViewMode.map,
-          icon: Icon(Icons.map_outlined),
-          label: Text('Map'),
-        ),
-        ButtonSegment<ParkingViewMode>(
-          value: ParkingViewMode.list,
-          icon: Icon(Icons.list),
-          label: Text('List'),
-        ),
-      ],
+      segments: [
+  ButtonSegment<ParkingViewMode>(
+    value: ParkingViewMode.map,
+    icon: const Icon(Icons.map_outlined),
+    label: Text(l10n.mapView),
+  ),
+  ButtonSegment<ParkingViewMode>(
+    value: ParkingViewMode.list,
+    icon: const Icon(Icons.list),
+    label: Text(l10n.listView),
+  ),
+],
       selected: {
         parkingState.viewMode,
       },
@@ -125,56 +125,56 @@ actions: [
 }
 
 Widget _buildParkingContent(
-BuildContext context,
-AppLocalizations l10n,
-ParkingState parkingState,
+  BuildContext context,
+  AppLocalizations l10n,
+  ParkingState parkingState,
 ) {
-if (parkingState.isLoading) {
-return const _LoadingState(
-message: 'Loading parking spots...',
-);
-}
-
-if (parkingState.errorMessage != null) {
-  return _MessageState(
-    icon: Icons.error_outline,
-    title: 'Parking spots could not be loaded',
-    message: parkingState.errorMessage!,
-    actionText: 'Retry',
-    onPressed: () {
-      ref
-          .read(
-            parkingViewModelProvider.notifier,
-          )
-          .watchParkingSpots();
-    },
+  if (parkingState.isLoading) {
+  return _LoadingState(
+    message: l10n.parkingLoading,
   );
 }
 
-if (parkingState.parkingSpots.isEmpty) {
-  return const Center(
+  if (parkingState.errorMessage != null) {
+    return _MessageState(
+      icon: Icons.error_outline,
+      title: l10n.parkingLoadError,
+      message: parkingState.errorMessage!,
+      actionText: l10n.retry,
+      onPressed: () {
+        ref
+            .read(
+              parkingViewModelProvider.notifier,
+            )
+            .watchParkingSpots();
+      },
+    );
+  }
+
+  if (parkingState.viewMode == ParkingViewMode.list) {
+    if (parkingState.parkingSpots.isEmpty) {
+  return Center(
     child: Text(
-      'No parking spots available',
+      l10n.parkingNoSpots,
     ),
   );
 }
 
-if (parkingState.viewMode == ParkingViewMode.list) {
-  return ParkingList(
-    parkingSpots: parkingState.parkingSpots,
-  );
-}
-
-return AnimatedBuilder(
-  animation: _locationController,
-  builder: (context, child) {
-    return _buildMapContent(
-      context,
-      l10n,
-      parkingState,
+    return ParkingList(
+      parkingSpots: parkingState.parkingSpots,
     );
-  },
-);
+  }
+
+  return AnimatedBuilder(
+    animation: _locationController,
+    builder: (context, child) {
+      return _buildMapContent(
+        context,
+        l10n,
+        parkingState,
+      );
+    },
+  );
 }
 
 Widget _buildMapContent(

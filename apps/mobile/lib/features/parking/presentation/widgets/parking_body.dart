@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../localization/generated/app_localizations.dart';
 import '../enums/parking_view_mode.dart';
 import '../state/parking_state.dart';
 import 'map/parking_map.dart';
@@ -17,6 +18,8 @@ class ParkingBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (state.isLoading) {
       return const ParkingLoading();
     }
@@ -28,8 +31,8 @@ class ParkingBody extends StatelessWidget {
     }
 
     if (state.parkingSpots.isEmpty) {
-      return const Center(
-        child: Text('No parking spots available'),
+      return Center(
+        child: Text(l10n.parkingNoSpots),
       );
     }
 

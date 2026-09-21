@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../localization/generated/app_localizations.dart';
 import '../../domain/entities/parking_spot.dart';
-import '../../domain/value_objects/parking_services.dart';
 import '../../domain/enums/parking_type.dart';
+import '../../domain/value_objects/parking_services.dart';
 import '../providers/parking_provider.dart';
 
 class EditParkingScreen extends ConsumerStatefulWidget {
@@ -32,24 +33,27 @@ class _EditParkingScreenState
 
   bool _isSaving = false;
 
-  String _typeLabel(ParkingType type) {
-  switch (type) {
-    case ParkingType.motorway:
-      return 'Motorway parking';
-    case ParkingType.serviceArea:
-      return 'Service area';
-    case ParkingType.fuelStation:
-      return 'Fuel station';
-    case ParkingType.logisticsCenter:
-      return 'Logistics center';
-    case ParkingType.industrial:
-      return 'Industrial area';
-    case ParkingType.publicParking:
-      return 'Public parking';
-    case ParkingType.privateParking:
-      return 'Private parking';
+  String _typeLabel(
+    ParkingType type,
+    AppLocalizations l10n,
+  ) {
+    switch (type) {
+      case ParkingType.motorway:
+        return l10n.parkingTypeMotorway;
+      case ParkingType.serviceArea:
+        return l10n.parkingTypeServiceArea;
+      case ParkingType.fuelStation:
+        return l10n.parkingTypeFuelStation;
+      case ParkingType.logisticsCenter:
+        return l10n.parkingTypeLogisticsCenter;
+      case ParkingType.industrial:
+        return l10n.parkingTypeIndustrial;
+      case ParkingType.publicParking:
+        return l10n.parkingTypePublicParking;
+      case ParkingType.privateParking:
+        return l10n.parkingTypePrivateParking;
+    }
   }
-}
 
   @override
   void initState() {
@@ -100,10 +104,11 @@ class _EditParkingScreenState
       return;
     }
 
+    final l10n = AppLocalizations.of(context)!;
+
     if (freeSpaces > totalSpaces) {
       _showMessage(
-        'A szabad helyek száma nem lehet nagyobb '
-        'az összes férőhelynél.',
+        l10n.parkingFreeSpacesExceedTotal,
       );
       return;
     }
@@ -136,9 +141,9 @@ class _EditParkingScreenState
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-            'Parkoló sikeresen módosítva.',
+            l10n.parkingUpdateSuccess,
           ),
         ),
       );
@@ -150,7 +155,7 @@ class _EditParkingScreenState
       }
 
       _showMessage(
-        'A parkoló módosítása sikertelen.\n$error',
+        '${l10n.parkingUpdateFailed}\n$error',
       );
     } finally {
       if (mounted) {
@@ -184,11 +189,85 @@ class _EditParkingScreenState
     );
   }
 
+  Future<void> _confirmDelete() async {
+    final l10n = AppLocalizations.of(context)!;
+
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            l10n.parkingDeleteTitle,
+          ),
+          content: Text(
+            l10n.parkingDeleteConfirmation,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text(
+                l10n.cancel,
+              ),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text(
+                l10n.delete,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldDelete != true) {
+      return;
+    }
+
+    setState(() {
+      _isSaving = true;
+    });
+
+    try {
+      await ref
+          .read(parkingViewModelProvider.notifier)
+          .deleteParkingSpot(widget.parkingSpot.id);
+
+      if (!mounted) {
+        return;
+      }
+
+      Navigator.of(context).pop();
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      _showMessage(
+        '${l10n.parkingDeleteFailed}: $error',
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Parkoló szerkesztése'),
+        title: Text(
+          l10n.editParkingTitle,
+        ),
       ),
       body: SafeArea(
         child: Form(
@@ -200,17 +279,17 @@ class _EditParkingScreenState
                 controller: _nameController,
                 enabled: !_isSaving,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                  labelText: 'Parkoló neve',
-                  prefixIcon: Icon(
+                decoration: InputDecoration(
+                  labelText: l10n.parkingName,
+                  prefixIcon: const Icon(
                     Icons.local_parking,
                   ),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null ||
                       value.trim().isEmpty) {
-                    return 'Add meg a parkoló nevét.';
+                    return l10n.enterName;
                   }
 
                   return null;
@@ -220,36 +299,39 @@ class _EditParkingScreenState
               const SizedBox(height: 20),
 
               DropdownButtonFormField<ParkingType>(
-                  initialValue: _type,
-                  decoration: const InputDecoration(
-                    labelText: 'Parkolótípus',
-                    prefixIcon: Icon(
-                      Icons.category_outlined,
-                    ),
-                    border: OutlineInputBorder(),
+                initialValue: _type,
+                decoration: InputDecoration(
+                  labelText: l10n.parkingType,
+                  prefixIcon: const Icon(
+                    Icons.category_outlined,
                   ),
-                  items: ParkingType.values.map(
-                    (type) {
-                      return DropdownMenuItem<ParkingType>(
-                        value: type,
-                        child: Text(
-                          _typeLabel(type),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                  onChanged: _isSaving
-                      ? null
-                      : (value) {
-                          if (value == null) {
-                            return;
-                          }
-
-                          setState(() {
-                            _type = value;
-                          });
-                        },
+                  border: const OutlineInputBorder(),
                 ),
+                items: ParkingType.values.map(
+                  (type) {
+                    return DropdownMenuItem<ParkingType>(
+                      value: type,
+                      child: Text(
+                        _typeLabel(
+                          type,
+                          l10n,
+                        ),
+                      ),
+                    );
+                  },
+                ).toList(),
+                onChanged: _isSaving
+                    ? null
+                    : (value) {
+                        if (value == null) {
+                          return;
+                        }
+
+                        setState(() {
+                          _type = value;
+                        });
+                      },
+              ),
 
               const SizedBox(height: 20),
 
@@ -262,14 +344,14 @@ class _EditParkingScreenState
                       enabled: !_isSaving,
                       keyboardType:
                           TextInputType.number,
-                      decoration:
-                          const InputDecoration(
-                        labelText: 'Összes férőhely',
-                        prefixIcon: Icon(
+                      decoration: InputDecoration(
+                        labelText:
+                            l10n.parkingTotalSpaces,
+                        prefixIcon: const Icon(
                           Icons.local_parking,
                         ),
                         border:
-                            OutlineInputBorder(),
+                            const OutlineInputBorder(),
                       ),
                       validator: (value) {
                         final spaces =
@@ -277,7 +359,8 @@ class _EditParkingScreenState
 
                         if (spaces == null ||
                             spaces <= 0) {
-                          return 'Érvénytelen';
+                          return l10n
+                              .parkingTotalSpacesInvalid;
                         }
 
                         return null;
@@ -292,14 +375,14 @@ class _EditParkingScreenState
                       enabled: !_isSaving,
                       keyboardType:
                           TextInputType.number,
-                      decoration:
-                          const InputDecoration(
-                        labelText: 'Szabad hely',
-                        prefixIcon: Icon(
+                      decoration: InputDecoration(
+                        labelText:
+                            l10n.parkingFreeSpacesLabel,
+                        prefixIcon: const Icon(
                           Icons.event_available,
                         ),
                         border:
-                            OutlineInputBorder(),
+                            const OutlineInputBorder(),
                       ),
                       validator: (value) {
                         final spaces =
@@ -307,7 +390,8 @@ class _EditParkingScreenState
 
                         if (spaces == null ||
                             spaces < 0) {
-                          return 'Érvénytelen';
+                          return l10n
+                              .parkingFreeSpacesInvalid;
                         }
 
                         return null;
@@ -320,11 +404,10 @@ class _EditParkingScreenState
               const SizedBox(height: 24),
 
               Text(
-                'Helyszín',
-                style:
-                    Theme.of(context)
-                        .textTheme
-                        .titleLarge,
+                l10n.parkingLocation,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge,
               ),
 
               const SizedBox(height: 8),
@@ -334,8 +417,8 @@ class _EditParkingScreenState
                 leading: const Icon(
                   Icons.location_on,
                 ),
-                title: const Text(
-                  'Parkoló helye',
+                title: Text(
+                  l10n.parkingLocation,
                 ),
                 subtitle: Text(
                   '${widget.parkingSpot.location.latitude.toStringAsFixed(5)}, '
@@ -346,17 +429,16 @@ class _EditParkingScreenState
               const SizedBox(height: 24),
 
               Text(
-                'Szolgáltatások',
-                style:
-                    Theme.of(context)
-                        .textTheme
-                        .titleLarge,
+                l10n.parkingServices,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge,
               ),
 
               const SizedBox(height: 8),
 
               _buildServiceSwitch(
-                title: 'WC',
+                title: l10n.parkingServiceToilets,
                 value: _services.toilets,
                 icon: Icons.wc,
                 onChanged: (value) {
@@ -377,7 +459,7 @@ class _EditParkingScreenState
               ),
 
               _buildServiceSwitch(
-                title: 'Zuhanyzó',
+                title: l10n.parkingServiceShowers,
                 value: _services.showers,
                 icon: Icons.shower,
                 onChanged: (value) {
@@ -398,7 +480,8 @@ class _EditParkingScreenState
               ),
 
               _buildServiceSwitch(
-                title: 'Étterem',
+                title:
+                    l10n.parkingServiceRestaurant,
                 value: _services.restaurant,
                 icon: Icons.restaurant,
                 onChanged: (value) {
@@ -419,7 +502,7 @@ class _EditParkingScreenState
               ),
 
               _buildServiceSwitch(
-                title: 'Üzemanyag',
+                title: l10n.parkingServiceFuel,
                 value: _services.fuel,
                 icon: Icons.local_gas_station,
                 onChanged: (value) {
@@ -440,7 +523,7 @@ class _EditParkingScreenState
               ),
 
               _buildServiceSwitch(
-                title: 'Biztonság',
+                title: l10n.parkingServiceSecurity,
                 value: _services.security,
                 icon: Icons.security,
                 onChanged: (value) {
@@ -461,7 +544,7 @@ class _EditParkingScreenState
               ),
 
               _buildServiceSwitch(
-                title: 'Wi-Fi',
+                title: l10n.parkingServiceWifi,
                 value: _services.wifi,
                 icon: Icons.wifi,
                 onChanged: (value) {
@@ -482,7 +565,8 @@ class _EditParkingScreenState
               ),
 
               _buildServiceSwitch(
-                title: 'Elektromosság',
+                title:
+                    l10n.parkingServiceElectricity,
                 value: _services.electricity,
                 icon: Icons.electrical_services,
                 onChanged: (value) {
@@ -502,7 +586,7 @@ class _EditParkingScreenState
               ),
 
               _buildServiceSwitch(
-                title: 'Víz',
+                title: l10n.parkingServiceWater,
                 value: _services.water,
                 icon: Icons.water_drop,
                 onChanged: (value) {
@@ -543,8 +627,25 @@ class _EditParkingScreenState
                         ),
                   label: Text(
                     _isSaving
-                        ? 'Mentés...'
-                        : 'Módosítások mentése',
+                        ? l10n.parkingSaving
+                        : l10n.parkingSaveChanges,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              SizedBox(
+                height: 52,
+                child: OutlinedButton.icon(
+                  onPressed: _isSaving
+                      ? null
+                      : _confirmDelete,
+                  icon: const Icon(
+                    Icons.delete_outline,
+                  ),
+                  label: Text(
+                    l10n.parkingDelete,
                   ),
                 ),
               ),

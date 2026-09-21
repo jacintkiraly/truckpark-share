@@ -685,6 +685,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open App Settings'**
   String get locationOpenAppSettings;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @addParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Add parking spot'**
+  String get addParking;
+
+  /// No description provided for @mapView.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get mapView;
+
+  /// No description provided for @listView.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get listView;
+
+  /// No description provided for @parkingLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading parking spots...'**
+  String get parkingLoading;
+
+  /// No description provided for @parkingLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking spots could not be loaded'**
+  String get parkingLoadError;
+
+  /// No description provided for @parkingNoSpots.
+  ///
+  /// In en, this message translates to:
+  /// **'No parking spots available'**
+  String get parkingNoSpots;
+
+  /// No description provided for @parkingName.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking name'**
+  String get parkingName;
+
+  /// No description provided for @parkingNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter parking name'**
+  String get parkingNameHint;
+
+  /// No description provided for @parkingType.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking type'**
+  String get parkingType;
+
+  /// No description provided for @parkingTotalSpaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Total spaces'**
+  String get parkingTotalSpaces;
+
+  /// No description provided for @parkingFreeSpaces.
+  ///
+  /// In en, this message translates to:
+  /// **'{free} / {total} free'**
+  String parkingFreeSpaces(int free, int total);
+
+  /// No description provided for @parkingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get parkingLocation;
+
+  /// No description provided for @parkingServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get parkingServices;
+
+  /// No description provided for @parkingVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get parkingVerified;
+
+  /// No description provided for @parkingNavigate.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate here'**
+  String get parkingNavigate;
+
+  /// No description provided for @parkingEditButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get parkingEditButton;
+
+  /// No description provided for @parkingAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get parkingAvailable;
+
+  /// No description provided for @parkingNearlyFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearly full'**
+  String get parkingNearlyFull;
+
+  /// No description provided for @parkingFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get parkingFull;
+
+  /// No description provided for @parkingClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get parkingClosed;
+
+  /// No description provided for @parkingServiceToilets.
+  ///
+  /// In en, this message translates to:
+  /// **'Toilets'**
+  String get parkingServiceToilets;
+
+  /// No description provided for @parkingServiceShowers.
+  ///
+  /// In en, this message translates to:
+  /// **'Showers'**
+  String get parkingServiceShowers;
+
+  /// No description provided for @parkingServiceRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant'**
+  String get parkingServiceRestaurant;
+
+  /// No description provided for @parkingServiceFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel'**
+  String get parkingServiceFuel;
+
+  /// No description provided for @parkingServiceSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get parkingServiceSecurity;
+
+  /// No description provided for @parkingServiceWifi.
+  ///
+  /// In en, this message translates to:
+  /// **'Wi-Fi'**
+  String get parkingServiceWifi;
+
+  /// No description provided for @parkingServiceElectricity.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity'**
+  String get parkingServiceElectricity;
+
+  /// No description provided for @parkingServiceWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get parkingServiceWater;
+
+  /// No description provided for @parkingTypeMotorway.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorway parking'**
+  String get parkingTypeMotorway;
+
+  /// No description provided for @parkingTypeServiceArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Service area'**
+  String get parkingTypeServiceArea;
+
+  /// No description provided for @parkingTypeFuelStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel station'**
+  String get parkingTypeFuelStation;
+
+  /// No description provided for @parkingTypeLogisticsCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Logistics center'**
+  String get parkingTypeLogisticsCenter;
+
+  /// No description provided for @parkingTypeIndustrial.
+  ///
+  /// In en, this message translates to:
+  /// **'Industrial area'**
+  String get parkingTypeIndustrial;
+
+  /// No description provided for @parkingTypePublicParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Public parking'**
+  String get parkingTypePublicParking;
+
+  /// No description provided for @parkingTypePrivateParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Private parking'**
+  String get parkingTypePrivateParking;
+
+  /// No description provided for @parkingSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get parkingSaving;
+
+  /// No description provided for @parkingSaveSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking spot added successfully.'**
+  String get parkingSaveSuccess;
+
+  /// No description provided for @parkingSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save parking spot.'**
+  String get parkingSaveFailed;
+
+  /// No description provided for @parkingLocationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current location is required to add a parking spot.'**
+  String get parkingLocationRequired;
+
+  /// No description provided for @parkingFreeSpacesInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid number of free spaces.'**
+  String get parkingFreeSpacesInvalid;
+
+  /// No description provided for @parkingTotalSpacesInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid number of parking spaces.'**
+  String get parkingTotalSpacesInvalid;
+
+  /// No description provided for @parkingFreeSpacesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Free spaces'**
+  String get parkingFreeSpacesLabel;
+
+  /// No description provided for @editParkingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit parking'**
+  String get editParkingTitle;
+
+  /// No description provided for @parkingUpdateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking spot updated successfully.'**
+  String get parkingUpdateSuccess;
+
+  /// No description provided for @parkingUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update parking spot.'**
+  String get parkingUpdateFailed;
+
+  /// No description provided for @parkingFreeSpacesExceedTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Free spaces cannot be greater than total spaces.'**
+  String get parkingFreeSpacesExceedTotal;
+
+  /// No description provided for @parkingDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete parking'**
+  String get parkingDeleteTitle;
+
+  /// No description provided for @parkingDeleteConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this parking spot? This action cannot be undone.'**
+  String get parkingDeleteConfirmation;
+
+  /// No description provided for @parkingDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete parking spot.'**
+  String get parkingDeleteFailed;
+
+  /// No description provided for @parkingSaveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get parkingSaveChanges;
+
+  /// No description provided for @parkingDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete parking'**
+  String get parkingDelete;
+
+  /// No description provided for @parkingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking'**
+  String get parkingTitle;
+
+  /// No description provided for @showPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get showPassword;
+
+  /// No description provided for @hidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get hidePassword;
 }
 
 class _AppLocalizationsDelegate

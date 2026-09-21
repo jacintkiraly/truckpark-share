@@ -323,4 +323,189 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get locationOpenAppSettings => 'Open App Settings';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get addParking => 'Add parking spot';
+
+  @override
+  String get mapView => 'Map';
+
+  @override
+  String get listView => 'List';
+
+  @override
+  String get parkingLoading => 'Loading parking spots...';
+
+  @override
+  String get parkingLoadError => 'Parking spots could not be loaded';
+
+  @override
+  String get parkingNoSpots => 'No parking spots available';
+
+  @override
+  String get parkingName => 'Parking name';
+
+  @override
+  String get parkingNameHint => 'Enter parking name';
+
+  @override
+  String get parkingType => 'Parking type';
+
+  @override
+  String get parkingTotalSpaces => 'Total spaces';
+
+  @override
+  String parkingFreeSpaces(int free, int total) {
+    return '$free / $total free';
+  }
+
+  @override
+  String get parkingLocation => 'Location';
+
+  @override
+  String get parkingServices => 'Services';
+
+  @override
+  String get parkingVerified => 'Verified';
+
+  @override
+  String get parkingNavigate => 'Navigate here';
+
+  @override
+  String get parkingEditButton => 'Edit';
+
+  @override
+  String get parkingAvailable => 'Available';
+
+  @override
+  String get parkingNearlyFull => 'Nearly full';
+
+  @override
+  String get parkingFull => 'Full';
+
+  @override
+  String get parkingClosed => 'Closed';
+
+  @override
+  String get parkingServiceToilets => 'Toilets';
+
+  @override
+  String get parkingServiceShowers => 'Showers';
+
+  @override
+  String get parkingServiceRestaurant => 'Restaurant';
+
+  @override
+  String get parkingServiceFuel => 'Fuel';
+
+  @override
+  String get parkingServiceSecurity => 'Security';
+
+  @override
+  String get parkingServiceWifi => 'Wi-Fi';
+
+  @override
+  String get parkingServiceElectricity => 'Electricity';
+
+  @override
+  String get parkingServiceWater => 'Water';
+
+  @override
+  String get parkingTypeMotorway => 'Motorway parking';
+
+  @override
+  String get parkingTypeServiceArea => 'Service area';
+
+  @override
+  String get parkingTypeFuelStation => 'Fuel station';
+
+  @override
+  String get parkingTypeLogisticsCenter => 'Logistics center';
+
+  @override
+  String get parkingTypeIndustrial => 'Industrial area';
+
+  @override
+  String get parkingTypePublicParking => 'Public parking';
+
+  @override
+  String get parkingTypePrivateParking => 'Private parking';
+
+  @override
+  String get parkingSaving => 'Saving...';
+
+  @override
+  String get parkingSaveSuccess => 'Parking spot added successfully.';
+
+  @override
+  String get parkingSaveFailed => 'Failed to save parking spot.';
+
+  @override
+  String get parkingLocationRequired =>
+      'Your current location is required to add a parking spot.';
+
+  @override
+  String get parkingFreeSpacesInvalid => 'Invalid number of free spaces.';
+
+  @override
+  String get parkingTotalSpacesInvalid => 'Invalid number of parking spaces.';
+
+  @override
+  String get parkingFreeSpacesLabel => 'Free spaces';
+
+  @override
+  String get editParkingTitle => 'Edit parking';
+
+  @override
+  String get parkingUpdateSuccess => 'Parking spot updated successfully.';
+
+  @override
+  String get parkingUpdateFailed => 'Failed to update parking spot.';
+
+  @override
+  String get parkingFreeSpacesExceedTotal =>
+      'Free spaces cannot be greater than total spaces.';
+
+  @override
+  String get parkingDeleteTitle => 'Delete parking';
+
+  @override
+  String get parkingDeleteConfirmation =>
+      'Are you sure you want to delete this parking spot? This action cannot be undone.';
+
+  @override
+  String get parkingDeleteFailed => 'Failed to delete parking spot.';
+
+  @override
+  String get parkingSaveChanges => 'Save changes';
+
+  @override
+  String get parkingDelete => 'Delete parking';
+
+  @override
+  String get parkingTitle => 'Parking';
+
+  @override
+  String get showPassword => 'Show password';
+
+  @override
+  String get hidePassword => 'Hide password';
 }

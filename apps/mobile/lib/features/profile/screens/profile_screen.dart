@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app/app.dart';
 import '../../../localization/generated/app_localizations.dart';
+import '../../../localization/supported_languages.dart';
 import '../../../shared/widgets/primary_button.dart';
 import '../../auth/services/auth_service.dart';
 
@@ -163,14 +164,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   String _languageName(String languageCode) {
-    switch (languageCode) {
-      case 'hu':
-        return 'Magyar';
-
-      case 'en':
-      default:
-        return 'English';
+    for (final language in supportedLanguages) {
+      if (language.languageCode == languageCode) {
+        return language.nativeName;
+      }
     }
+
+    return languageCode;
   }
 }
 

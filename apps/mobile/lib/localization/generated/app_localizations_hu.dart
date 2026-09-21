@@ -330,4 +330,189 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get locationOpenAppSettings => 'Alkalmazásbeállítások megnyitása';
+
+  @override
+  String get retry => 'Újra';
+
+  @override
+  String get cancel => 'Mégse';
+
+  @override
+  String get save => 'Mentés';
+
+  @override
+  String get delete => 'Törlés';
+
+  @override
+  String get edit => 'Szerkesztés';
+
+  @override
+  String get close => 'Bezárás';
+
+  @override
+  String get addParking => 'Parkoló hozzáadása';
+
+  @override
+  String get mapView => 'Térkép';
+
+  @override
+  String get listView => 'Lista';
+
+  @override
+  String get parkingLoading => 'Parkolók betöltése...';
+
+  @override
+  String get parkingLoadError => 'A parkolók nem tölthetők be.';
+
+  @override
+  String get parkingNoSpots => 'Nincs elérhető parkolóhely.';
+
+  @override
+  String get parkingName => 'Parkoló neve';
+
+  @override
+  String get parkingNameHint => 'Adja meg a parkoló nevét';
+
+  @override
+  String get parkingType => 'Parkoló típusa';
+
+  @override
+  String get parkingTotalSpaces => 'Összes férőhely';
+
+  @override
+  String parkingFreeSpaces(int free, int total) {
+    return '$free / $total szabad';
+  }
+
+  @override
+  String get parkingLocation => 'Helyszín';
+
+  @override
+  String get parkingServices => 'Szolgáltatások';
+
+  @override
+  String get parkingVerified => 'Ellenőrzött';
+
+  @override
+  String get parkingNavigate => 'Navigálás ide';
+
+  @override
+  String get parkingEditButton => 'Szerkesztés';
+
+  @override
+  String get parkingAvailable => 'Elérhető';
+
+  @override
+  String get parkingNearlyFull => 'Majdnem tele';
+
+  @override
+  String get parkingFull => 'Tele';
+
+  @override
+  String get parkingClosed => 'Zárva';
+
+  @override
+  String get parkingServiceToilets => 'WC';
+
+  @override
+  String get parkingServiceShowers => 'Zuhanyzó';
+
+  @override
+  String get parkingServiceRestaurant => 'Étterem';
+
+  @override
+  String get parkingServiceFuel => 'Üzemanyag';
+
+  @override
+  String get parkingServiceSecurity => 'Biztonság';
+
+  @override
+  String get parkingServiceWifi => 'Wi-Fi';
+
+  @override
+  String get parkingServiceElectricity => 'Elektromos töltés';
+
+  @override
+  String get parkingServiceWater => 'Víz';
+
+  @override
+  String get parkingTypeMotorway => 'Autópálya-parkoló';
+
+  @override
+  String get parkingTypeServiceArea => 'Pihenőhely';
+
+  @override
+  String get parkingTypeFuelStation => 'Benzinkút';
+
+  @override
+  String get parkingTypeLogisticsCenter => 'Logisztikai központ';
+
+  @override
+  String get parkingTypeIndustrial => 'Ipari terület';
+
+  @override
+  String get parkingTypePublicParking => 'Nyilvános parkoló';
+
+  @override
+  String get parkingTypePrivateParking => 'Privát parkoló';
+
+  @override
+  String get parkingSaving => 'Mentés...';
+
+  @override
+  String get parkingSaveSuccess => 'A parkoló sikeresen hozzáadva.';
+
+  @override
+  String get parkingSaveFailed => 'A parkoló mentése sikertelen.';
+
+  @override
+  String get parkingLocationRequired =>
+      'A parkoló hozzáadásához szükség van a jelenlegi tartózkodási helyedre.';
+
+  @override
+  String get parkingFreeSpacesInvalid => 'Érvénytelen szabadhely-szám.';
+
+  @override
+  String get parkingTotalSpacesInvalid => 'Érvénytelen férőhelyszám.';
+
+  @override
+  String get parkingFreeSpacesLabel => 'Szabad férőhelyek';
+
+  @override
+  String get editParkingTitle => 'Parkoló szerkesztése';
+
+  @override
+  String get parkingUpdateSuccess => 'A parkoló sikeresen módosítva.';
+
+  @override
+  String get parkingUpdateFailed => 'A parkoló módosítása sikertelen.';
+
+  @override
+  String get parkingFreeSpacesExceedTotal =>
+      'A szabad helyek száma nem lehet nagyobb az összes férőhelynél.';
+
+  @override
+  String get parkingDeleteTitle => 'Parkoló törlése';
+
+  @override
+  String get parkingDeleteConfirmation =>
+      'Biztosan törölni szeretnéd ezt a parkolót? Ez a művelet nem vonható vissza.';
+
+  @override
+  String get parkingDeleteFailed => 'A parkoló törlése nem sikerült.';
+
+  @override
+  String get parkingSaveChanges => 'Módosítások mentése';
+
+  @override
+  String get parkingDelete => 'Parkoló törlése';
+
+  @override
+  String get parkingTitle => 'Parkolók';
+
+  @override
+  String get showPassword => 'Jelszó megjelenítése';
+
+  @override
+  String get hidePassword => 'Jelszó elrejtése';
 }

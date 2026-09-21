@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../localization/generated/app_localizations.dart';
+
 class PasswordField extends StatefulWidget {
   const PasswordField({
     super.key,
@@ -33,6 +35,8 @@ class _PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return TextFormField(
       controller: widget.controller,
       obscureText: _obscurePassword,
@@ -50,8 +54,8 @@ class _PasswordFieldState extends State<PasswordField> {
         suffixIcon: IconButton(
           onPressed: _togglePasswordVisibility,
           tooltip: _obscurePassword
-              ? 'Show password'
-              : 'Hide password',
+              ? l10n.showPassword
+              : l10n.hidePassword,
           icon: Icon(
             _obscurePassword
                 ? Icons.visibility_outlined

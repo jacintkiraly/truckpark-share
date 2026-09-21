@@ -1,48 +1,35 @@
 {
   "@@locale": "hu",
-
   "appTitle": "TruckPark Share",
-
   "chooseLanguage": "Válassz nyelvet",
   "languageDescription": "A TruckPark Share\ntöbb nyelven is elérhető.",
   "continueButton": "Folytatás",
-
   "welcomeTitle": "TruckPark Share",
   "welcomeSubtitle": "Oszd meg a helyed. Segíts a következő sofőrnek.",
   "welcomeDescription": "Valós idejű kamionparkoló-információ\nkamionosok közösségétől.",
-
   "getStarted": "Kezdjük",
   "joinCommunity": "Csatlakozz a közösséghez",
   "signInPrompt": "Már van fiókod? Jelentkezz be",
   "communityTitle": "Ha segítünk egymásnak,\nkönnyebb parkolóhelyet találni.",
-
   "communityDescription": "Minden megosztott parkolóhely egy másik hivatásos sofőrnek segít.\n\nEgyütt csökkenthetjük a stresszt, időt takaríthatunk meg, és biztonságosabbá tehetjük az utakat.",
-
   "createAccount": "Fiók létrehozása",
   "createAccountTitle": "Hozd létre a fiókodat",
   "createAccountSubtitle": "Csatlakozz a TruckPark Share közösségéhez.",
-
   "fullName": "Teljes név",
   "email": "E-mail",
   "password": "Jelszó",
   "confirmPassword": "Jelszó megerősítése",
-
   "creatingAccount": "Fiók létrehozása...",
   "registrationSuccessful": "A regisztráció sikeres!",
   "registrationFailed": "A regisztráció sikertelen.",
-
   "enterName": "Kérjük, add meg a teljes nevedet.",
   "nameTooShort": "A névnek legalább 2 karakterből kell állnia.",
-
   "enterEmail": "Kérjük, add meg az e-mail címedet.",
   "invalidEmail": "Kérjük, adj meg egy érvényes e-mail címet.",
-
   "enterPassword": "Kérjük, add meg a jelszavadat.",
   "passwordTooShort": "A jelszónak legalább 8 karakter hosszúnak kell lennie.",
-
   "confirmYourPassword": "Kérjük, erősítsd meg a jelszavadat.",
   "passwordsDoNotMatch": "A két jelszó nem egyezik.",
-
   "authErrorEmailAlreadyInUse": "Már létezik fiók ezzel az e-mail címmel.",
   "authErrorInvalidEmail": "Kérlek, adj meg egy érvényes e-mail címet.",
   "authErrorWeakPassword": "A jelszó túl gyenge.",
@@ -50,7 +37,6 @@
   "authErrorTooManyRequests": "Túl sok próbálkozás. Kérlek, próbáld újra később.",
   "authErrorNetworkError": "Hálózati hiba. Ellenőrizd a internetkapcsolatot.",
   "authErrorUnknown": "Valami hiba történt. Kérlek, próbáljd újra.",
-
   "loginTitle": "Üdv újra!",
   "loginSubtitle": "Jelentkezz be a TruckPark Share folytatásához.",
   "signIn": "Bejelentkezés",
@@ -58,19 +44,16 @@
   "forgotPassword": "Elfelejtetted a jelszavad?",
   "noAccountPrompt": "Nincs még fiókod? Hozz létre egyet",
   "loginSuccessful": "Sikeres bejelentkezés.",
-
   "forgotPasswordTitle": "Jelszó visszaállítása",
   "forgotPasswordSubtitle": "Add meg az e-mail címedet, és küldünk egy linket a jelszavad visszaállításához.",
   "sendResetLink": "Visszaállítási link küldése",
   "sendingResetLink": "Küldés...",
   "passwordResetEmailSent": "Ha ehhez az e-mail címhez tartozik fiók, elküldtük a jelszó-visszaállítási linket.",
   "backToSignIn": "Vissza a bejelentkezéshez",
-
   "homeWelcome": "Üdvözlünk a TruckPark Share-ben!",
   "homePlaceholderDescription": "Be vagy jelentkezve. Hamarosan érkezik a sofőröknek készült felület.",
   "signOut": "Kijelentkezés",
   "signingOut": "Kijelentkezés...",
-
   "authErrorEmailNotVerified": "Az e-mail címed még nincs megerősítve.",
   "verifyEmailTitle": "E-mail-cím megerősítése",
   "verifyEmailSubtitle": "Megerősítő linket küldtünk az e-mail címedre.",
@@ -90,7 +73,6 @@
   "parkingMapPlaceholder": "Hamarosan érkezik a parkolótérkép.",
   "driverCommunityTitle": "Közösség",
   "driverCommunityPlaceholder": "Hamarosan érkezik a sofőrközösség.",
-  
   "profileTitle": "Profil",
   "profilePlaceholder": "Hamarosan érkezik a sofőrprofil.",
   "profileAccount": "Fiók",
@@ -101,7 +83,6 @@
   "profileEmailNotVerified": "Nincs megerősítve",
   "profileLanguage": "Nyelv",
   "profileNoName": "Nincs megadva név",
-
   "locationLoading": "Helyzet meghatározása...",
   "locationServiceDisabledTitle": "A helymeghatározás ki van kapcsolva",
   "locationServiceDisabledMessage": "Kapcsold be a helymeghatározást, hogy lásd a pozíciódat és a közeli kamionparkolókat.",
@@ -113,7 +94,6 @@
   "locationErrorMessage": "Hiba történt a helyzeted meghatározása közben. Próbáld újra.",
   "locationAvailableTitle": "Helyzet meghatározva",
   "locationAccuracy": "Pontosság",
-
   "locationMeters": "{value} m",
   "@locationMeters": {
     "placeholders": {
@@ -122,8 +102,77 @@
       }
     }
   },
-
   "locationRetry": "Újrapróbálkozás",
   "locationOpenSettings": "Helybeállítások megnyitása",
-  "locationOpenAppSettings": "Alkalmazásbeállítások megnyitása"
+  "locationOpenAppSettings": "Alkalmazásbeállítások megnyitása",
+  "retry": "Újra",
+  "cancel": "Mégse",
+  "save": "Mentés",
+  "delete": "Törlés",
+  "edit": "Szerkesztés",
+  "close": "Bezárás",
+  "addParking": "Parkoló hozzáadása",
+  "mapView": "Térkép",
+  "listView": "Lista",
+  "parkingLoading": "Parkolók betöltése...",
+  "parkingLoadError": "A parkolók nem tölthetők be.",
+  "parkingNoSpots": "Nincs elérhető parkolóhely.",
+  "parkingName": "Parkoló neve",
+  "parkingNameHint": "Adja meg a parkoló nevét",
+  "parkingType": "Parkoló típusa",
+  "parkingTotalSpaces": "Összes férőhely",
+  "parkingFreeSpaces": "{free} / {total} szabad",
+  "parkingLocation": "Helyszín",
+  "parkingServices": "Szolgáltatások",
+  "parkingVerified": "Ellenőrzött",
+  "parkingNavigate": "Navigálás ide",
+  "parkingEditButton": "Szerkesztés",
+  "parkingAvailable": "Elérhető",
+  "parkingNearlyFull": "Majdnem tele",
+  "parkingFull": "Tele",
+  "parkingClosed": "Zárva",
+  "parkingServiceToilets": "WC",
+  "parkingServiceShowers": "Zuhanyzó",
+  "parkingServiceRestaurant": "Étterem",
+  "parkingServiceFuel": "Üzemanyag",
+  "parkingServiceSecurity": "Biztonság",
+  "parkingServiceWifi": "Wi-Fi",
+  "parkingServiceElectricity": "Elektromos töltés",
+  "parkingServiceWater": "Víz",
+  "parkingTypeMotorway": "Autópálya-parkoló",
+  "parkingTypeServiceArea": "Pihenőhely",
+  "parkingTypeFuelStation": "Benzinkút",
+  "parkingTypeLogisticsCenter": "Logisztikai központ",
+  "parkingTypeIndustrial": "Ipari terület",
+  "parkingTypePublicParking": "Nyilvános parkoló",
+  "parkingTypePrivateParking": "Privát parkoló",
+  "parkingSaving": "Mentés...",
+  "parkingSaveSuccess": "A parkoló sikeresen hozzáadva.",
+  "parkingSaveFailed": "A parkoló mentése sikertelen.",
+  "parkingLocationRequired": "A parkoló hozzáadásához szükség van a jelenlegi tartózkodási helyedre.",
+  "parkingFreeSpacesInvalid": "Érvénytelen szabadhely-szám.",
+  "parkingTotalSpacesInvalid": "Érvénytelen férőhelyszám.",
+  "parkingFreeSpacesLabel": "Szabad férőhelyek",
+  "editParkingTitle": "Parkoló szerkesztése",
+  "parkingUpdateSuccess": "A parkoló sikeresen módosítva.",
+  "parkingUpdateFailed": "A parkoló módosítása sikertelen.",
+  "parkingFreeSpacesExceedTotal": "A szabad helyek száma nem lehet nagyobb az összes férőhelynél.",
+  "parkingDeleteTitle": "Parkoló törlése",
+  "parkingDeleteConfirmation": "Biztosan törölni szeretnéd ezt a parkolót? Ez a művelet nem vonható vissza.",
+  "parkingDeleteFailed": "A parkoló törlése nem sikerült.",
+  "parkingSaveChanges": "Módosítások mentése",
+  "parkingDelete": "Parkoló törlése",
+  "parkingTitle": "Parkolók",
+  "showPassword": "Jelszó megjelenítése",
+  "hidePassword": "Jelszó elrejtése",
+  "@parkingFreeSpaces": {
+    "placeholders": {
+      "free": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

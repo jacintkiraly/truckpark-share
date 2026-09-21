@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../localization/generated/app_localizations.dart';
 import '../../parking/domain/entities/parking_spot.dart';
 import '../../parking/presentation/screens/edit_parking_screen.dart';
 import '../../parking/presentation/widgets/parking_card.dart';
@@ -52,6 +53,8 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Stack(
       children: [
         GoogleMap(
@@ -74,7 +77,6 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
             }
           },
         ),
-
         if (_selectedParkingSpot != null)
           Positioned(
             left: 24,
@@ -88,44 +90,51 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
                   ),
                   child: Material(
                     elevation: 8,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius:
+                        BorderRadius.circular(16),
                     clipBehavior: Clip.antiAlias,
                     child: Stack(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
+                          padding:
+                              const EdgeInsets.only(
                             right: 36,
                           ),
                           child: ParkingCard(
-  parkingSpot: _selectedParkingSpot!,
-  driverLocation: widget.location,
- onEdit: () {
-  final parkingSpot = _selectedParkingSpot;
+                            parkingSpot:
+                                _selectedParkingSpot!,
+                            driverLocation:
+                                widget.location,
+                            onEdit: () {
+                              final parkingSpot =
+                                  _selectedParkingSpot;
 
-  if (parkingSpot == null) {
-    return;
-  }
+                              if (parkingSpot == null) {
+                                return;
+                              }
 
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (_) => EditParkingScreen(
-        parkingSpot: parkingSpot,
-      ),
-    ),
-  );
-},
-),
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      EditParkingScreen(
+                                    parkingSpot:
+                                        parkingSpot,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
-
                         Positioned(
                           top: 4,
                           right: 4,
                           child: IconButton(
-                            tooltip: 'Bezárás',
+                            tooltip: l10n.close,
                             icon: const Icon(
                               Icons.close,
                             ),
-                            onPressed: _closeParkingCard,
+                            onPressed:
+                                _closeParkingCard,
                           ),
                         ),
                       ],

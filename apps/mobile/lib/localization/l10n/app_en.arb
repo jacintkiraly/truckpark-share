@@ -1,50 +1,35 @@
 {
   "@@locale": "en",
-
   "appTitle": "TruckPark Share",
-
   "chooseLanguage": "Choose your language",
   "languageDescription": "TruckPark Share is available\nin multiple languages.",
   "continueButton": "Continue",
-
   "welcomeTitle": "TruckPark Share",
   "welcomeSubtitle": "Share your spot. Help the next driver.",
   "welcomeDescription": "Real-time truck parking availability\npowered by the driver community.",
-
   "getStarted": "Get Started",
   "joinCommunity": "Join the Community",
   "signInPrompt": "Already have an account? Sign In",
-  
   "communityTitle": "Helping each other\nmakes parking easier.",
-
   "communityDescription": "Every shared parking space helps another professional driver.\n\nTogether we can reduce stress, save time and make the roads safer.",
-
-
   "createAccount": "Create Account",
   "createAccountTitle": "Create your account",
   "createAccountSubtitle": "Join the TruckPark Share community.",
-
   "fullName": "Full name",
   "email": "Email",
   "password": "Password",
   "confirmPassword": "Confirm password",
-
   "creatingAccount": "Creating account...",
   "registrationSuccessful": "Registration successful!",
   "registrationFailed": "Registration failed.",
-
   "enterName": "Please enter your full name.",
   "nameTooShort": "Name must contain at least 2 characters.",
-
   "enterEmail": "Please enter your email address.",
   "invalidEmail": "Please enter a valid email address.",
-
   "enterPassword": "Please enter your password.",
   "passwordTooShort": "Password must contain at least 8 characters.",
-
   "confirmYourPassword": "Please confirm your password.",
   "passwordsDoNotMatch": "Passwords do not match.",
-
   "authErrorEmailAlreadyInUse": "An account already exists with this email.",
   "authErrorInvalidEmail": "Please enter a valid email address.",
   "authErrorWeakPassword": "Your password is too weak.",
@@ -52,7 +37,6 @@
   "authErrorTooManyRequests": "Too many attempts. Please try again later.",
   "authErrorNetworkError": "Network error. Please check your connection.",
   "authErrorUnknown": "Something went wrong. Please try again.",
-
   "loginTitle": "Welcome back",
   "loginSubtitle": "Sign in to continue with TruckPark Share.",
   "signIn": "Sign In",
@@ -60,19 +44,16 @@
   "forgotPassword": "Forgot password?",
   "noAccountPrompt": "Don't have an account? Create Account",
   "loginSuccessful": "Signed in successfully.",
-
   "forgotPasswordTitle": "Reset your password",
   "forgotPasswordSubtitle": "Enter your email address and we'll send you a password reset link.",
   "sendResetLink": "Send Reset Link",
   "sendingResetLink": "Sending...",
   "passwordResetEmailSent": "If an account exists for this email, a password reset link has been sent.",
   "backToSignIn": "Back to Sign In",
-
   "homeWelcome": "Welcome to TruckPark Share",
   "homePlaceholderDescription": "You're signed in. The driver experience is coming next.",
   "signOut": "Sign Out",
   "signingOut": "Signing out...",
-
   "authErrorEmailNotVerified": "Your email address has not been verified yet.",
   "verifyEmailTitle": "Verify your email",
   "verifyEmailSubtitle": "We've sent a verification link to your email address.",
@@ -92,7 +73,6 @@
   "parkingMapPlaceholder": "Parking map coming next.",
   "driverCommunityTitle": "Community",
   "driverCommunityPlaceholder": "Driver community coming soon.",
-  
   "profileTitle": "Profile",
   "profilePlaceholder": "Driver profile coming soon.",
   "profileAccount": "Account",
@@ -103,7 +83,6 @@
   "profileEmailNotVerified": "Not verified",
   "profileLanguage": "Language",
   "profileNoName": "No name provided",
-
   "locationLoading": "Finding your location...",
   "locationServiceDisabledTitle": "Location services are turned off",
   "locationServiceDisabledMessage": "Turn on location services to see your position and nearby truck parking.",
@@ -115,7 +94,6 @@
   "locationErrorMessage": "Something went wrong while finding your location. Please try again.",
   "locationAvailableTitle": "Location found",
   "locationAccuracy": "Accuracy",
-  
   "locationMeters": "{value} m",
   "@locationMeters": {
     "placeholders": {
@@ -124,8 +102,78 @@
       }
     }
   },
-
   "locationRetry": "Try Again",
   "locationOpenSettings": "Open Location Settings",
-  "locationOpenAppSettings": "Open App Settings"
+  "locationOpenAppSettings": "Open App Settings",
+  "retry": "Retry",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+  "close": "Close",
+  "addParking": "Add parking spot",
+  "mapView": "Map",
+  "listView": "List",
+  "parkingLoading": "Loading parking spots...",
+  "parkingLoadError": "Parking spots could not be loaded",
+  "parkingNoSpots": "No parking spots available",
+  "parkingName": "Parking name",
+  "parkingNameHint": "Enter parking name",
+  "parkingType": "Parking type",
+  "parkingTotalSpaces": "Total spaces",
+  "parkingFreeSpaces": "{free} / {total} free",
+  "parkingLocation": "Location",
+  "parkingServices": "Services",
+  "parkingVerified": "Verified",
+  "parkingNavigate": "Navigate here",
+  "parkingEditButton": "Edit",
+  "parkingAvailable": "Available",
+  "parkingNearlyFull": "Nearly full",
+  "parkingFull": "Full",
+  "parkingClosed": "Closed",
+  "parkingServiceToilets": "Toilets",
+  "parkingServiceShowers": "Showers",
+  "parkingServiceRestaurant": "Restaurant",
+  "parkingServiceFuel": "Fuel",
+  "parkingServiceSecurity": "Security",
+  "parkingServiceWifi": "Wi-Fi",
+  "parkingServiceElectricity": "Electricity",
+  "parkingServiceWater": "Water",
+  "parkingTypeMotorway": "Motorway parking",
+  "parkingTypeServiceArea": "Service area",
+  "parkingTypeFuelStation": "Fuel station",
+  "parkingTypeLogisticsCenter": "Logistics center",
+  "parkingTypeIndustrial": "Industrial area",
+  "parkingTypePublicParking": "Public parking",
+  "parkingTypePrivateParking": "Private parking",
+  "parkingSaving": "Saving...",
+  "parkingSaveSuccess": "Parking spot added successfully.",
+  "parkingSaveFailed": "Failed to save parking spot.",
+  "parkingLocationRequired": "Your current location is required to add a parking spot.",
+  "parkingFreeSpacesInvalid": "Invalid number of free spaces.",
+  "parkingTotalSpacesInvalid": "Invalid number of parking spaces.",
+  "parkingFreeSpacesLabel": "Free spaces",
+  "editParkingTitle": "Edit parking",
+  "parkingUpdateSuccess": "Parking spot updated successfully.",
+  "parkingUpdateFailed": "Failed to update parking spot.",
+  "parkingFreeSpacesExceedTotal": "Free spaces cannot be greater than total spaces.",
+  "parkingDeleteTitle": "Delete parking",
+  "parkingDeleteConfirmation": "Are you sure you want to delete this parking spot? This action cannot be undone.",
+  "parkingDeleteFailed": "Failed to delete parking spot.",
+  "parkingSaveChanges": "Save changes",
+  "parkingDelete": "Delete parking",
+  "parkingTitle": "Parking",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "close": "Close",
+  "@parkingFreeSpaces": {
+    "placeholders": {
+      "free": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

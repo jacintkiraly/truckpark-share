@@ -7,8 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../auth/services/auth_service.dart';
 import '../../domain/entities/parking_spot.dart';
 import '../../domain/usecases/add_parking_spot_use_case.dart';
-import '../../domain/usecases/watch_parking_spots_use_case.dart';
+import '../../domain/usecases/delete_parking_spot_use_case.dart';
 import '../../domain/usecases/update_parking_spot_use_case.dart';
+import '../../domain/usecases/watch_parking_spots_use_case.dart';
 import '../enums/parking_view_mode.dart';
 import '../state/parking_state.dart';
 
@@ -17,6 +18,7 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
     this._watchParkingSpotsUseCase,
     this._addParkingSpotUseCase,
     this._updateParkingSpotUseCase,
+    this._deleteParkingSpotUseCase,
     this._authService,
     this._firestore,
   ) : super(const ParkingState());
@@ -26,6 +28,7 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
   final AuthService _authService;
   final FirebaseFirestore _firestore;
   final UpdateParkingSpotUseCase _updateParkingSpotUseCase;
+  final DeleteParkingSpotUseCase _deleteParkingSpotUseCase;
 
   StreamSubscription? _subscription;
 
@@ -81,8 +84,7 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
 
     if (user == null) {
       throw StateError(
-        'A bejelentkezett felhasználó szükséges '
-        'parkoló hozzáadásához.',
+        'Authenticated user is required to add a parking spot.',
       );
     }
 
@@ -123,52 +125,84 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
   }
 
   Future<void> updateParkingSpot(
-  ParkingSpot parkingSpot,
-) async {
-  final user = _authService.currentUser;
+    ParkingSpot parkingSpot,
+  ) async {
+    final user = _authService.currentUser;
 
-  if (user == null) {
-    throw StateError(
-      'A bejelentkezett felhasználó szükséges '
-      'parkoló módosításához.',
+    if (user == null) {
+      throw StateError(
+        'Authenticated user is required to update a parking spot.',
+      );
+    }
+
+    final updatedParkingSpot = ParkingSpot(
+      id: parkingSpot.id,
+      name: parkingSpot.name,
+      location: parkingSpot.location,
+      type: parkingSpot.type,
+      status: parkingSpot.status,
+      totalSpaces: parkingSpot.totalSpaces,
+      freeSpaces: parkingSpot.freeSpaces,
+      services: parkingSpot.services,
+      lastUpdated: DateTime.now(),
+      updatedBy: user.uid,
+      verified: parkingSpot.verified,
     );
+
+    try {
+      await _updateParkingSpotUseCase(
+        updatedParkingSpot,
+      );
+
+      debugPrint(
+        'PARKING: updated ${updatedParkingSpot.id} '
+        'by ${user.uid}',
+      );
+    } catch (error) {
+      debugPrint(
+        'PARKING UPDATE ERROR: $error',
+      );
+
+      state = state.copyWith(
+        errorMessage: error.toString(),
+      );
+
+      rethrow;
+    }
   }
 
-  final updatedParkingSpot = ParkingSpot(
-    id: parkingSpot.id,
-    name: parkingSpot.name,
-    location: parkingSpot.location,
-    type: parkingSpot.type,
-    status: parkingSpot.status,
-    totalSpaces: parkingSpot.totalSpaces,
-    freeSpaces: parkingSpot.freeSpaces,
-    services: parkingSpot.services,
-    lastUpdated: DateTime.now(),
-    updatedBy: user.uid,
-    verified: parkingSpot.verified,
-  );
+  Future<void> deleteParkingSpot(
+    String parkingSpotId,
+  ) async {
+    final user = _authService.currentUser;
 
-  try {
-    await _updateParkingSpotUseCase(
-      updatedParkingSpot,
-    );
+    if (user == null) {
+      throw StateError(
+        'Authenticated user is required to delete a parking spot.',
+      );
+    }
 
-    debugPrint(
-      'PARKING: updated ${updatedParkingSpot.id} '
-      'by ${user.uid}',
-    );
-  } catch (error) {
-    debugPrint(
-      'PARKING UPDATE ERROR: $error',
-    );
+    try {
+      await _deleteParkingSpotUseCase(
+        parkingSpotId,
+      );
 
-    state = state.copyWith(
-      errorMessage: error.toString(),
-    );
+      debugPrint(
+        'PARKING: deleted $parkingSpotId '
+        'by ${user.uid}',
+      );
+    } catch (error) {
+      debugPrint(
+        'PARKING DELETE ERROR: $error',
+      );
 
-    rethrow;
+      state = state.copyWith(
+        errorMessage: error.toString(),
+      );
+
+      rethrow;
+    }
   }
-}
 
   @override
   void dispose() {

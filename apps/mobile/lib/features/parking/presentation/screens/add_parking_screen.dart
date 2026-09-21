@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../localization/generated/app_localizations.dart';
 import '../../../map/controllers/location_controller.dart';
 import '../../../map/models/location_status.dart';
 import '../../domain/entities/parking_spot.dart';
@@ -29,7 +30,8 @@ class _AddParkingScreenState
   final LocationController _locationController =
       LocationController();
 
-  ParkingType _selectedType = ParkingType.publicParking;
+  ParkingType _selectedType =
+      ParkingType.publicParking;
 
   bool _toilets = false;
   bool _showers = false;
@@ -71,11 +73,13 @@ class _AddParkingScreenState
 
     final location = _locationController.location;
 
-    if (_locationController.status != LocationStatus.available ||
+    if (_locationController.status !=
+            LocationStatus.available ||
         location == null) {
+      final l10n = AppLocalizations.of(context)!;
+
       _showMessage(
-        'A parkoló hozzáadásához szükség van '
-        'a jelenlegi tartózkodási helyedre.',
+        l10n.parkingLocationRequired,
       );
       return;
     }
@@ -91,9 +95,10 @@ class _AddParkingScreenState
     }
 
     if (freeSpaces > totalSpaces) {
+      final l10n = AppLocalizations.of(context)!;
+
       _showMessage(
-        'A szabad helyek száma nem lehet nagyobb '
-        'az összes férőhelynél.',
+        l10n.parkingFreeSpacesInvalid,
       );
       return;
     }
@@ -137,9 +142,13 @@ class _AddParkingScreenState
         return;
       }
 
+      final l10n = AppLocalizations.of(context)!;
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Parkoló sikeresen hozzáadva.'),
+        SnackBar(
+          content: Text(
+            l10n.parkingSaveSuccess,
+          ),
         ),
       );
 
@@ -149,8 +158,10 @@ class _AddParkingScreenState
         return;
       }
 
+      final l10n = AppLocalizations.of(context)!;
+
       _showMessage(
-        'A parkoló mentése sikertelen.\n$error',
+        '${l10n.parkingSaveFailed}\n$error',
       );
     } finally {
       if (mounted) {
@@ -169,22 +180,25 @@ class _AddParkingScreenState
     );
   }
 
-  String _parkingTypeLabel(ParkingType type) {
+  String _parkingTypeLabel(
+    ParkingType type,
+    AppLocalizations l10n,
+  ) {
     switch (type) {
       case ParkingType.motorway:
-        return 'Autópálya';
+        return l10n.parkingTypeMotorway;
       case ParkingType.serviceArea:
-        return 'Pihenőhely';
+        return l10n.parkingTypeServiceArea;
       case ParkingType.fuelStation:
-        return 'Benzinkút';
+        return l10n.parkingTypeFuelStation;
       case ParkingType.logisticsCenter:
-        return 'Logisztikai központ';
+        return l10n.parkingTypeLogisticsCenter;
       case ParkingType.industrial:
-        return 'Ipari terület';
+        return l10n.parkingTypeIndustrial;
       case ParkingType.publicParking:
-        return 'Nyilvános parkoló';
+        return l10n.parkingTypePublicParking;
       case ParkingType.privateParking:
-        return 'Privát parkoló';
+        return l10n.parkingTypePrivateParking;
     }
   }
 
@@ -203,42 +217,47 @@ class _AddParkingScreenState
     );
   }
 
-  Widget _buildLocationStatus() {
+  Widget _buildLocationStatus(
+    AppLocalizations l10n,
+  ) {
     final status = _locationController.status;
 
     if (status == LocationStatus.loading ||
         status == LocationStatus.initial) {
-      return const ListTile(
+      return ListTile(
         contentPadding: EdgeInsets.zero,
-        leading: SizedBox(
+        leading: const SizedBox(
           width: 24,
           height: 24,
           child: CircularProgressIndicator(
             strokeWidth: 2,
           ),
         ),
-        title: Text('Tartózkodási hely lekérése...'),
+        title: Text(
+          l10n.locationLoading,
+        ),
       );
     }
 
     if (status == LocationStatus.available &&
         _locationController.location != null) {
-      final location = _locationController.location!;
+      final location =
+          _locationController.location!;
 
       return ListTile(
         contentPadding: EdgeInsets.zero,
         leading: const Icon(
           Icons.location_on,
         ),
-        title: const Text(
-          'Tartózkodási hely',
+        title: Text(
+          l10n.locationAvailableTitle,
         ),
         subtitle: Text(
           '${location.latitude.toStringAsFixed(5)}, '
           '${location.longitude.toStringAsFixed(5)}',
         ),
         trailing: IconButton(
-          tooltip: 'Hely frissítése',
+          tooltip: l10n.locationRetry,
           onPressed: _isSaving
               ? null
               : _locationController.retry,
@@ -252,14 +271,14 @@ class _AddParkingScreenState
       leading: const Icon(
         Icons.location_off,
       ),
-      title: const Text(
-        'Tartózkodási hely nem érhető el',
+      title: Text(
+        l10n.locationErrorTitle,
       ),
-      subtitle: const Text(
-        'Ellenőrizd a helymeghatározási engedélyeket.',
+      subtitle: Text(
+        l10n.locationErrorMessage,
       ),
       trailing: IconButton(
-        tooltip: 'Újrapróbálás',
+        tooltip: l10n.locationRetry,
         onPressed: _isSaving
             ? null
             : _locationController.retry,
@@ -270,9 +289,13 @@ class _AddParkingScreenState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Parkoló hozzáadása'),
+        title: Text(
+          l10n.addParking,
+        ),
       ),
       body: SafeArea(
         child: AnimatedBuilder(
@@ -286,41 +309,43 @@ class _AddParkingScreenState
                   TextFormField(
                     controller: _nameController,
                     enabled: !_isSaving,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Parkoló neve',
-                      hintText: 'Pl. Test Truck Parking',
-                      prefixIcon: Icon(
+                    textInputAction:
+                        TextInputAction.next,
+                    decoration: InputDecoration(
+                      labelText: l10n.parkingName,
+                      hintText: l10n.parkingNameHint,
+                      prefixIcon: const Icon(
                         Icons.local_parking,
                       ),
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null ||
                           value.trim().isEmpty) {
-                        return 'Add meg a parkoló nevét.';
+                        return l10n.enterName;
                       }
 
                       return null;
                     },
                   ),
-
                   const SizedBox(height: 20),
-
                   DropdownButtonFormField<ParkingType>(
                     initialValue: _selectedType,
-                    decoration: const InputDecoration(
-                      labelText: 'Parkolótípus',
-                      prefixIcon: Icon(
+                    decoration: InputDecoration(
+                      labelText: l10n.parkingType,
+                      prefixIcon: const Icon(
                         Icons.category_outlined,
                       ),
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                     items: ParkingType.values.map((type) {
                       return DropdownMenuItem<ParkingType>(
                         value: type,
                         child: Text(
-                          _parkingTypeLabel(type),
+                          _parkingTypeLabel(
+                            type,
+                            l10n,
+                          ),
                         ),
                       );
                     }).toList(),
@@ -336,9 +361,7 @@ class _AddParkingScreenState
                             });
                           },
                   ),
-
                   const SizedBox(height: 20),
-
                   Row(
                     children: [
                       Expanded(
@@ -350,14 +373,14 @@ class _AddParkingScreenState
                               TextInputType.number,
                           textInputAction:
                               TextInputAction.next,
-                          decoration:
-                              const InputDecoration(
-                            labelText: 'Összes férőhely',
-                            prefixIcon: Icon(
+                          decoration: InputDecoration(
+                            labelText:
+                                l10n.parkingTotalSpaces,
+                            prefixIcon: const Icon(
                               Icons.local_parking,
                             ),
                             border:
-                                OutlineInputBorder(),
+                                const OutlineInputBorder(),
                           ),
                           validator: (value) {
                             final spaces =
@@ -367,7 +390,8 @@ class _AddParkingScreenState
 
                             if (spaces == null ||
                                 spaces <= 0) {
-                              return 'Érvénytelen';
+                              return l10n
+                                  .parkingTotalSpacesInvalid;
                             }
 
                             return null;
@@ -384,14 +408,13 @@ class _AddParkingScreenState
                               TextInputType.number,
                           textInputAction:
                               TextInputAction.done,
-                          decoration:
-                              const InputDecoration(
-                            labelText: 'Szabad hely',
-                            prefixIcon: Icon(
+                          decoration: InputDecoration(
+                            labelText: l10n.parkingFreeSpacesLabel,
+                            prefixIcon: const Icon(
                               Icons.event_available,
                             ),
                             border:
-                                OutlineInputBorder(),
+                                const OutlineInputBorder(),
                           ),
                           validator: (value) {
                             final freeSpaces =
@@ -401,7 +424,8 @@ class _AddParkingScreenState
 
                             if (freeSpaces == null ||
                                 freeSpaces < 0) {
-                              return 'Érvénytelen';
+                              return l10n
+                                  .parkingFreeSpacesInvalid;
                             }
 
                             return null;
@@ -410,33 +434,25 @@ class _AddParkingScreenState
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 24),
-
                   Text(
-                    'Helyszín',
+                    l10n.parkingLocation,
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge,
                   ),
-
                   const SizedBox(height: 8),
-
-                  _buildLocationStatus(),
-
+                  _buildLocationStatus(l10n),
                   const SizedBox(height: 24),
-
                   Text(
-                    'Szolgáltatások',
+                    l10n.parkingServices,
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge,
                   ),
-
                   const SizedBox(height: 8),
-
                   _buildServiceSwitch(
-                    title: 'WC',
+                    title: l10n.parkingServiceToilets,
                     value: _toilets,
                     icon: Icons.wc,
                     onChanged: (value) {
@@ -445,9 +461,8 @@ class _AddParkingScreenState
                       });
                     },
                   ),
-
                   _buildServiceSwitch(
-                    title: 'Zuhanyzó',
+                    title: l10n.parkingServiceShowers,
                     value: _showers,
                     icon: Icons.shower,
                     onChanged: (value) {
@@ -456,9 +471,9 @@ class _AddParkingScreenState
                       });
                     },
                   ),
-
                   _buildServiceSwitch(
-                    title: 'Étterem',
+                    title:
+                        l10n.parkingServiceRestaurant,
                     value: _restaurant,
                     icon: Icons.restaurant,
                     onChanged: (value) {
@@ -467,9 +482,8 @@ class _AddParkingScreenState
                       });
                     },
                   ),
-
                   _buildServiceSwitch(
-                    title: 'Üzemanyag',
+                    title: l10n.parkingServiceFuel,
                     value: _fuel,
                     icon: Icons.local_gas_station,
                     onChanged: (value) {
@@ -478,9 +492,9 @@ class _AddParkingScreenState
                       });
                     },
                   ),
-
                   _buildServiceSwitch(
-                    title: 'Biztonság',
+                    title:
+                        l10n.parkingServiceSecurity,
                     value: _security,
                     icon: Icons.security,
                     onChanged: (value) {
@@ -489,9 +503,8 @@ class _AddParkingScreenState
                       });
                     },
                   ),
-
                   _buildServiceSwitch(
-                    title: 'Wi-Fi',
+                    title: l10n.parkingServiceWifi,
                     value: _wifi,
                     icon: Icons.wifi,
                     onChanged: (value) {
@@ -500,9 +513,9 @@ class _AddParkingScreenState
                       });
                     },
                   ),
-
                   _buildServiceSwitch(
-                    title: 'Elektromosság',
+                    title:
+                        l10n.parkingServiceElectricity,
                     value: _electricity,
                     icon: Icons.electrical_services,
                     onChanged: (value) {
@@ -511,9 +524,8 @@ class _AddParkingScreenState
                       });
                     },
                   ),
-
                   _buildServiceSwitch(
-                    title: 'Víz',
+                    title: l10n.parkingServiceWater,
                     value: _water,
                     icon: Icons.water_drop,
                     onChanged: (value) {
@@ -522,9 +534,7 @@ class _AddParkingScreenState
                       });
                     },
                   ),
-
                   const SizedBox(height: 24),
-
                   SizedBox(
                     height: 52,
                     child: FilledButton.icon(
@@ -544,12 +554,11 @@ class _AddParkingScreenState
                             ),
                       label: Text(
                         _isSaving
-                            ? 'Mentés...'
-                            : 'Parkoló hozzáadása',
+                            ? l10n.parkingSaving
+                            : l10n.addParking,
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 16),
                 ],
               ),
