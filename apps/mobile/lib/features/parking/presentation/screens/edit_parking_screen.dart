@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../localization/generated/app_localizations.dart';
 import '../../domain/entities/parking_spot.dart';
-import '../../domain/enums/parking_type.dart';
+import '../../domain/enums/parking_facility_type.dart';
 import '../../domain/value_objects/parking_services.dart';
 import '../providers/parking_provider.dart';
 
@@ -25,35 +25,11 @@ class _EditParkingScreenState
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameController;
-  late final TextEditingController _totalSpacesController;
-  late final TextEditingController _freeSpacesController;
 
   late ParkingServices _services;
-  late ParkingType _type;
+  late ParkingFacilityType _facilityType;
 
   bool _isSaving = false;
-
-  String _typeLabel(
-    ParkingType type,
-    AppLocalizations l10n,
-  ) {
-    switch (type) {
-      case ParkingType.motorway:
-        return l10n.parkingTypeMotorway;
-      case ParkingType.serviceArea:
-        return l10n.parkingTypeServiceArea;
-      case ParkingType.fuelStation:
-        return l10n.parkingTypeFuelStation;
-      case ParkingType.logisticsCenter:
-        return l10n.parkingTypeLogisticsCenter;
-      case ParkingType.industrial:
-        return l10n.parkingTypeIndustrial;
-      case ParkingType.publicParking:
-        return l10n.parkingTypePublicParking;
-      case ParkingType.privateParking:
-        return l10n.parkingTypePrivateParking;
-    }
-  }
 
   @override
   void initState() {
@@ -65,24 +41,38 @@ class _EditParkingScreenState
       text: parkingSpot.name,
     );
 
-    _totalSpacesController = TextEditingController(
-      text: parkingSpot.totalSpaces.toString(),
-    );
-
-    _freeSpacesController = TextEditingController(
-      text: parkingSpot.freeSpaces.toString(),
-    );
-
     _services = parkingSpot.services;
-    _type = parkingSpot.type;
+    _facilityType = parkingSpot.facilityType;
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _totalSpacesController.dispose();
-    _freeSpacesController.dispose();
     super.dispose();
+  }
+
+  String _facilityTypeLabel(
+    ParkingFacilityType type,
+  ) {
+    switch (type) {
+      case ParkingFacilityType.parking:
+        return 'Parking';
+
+      case ParkingFacilityType.fueling:
+        return 'Fueling';
+
+      case ParkingFacilityType.restArea:
+        return 'Rest Area';
+
+      case ParkingFacilityType.truckStopAndRestArea:
+        return 'Truck Stop / Rest Area';
+
+      case ParkingFacilityType.fuelingAndTruckStop:
+        return 'Fueling / Truck Stop';
+
+      case ParkingFacilityType.parkingAndRestArea:
+        return 'Parking / Rest Area';
+    }
   }
 
   Future<void> _submit() async {
@@ -94,42 +84,30 @@ class _EditParkingScreenState
       return;
     }
 
-    final totalSpaces =
-        int.tryParse(_totalSpacesController.text.trim());
-
-    final freeSpaces =
-        int.tryParse(_freeSpacesController.text.trim());
-
-    if (totalSpaces == null || freeSpaces == null) {
-      return;
-    }
-
-    final l10n = AppLocalizations.of(context)!;
-
-    if (freeSpaces > totalSpaces) {
-      _showMessage(
-        l10n.parkingFreeSpacesExceedTotal,
-      );
-      return;
-    }
-
     final updatedParkingSpot = ParkingSpot(
       id: widget.parkingSpot.id,
       name: _nameController.text.trim(),
       location: widget.parkingSpot.location,
-      type: _type,
-      status: widget.parkingSpot.status,
-      totalSpaces: totalSpaces,
-      freeSpaces: freeSpaces,
+      countryCode: widget.parkingSpot.countryCode,
+      facilityType: _facilityType,
+      totalAreaM2: widget.parkingSpot.totalAreaM2,
       services: _services,
-      lastUpdated: widget.parkingSpot.lastUpdated,
-      updatedBy: widget.parkingSpot.updatedBy,
-      verified: widget.parkingSpot.verified,
+      infrastructure: widget.parkingSpot.infrastructure,
+      context: widget.parkingSpot.context,
+      networkContext: widget.parkingSpot.networkContext,
+      truckContext: widget.parkingSpot.truckContext,
+      source: widget.parkingSpot.source,
+      verification: widget.parkingSpot.verification,
+      safeAndSecureTruckParkingArea:
+          widget.parkingSpot.safeAndSecureTruckParkingArea,
+      sourceConfidence: widget.parkingSpot.sourceConfidence,
     );
 
     setState(() {
       _isSaving = true;
     });
+
+    final l10n = AppLocalizations.of(context)!;
 
     try {
       await ref
@@ -187,6 +165,30 @@ class _EditParkingScreenState
       value: value,
       onChanged: _isSaving ? null : onChanged,
     );
+  }
+
+  void _updateServices({
+    bool? toilets,
+    bool? showers,
+    bool? restaurant,
+    bool? fuel,
+    bool? security,
+    bool? wifi,
+    bool? electricity,
+    bool? water,
+  }) {
+    setState(() {
+      _services = ParkingServices(
+        toilets: toilets ?? _services.toilets,
+        showers: showers ?? _services.showers,
+        restaurant: restaurant ?? _services.restaurant,
+        fuel: fuel ?? _services.fuel,
+        security: security ?? _services.security,
+        wifi: wifi ?? _services.wifi,
+        electricity: electricity ?? _services.electricity,
+        water: water ?? _services.water,
+      );
+    });
   }
 
   Future<void> _confirmDelete() async {
@@ -298,8 +300,8 @@ class _EditParkingScreenState
 
               const SizedBox(height: 20),
 
-              DropdownButtonFormField<ParkingType>(
-                initialValue: _type,
+              DropdownButtonFormField<ParkingFacilityType>(
+                initialValue: _facilityType,
                 decoration: InputDecoration(
                   labelText: l10n.parkingType,
                   prefixIcon: const Icon(
@@ -307,15 +309,12 @@ class _EditParkingScreenState
                   ),
                   border: const OutlineInputBorder(),
                 ),
-                items: ParkingType.values.map(
+                items: ParkingFacilityType.values.map(
                   (type) {
-                    return DropdownMenuItem<ParkingType>(
+                    return DropdownMenuItem<ParkingFacilityType>(
                       value: type,
                       child: Text(
-                        _typeLabel(
-                          type,
-                          l10n,
-                        ),
+                        _facilityTypeLabel(type),
                       ),
                     );
                   },
@@ -328,77 +327,9 @@ class _EditParkingScreenState
                         }
 
                         setState(() {
-                          _type = value;
+                          _facilityType = value;
                         });
                       },
-              ),
-
-              const SizedBox(height: 20),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller:
-                          _totalSpacesController,
-                      enabled: !_isSaving,
-                      keyboardType:
-                          TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText:
-                            l10n.parkingTotalSpaces,
-                        prefixIcon: const Icon(
-                          Icons.local_parking,
-                        ),
-                        border:
-                            const OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        final spaces =
-                            int.tryParse(value ?? '');
-
-                        if (spaces == null ||
-                            spaces <= 0) {
-                          return l10n
-                              .parkingTotalSpacesInvalid;
-                        }
-
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextFormField(
-                      controller:
-                          _freeSpacesController,
-                      enabled: !_isSaving,
-                      keyboardType:
-                          TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText:
-                            l10n.parkingFreeSpacesLabel,
-                        prefixIcon: const Icon(
-                          Icons.event_available,
-                        ),
-                        border:
-                            const OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        final spaces =
-                            int.tryParse(value ?? '');
-
-                        if (spaces == null ||
-                            spaces < 0) {
-                          return l10n
-                              .parkingFreeSpacesInvalid;
-                        }
-
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
               ),
 
               const SizedBox(height: 24),
@@ -442,19 +373,9 @@ class _EditParkingScreenState
                 value: _services.toilets,
                 icon: Icons.wc,
                 onChanged: (value) {
-                  setState(() {
-                    _services = ParkingServices(
-                      toilets: value,
-                      showers: _services.showers,
-                      restaurant: _services.restaurant,
-                      fuel: _services.fuel,
-                      security: _services.security,
-                      wifi: _services.wifi,
-                      electricity:
-                          _services.electricity,
-                      water: _services.water,
-                    );
-                  });
+                  _updateServices(
+                    toilets: value,
+                  );
                 },
               ),
 
@@ -463,41 +384,20 @@ class _EditParkingScreenState
                 value: _services.showers,
                 icon: Icons.shower,
                 onChanged: (value) {
-                  setState(() {
-                    _services = ParkingServices(
-                      toilets: _services.toilets,
-                      showers: value,
-                      restaurant: _services.restaurant,
-                      fuel: _services.fuel,
-                      security: _services.security,
-                      wifi: _services.wifi,
-                      electricity:
-                          _services.electricity,
-                      water: _services.water,
-                    );
-                  });
+                  _updateServices(
+                    showers: value,
+                  );
                 },
               ),
 
               _buildServiceSwitch(
-                title:
-                    l10n.parkingServiceRestaurant,
+                title: l10n.parkingServiceRestaurant,
                 value: _services.restaurant,
                 icon: Icons.restaurant,
                 onChanged: (value) {
-                  setState(() {
-                    _services = ParkingServices(
-                      toilets: _services.toilets,
-                      showers: _services.showers,
-                      restaurant: value,
-                      fuel: _services.fuel,
-                      security: _services.security,
-                      wifi: _services.wifi,
-                      electricity:
-                          _services.electricity,
-                      water: _services.water,
-                    );
-                  });
+                  _updateServices(
+                    restaurant: value,
+                  );
                 },
               ),
 
@@ -506,19 +406,9 @@ class _EditParkingScreenState
                 value: _services.fuel,
                 icon: Icons.local_gas_station,
                 onChanged: (value) {
-                  setState(() {
-                    _services = ParkingServices(
-                      toilets: _services.toilets,
-                      showers: _services.showers,
-                      restaurant: _services.restaurant,
-                      fuel: value,
-                      security: _services.security,
-                      wifi: _services.wifi,
-                      electricity:
-                          _services.electricity,
-                      water: _services.water,
-                    );
-                  });
+                  _updateServices(
+                    fuel: value,
+                  );
                 },
               ),
 
@@ -527,19 +417,9 @@ class _EditParkingScreenState
                 value: _services.security,
                 icon: Icons.security,
                 onChanged: (value) {
-                  setState(() {
-                    _services = ParkingServices(
-                      toilets: _services.toilets,
-                      showers: _services.showers,
-                      restaurant: _services.restaurant,
-                      fuel: _services.fuel,
-                      security: value,
-                      wifi: _services.wifi,
-                      electricity:
-                          _services.electricity,
-                      water: _services.water,
-                    );
-                  });
+                  _updateServices(
+                    security: value,
+                  );
                 },
               ),
 
@@ -548,40 +428,20 @@ class _EditParkingScreenState
                 value: _services.wifi,
                 icon: Icons.wifi,
                 onChanged: (value) {
-                  setState(() {
-                    _services = ParkingServices(
-                      toilets: _services.toilets,
-                      showers: _services.showers,
-                      restaurant: _services.restaurant,
-                      fuel: _services.fuel,
-                      security: _services.security,
-                      wifi: value,
-                      electricity:
-                          _services.electricity,
-                      water: _services.water,
-                    );
-                  });
+                  _updateServices(
+                    wifi: value,
+                  );
                 },
               ),
 
               _buildServiceSwitch(
-                title:
-                    l10n.parkingServiceElectricity,
+                title: l10n.parkingServiceElectricity,
                 value: _services.electricity,
                 icon: Icons.electrical_services,
                 onChanged: (value) {
-                  setState(() {
-                    _services = ParkingServices(
-                      toilets: _services.toilets,
-                      showers: _services.showers,
-                      restaurant: _services.restaurant,
-                      fuel: _services.fuel,
-                      security: _services.security,
-                      wifi: _services.wifi,
-                      electricity: value,
-                      water: _services.water,
-                    );
-                  });
+                  _updateServices(
+                    electricity: value,
+                  );
                 },
               ),
 
@@ -590,19 +450,9 @@ class _EditParkingScreenState
                 value: _services.water,
                 icon: Icons.water_drop,
                 onChanged: (value) {
-                  setState(() {
-                    _services = ParkingServices(
-                      toilets: _services.toilets,
-                      showers: _services.showers,
-                      restaurant: _services.restaurant,
-                      fuel: _services.fuel,
-                      security: _services.security,
-                      wifi: _services.wifi,
-                      electricity:
-                          _services.electricity,
-                      water: value,
-                    );
-                  });
+                  _updateServices(
+                    water: value,
+                  );
                 },
               ),
 
@@ -611,8 +461,9 @@ class _EditParkingScreenState
               SizedBox(
                 height: 52,
                 child: FilledButton.icon(
-                  onPressed:
-                      _isSaving ? null : _submit,
+                  onPressed: _isSaving
+                      ? null
+                      : _submit,
                   icon: _isSaving
                       ? const SizedBox(
                           width: 20,

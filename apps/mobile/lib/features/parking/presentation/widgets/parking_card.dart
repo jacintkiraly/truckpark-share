@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../domain/entities/parking_spot.dart';
-import '../../domain/enums/parking_status.dart';
-import '../../domain/enums/parking_type.dart';
-import '../../../map/models/driver_location.dart';
 import '../../../../localization/generated/app_localizations.dart';
+import '../../../map/models/driver_location.dart';
+import '../../domain/entities/parking_spot.dart';
+import '../../domain/enums/parking_facility_type.dart';
 
 class ParkingCard extends StatelessWidget {
   const ParkingCard({
@@ -19,54 +18,27 @@ class ParkingCard extends StatelessWidget {
   final DriverLocation? driverLocation;
   final VoidCallback? onEdit;
 
-  String _statusLabel(
-    ParkingStatus status,
-    AppLocalizations l10n,
-  ) {
-    switch (status) {
-      case ParkingStatus.available:
-        return l10n.parkingAvailable;
-      case ParkingStatus.nearlyFull:
-        return l10n.parkingNearlyFull;
-      case ParkingStatus.full:
-        return l10n.parkingFull;
-      case ParkingStatus.closed:
-        return l10n.parkingClosed;
-    }
-  }
-
-  String _typeLabel(
-    ParkingType type,
-    AppLocalizations l10n,
+  String _facilityTypeLabel(
+    ParkingFacilityType type,
   ) {
     switch (type) {
-      case ParkingType.motorway:
-        return l10n.parkingTypeMotorway;
-      case ParkingType.serviceArea:
-        return l10n.parkingTypeServiceArea;
-      case ParkingType.fuelStation:
-        return l10n.parkingTypeFuelStation;
-      case ParkingType.logisticsCenter:
-        return l10n.parkingTypeLogisticsCenter;
-      case ParkingType.industrial:
-        return l10n.parkingTypeIndustrial;
-      case ParkingType.publicParking:
-        return l10n.parkingTypePublicParking;
-      case ParkingType.privateParking:
-        return l10n.parkingTypePrivateParking;
-    }
-  }
+      case ParkingFacilityType.parking:
+        return 'Parking';
 
-  IconData _statusIcon(ParkingStatus status) {
-    switch (status) {
-      case ParkingStatus.available:
-        return Icons.check_circle_outline;
-      case ParkingStatus.nearlyFull:
-        return Icons.warning_amber_rounded;
-      case ParkingStatus.full:
-        return Icons.do_not_disturb_on_outlined;
-      case ParkingStatus.closed:
-        return Icons.block_outlined;
+      case ParkingFacilityType.fueling:
+        return 'Fueling';
+
+      case ParkingFacilityType.restArea:
+        return 'Rest Area';
+
+      case ParkingFacilityType.truckStopAndRestArea:
+        return 'Truck Stop / Rest Area';
+
+      case ParkingFacilityType.fuelingAndTruckStop:
+        return 'Fueling / Truck Stop';
+
+      case ParkingFacilityType.parkingAndRestArea:
+        return 'Parking / Rest Area';
     }
   }
 
@@ -134,8 +106,16 @@ class ParkingCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     final services = parkingSpot.services;
-    final status = parkingSpot.status;
-    final type = parkingSpot.type;
+
+    final hasServices =
+        services.toilets ||
+        services.showers ||
+        services.restaurant ||
+        services.fuel ||
+        services.security ||
+        services.wifi ||
+        services.electricity ||
+        services.water;
 
     return Card(
       margin: EdgeInsets.zero,
@@ -172,7 +152,8 @@ class ParkingCard extends StatelessWidget {
                         TextOverflow.ellipsis,
                   ),
                 ),
-                if (parkingSpot.verified)
+
+                if (parkingSpot.verification.verified)
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 8),
@@ -186,96 +167,99 @@ class ParkingCard extends StatelessWidget {
                   ),
               ],
             ),
+
             const SizedBox(height: 10),
-            Row(
-              children: [
-                Icon(
-                  _statusIcon(status),
-                  size: 20,
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  _statusLabel(status, l10n),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  l10n.parkingFreeSpaces(
-                    parkingSpot.freeSpaces,
-                    parkingSpot.totalSpaces,
-                  ),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
+
             Text(
-              _typeLabel(type, l10n),
+              _facilityTypeLabel(
+                parkingSpot.facilityType,
+              ),
               style: Theme.of(context)
                   .textTheme
-                  .bodyMedium,
+                  .bodyMedium
+                  ?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
-            if (services.toilets ||
-                services.showers ||
-                services.restaurant ||
-                services.fuel ||
-                services.security ||
-                services.wifi ||
-                services.electricity ||
-                services.water) ...[
+
+            if (parkingSpot.countryCode != 'XX') ...[
+              const SizedBox(height: 4),
+              Text(
+                parkingSpot.countryCode,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall,
+              ),
+            ],
+
+            if (hasServices) ...[
               const SizedBox(height: 10),
               const Divider(height: 1),
               const SizedBox(height: 8),
+
               Wrap(
                 children: [
                   if (services.toilets)
                     _serviceChip(
                       icon: Icons.wc,
-                      label: l10n.parkingServiceToilets,
+                      label:
+                          l10n.parkingServiceToilets,
                     ),
+
                   if (services.showers)
                     _serviceChip(
                       icon: Icons.shower,
-                      label: l10n.parkingServiceShowers,
+                      label:
+                          l10n.parkingServiceShowers,
                     ),
+
                   if (services.restaurant)
                     _serviceChip(
                       icon: Icons.restaurant,
-                      label: l10n.parkingServiceRestaurant,
+                      label:
+                          l10n.parkingServiceRestaurant,
                     ),
+
                   if (services.fuel)
                     _serviceChip(
                       icon: Icons.local_gas_station,
-                      label: l10n.parkingServiceFuel,
+                      label:
+                          l10n.parkingServiceFuel,
                     ),
+
                   if (services.security)
                     _serviceChip(
                       icon: Icons.security,
-                      label: l10n.parkingServiceSecurity,
+                      label:
+                          l10n.parkingServiceSecurity,
                     ),
+
                   if (services.wifi)
                     _serviceChip(
                       icon: Icons.wifi,
-                      label: l10n.parkingServiceWifi,
+                      label:
+                          l10n.parkingServiceWifi,
                     ),
+
                   if (services.electricity)
                     _serviceChip(
                       icon: Icons.ev_station,
-                      label: l10n.parkingServiceElectricity,
+                      label:
+                          l10n.parkingServiceElectricity,
                     ),
+
                   if (services.water)
                     _serviceChip(
                       icon: Icons.water_drop,
-                      label: l10n.parkingServiceWater,
+                      label:
+                          l10n.parkingServiceWater,
                     ),
                 ],
               ),
             ],
+
             const SizedBox(height: 12),
+
             Row(
               children: [
                 if (onEdit != null) ...[
@@ -285,11 +269,14 @@ class ParkingCard extends StatelessWidget {
                       icon: const Icon(
                         Icons.edit_outlined,
                       ),
-                      label: Text(l10n.edit),
+                      label: Text(
+                        l10n.edit,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
                 ],
+
                 Expanded(
                   child: FilledButton.icon(
                     onPressed: _openNavigation,
