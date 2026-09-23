@@ -35,7 +35,7 @@ class ParkingSpotDto {
     this.trucksNearbyIntensity,
     this.trucksTotalIntensity,
     this.safeAndSecureTruckParkingArea,
-    this.sourceConfidence,
+    this.truckParkingConfidence,
     required this.sourceProvider,
     this.sourceId,
     this.sourceDataset,
@@ -90,7 +90,7 @@ class ParkingSpotDto {
   final String? trucksTotalIntensity;
 
   final bool? safeAndSecureTruckParkingArea;
-  final String? sourceConfidence;
+  final String? truckParkingConfidence;
 
   final String sourceProvider;
   final String? sourceId;
@@ -184,8 +184,8 @@ class ParkingSpotDto {
 
       safeAndSecureTruckParkingArea:
           json['safeAndSecureTruckParkingArea'] as bool?,
-      sourceConfidence:
-          json['sourceConfidence'] as String?,
+      truckParkingConfidence:
+          json['truckParkingConfidence'] as String?,
 
       sourceProvider:
           source['provider'] as String? ?? 'unknown',
@@ -260,7 +260,7 @@ class ParkingSpotDto {
 
       'safeAndSecureTruckParkingArea':
           safeAndSecureTruckParkingArea,
-      'sourceConfidence': sourceConfidence,
+      'truckParkingConfidence': truckParkingConfidence,
 
       'source': {
         'provider': sourceProvider,

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../enums/parking_facility_type.dart';
-import '../enums/parking_source_confidence.dart';
+import '../enums/parking_truck_confidence.dart';
 import '../value_objects/parking_context.dart';
 import '../value_objects/parking_infrastructure.dart';
 import '../value_objects/parking_location.dart';
@@ -27,7 +27,7 @@ class ParkingSpot extends Equatable {
     required this.source,
     required this.verification,
     this.safeAndSecureTruckParkingArea,
-    this.sourceConfidence,
+    this.truckParkingConfidence,
   });
 
   final String id;
@@ -48,7 +48,7 @@ class ParkingSpot extends Equatable {
   final ParkingVerification verification;
 
   final bool? safeAndSecureTruckParkingArea;
-  final ParkingSourceConfidence? sourceConfidence;
+  final ParkingTruckConfidence? truckParkingConfidence;
 
   @override
   List<Object?> get props => [
@@ -66,6 +66,6 @@ class ParkingSpot extends Equatable {
         source,
         verification,
         safeAndSecureTruckParkingArea,
-        sourceConfidence,
+        truckParkingConfidence,
       ];
 }

@@ -156,7 +156,7 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
       source: parkingSpot.source,
       verification: parkingSpot.verification,
       safeAndSecureTruckParkingArea: parkingSpot.safeAndSecureTruckParkingArea,
-      sourceConfidence: parkingSpot.sourceConfidence,
+      truckParkingConfidence: parkingSpot.truckParkingConfidence,
     );
 
     try {

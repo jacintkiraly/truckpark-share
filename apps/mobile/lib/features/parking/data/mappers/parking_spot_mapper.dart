@@ -2,7 +2,7 @@ import 'package:truckpark_share/features/parking/data/dto/parking_spot_dto.dart'
 import 'package:truckpark_share/features/parking/domain/entities/parking_spot.dart';
 import 'package:truckpark_share/features/parking/domain/enums/parking_facility_type.dart';
 import 'package:truckpark_share/features/parking/domain/enums/parking_intensity.dart';
-import 'package:truckpark_share/features/parking/domain/enums/parking_source_confidence.dart';
+import 'package:truckpark_share/features/parking/domain/enums/parking_truck_confidence.dart';
 import 'package:truckpark_share/features/parking/domain/value_objects/parking_context.dart';
 import 'package:truckpark_share/features/parking/domain/value_objects/parking_infrastructure.dart';
 import 'package:truckpark_share/features/parking/domain/value_objects/parking_location.dart';
@@ -95,9 +95,9 @@ class ParkingSpotMapper {
       ),
       safeAndSecureTruckParkingArea:
           dto.safeAndSecureTruckParkingArea,
-      sourceConfidence:
-          _sourceConfidenceFromFirestore(
-            dto.sourceConfidence,
+      truckParkingConfidence:
+          _truckParkingConfidenceFromFirestore(
+            dto.truckParkingConfidence,
           ),
     );
   }
@@ -182,8 +182,8 @@ class ParkingSpotMapper {
 
       safeAndSecureTruckParkingArea:
           parkingSpot.safeAndSecureTruckParkingArea,
-      sourceConfidence:
-          parkingSpot.sourceConfidence?.name,
+      truckParkingConfidence:
+          parkingSpot.truckParkingConfidence?.name,
 
       sourceProvider:
           parkingSpot.source.provider,
@@ -247,16 +247,16 @@ class ParkingSpotMapper {
     }
   }
 
-  ParkingSourceConfidence? _sourceConfidenceFromFirestore(
+  ParkingTruckConfidence? _truckParkingConfidenceFromFirestore(
     String? value,
   ) {
     switch (value) {
       case 'low':
-        return ParkingSourceConfidence.low;
+        return ParkingTruckConfidence.low;
       case 'medium':
-        return ParkingSourceConfidence.medium;
+        return ParkingTruckConfidence.medium;
       case 'high':
-        return ParkingSourceConfidence.high;
+        return ParkingTruckConfidence.high;
       default:
         return null;
     }

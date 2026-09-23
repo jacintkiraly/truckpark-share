@@ -100,7 +100,7 @@ class _EditParkingScreenState
       verification: widget.parkingSpot.verification,
       safeAndSecureTruckParkingArea:
           widget.parkingSpot.safeAndSecureTruckParkingArea,
-      sourceConfidence: widget.parkingSpot.sourceConfidence,
+      truckParkingConfidence: widget.parkingSpot.truckParkingConfidence,
     );
 
     setState(() {
