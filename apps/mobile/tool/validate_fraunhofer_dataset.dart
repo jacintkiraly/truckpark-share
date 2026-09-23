@@ -1,6 +1,6 @@
-﻿import 'dart:io';
+import 'dart:io';
 
-import '../lib/features/parking/data/import/fraunhofer_parking_mapper.dart';
+import 'package:truckpark_share/features/parking/data/import/fraunhofer_parking_mapper.dart';
 
 void main() {
   final csvFile = File(
@@ -144,36 +144,36 @@ void main() {
     }
   }
 
-  print('');
-  print('========================================');
-  print('Fraunhofer v04 Dataset Validation');
-  print('========================================');
-  print('Records read:          ${rows.length}');
-  print('Successfully mapped:   $successful');
-  print('Validation errors:     $failed');
-  print('Unique generated IDs:  ${ids.length}');
-  print('');
+  stdout.writeln('');
+  stdout.writeln('========================================');
+  stdout.writeln('Fraunhofer v04 Dataset Validation');
+  stdout.writeln('========================================');
+  stdout.writeln('Records read:          ${rows.length}');
+  stdout.writeln('Successfully mapped:   $successful');
+  stdout.writeln('Validation errors:     $failed');
+  stdout.writeln('Unique generated IDs:  ${ids.length}');
+  stdout.writeln('');
 
-  print('Facility types:');
+  stdout.writeln('Facility types:');
 
   final sortedFacilities = facilityTypes.entries.toList()
     ..sort((a, b) => a.key.compareTo(b.key));
 
   for (final entry in sortedFacilities) {
-    print('  ${entry.key}: ${entry.value}');
+    stdout.writeln('  ${entry.key}: ${entry.value}');
   }
 
-  print('');
-  print('Countries:');
+  stdout.writeln('');
+  stdout.writeln('Countries:');
 
   final sortedCountries = countries.entries.toList()
     ..sort((a, b) => a.key.compareTo(b.key));
 
   for (final entry in sortedCountries) {
-    print('  ${entry.key}: ${entry.value}');
+    stdout.writeln('  ${entry.key}: ${entry.value}');
   }
 
-  print('');
+  stdout.writeln('');
 
   final valid =
       rows.length == 13323 &&
@@ -182,10 +182,10 @@ void main() {
       ids.length == 13323;
 
   if (valid) {
-    print('RESULT: PASS');
+    stdout.writeln('RESULT: PASS');
     exitCode = 0;
   } else {
-    print('RESULT: FAIL');
+    stdout.writeln('RESULT: FAIL');
     exitCode = 1;
   }
 }
