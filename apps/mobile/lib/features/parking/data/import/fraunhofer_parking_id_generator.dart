@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:crypto/crypto.dart';
 
 class FraunhoferParkingIdGenerator {
@@ -17,7 +19,7 @@ class FraunhoferParkingIdGenerator {
     );
 
     final digest = sha256.convert(
-      canonicalKey.codeUnits,
+      utf8.encode(canonicalKey),
     );
 
     return 'tps_${digest.toString()}';
