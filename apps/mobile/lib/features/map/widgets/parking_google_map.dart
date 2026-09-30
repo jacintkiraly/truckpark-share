@@ -60,6 +60,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   final List<ParkingMapCluster> _clusters = [];
 
   final Map<int, BitmapDescriptor> _clusterIconCache = {};
+  BitmapDescriptor? _driverLocationIcon;
 
   bool _isLowZoom = false;
 
@@ -71,6 +72,121 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   int _spotRequestId = 0;
   int _clusterRequestId = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_prepareDriverLocationIcon());
+  }
+
+  Future<BitmapDescriptor> _createDriverLocationIcon() async {
+    const double size = 96;
+    const double centerCoordinate = size / 2;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final center = const Offset(
+      centerCoordinate,
+      centerCoordinate,
+    );
+
+    // Soft blue halo.
+    final haloPaint = Paint()
+      ..color = const Color(0x553A86FF)
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(
+      center,
+      29,
+      haloPaint,
+    );
+
+    // White outer ring.
+    final outerPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(
+      center,
+      21,
+      outerPaint,
+    );
+
+    // TruckPark Share blue center.
+    final bluePaint = Paint()
+      ..color = Colors.blue.shade700
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(
+      center,
+      17,
+      bluePaint,
+    );
+
+    // White center dot.
+    final centerPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(
+      center,
+      6,
+      centerPaint,
+    );
+
+    final image = await recorder.endRecording().toImage(
+      size.toInt(),
+      size.toInt(),
+    );
+
+    final byteData = await image.toByteData(
+      format: ui.ImageByteFormat.png,
+    );
+
+    image.dispose();
+
+    if (byteData == null) {
+      return BitmapDescriptor.defaultMarker;
+    }
+
+    return BitmapDescriptor.bytes(
+      byteData.buffer.asUint8List(),
+      width: 40,
+      height: 40,
+    );
+  }
+
+  Future<void> _prepareDriverLocationIcon() async {
+    final icon = await _createDriverLocationIcon();
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _driverLocationIcon = icon;
+    });
+  }
+
+  Marker _buildDriverLocationMarker() {
+    final icon = _driverLocationIcon;
+
+    if (icon == null) {
+      throw StateError(
+        'Driver location icon is not ready.',
+      );
+    }
+
+    return Marker(
+      markerId: const MarkerId('driver_location'),
+      position: LatLng(
+        widget.location.latitude,
+        widget.location.longitude,
+      ),
+      icon: icon,
+      anchor: const Offset(0.5, 0.5),
+      zIndexInt: 10000,
+    );
+  }
   Set<Marker> _buildParkingMarkers() {
     return _visibleParkingSpots.map((parkingSpot) {
       return Marker(
@@ -519,12 +635,17 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
             ),
             zoom: 15,
           ),
-          markers: _isLowZoom
-              ? _buildClusterMarkers()
-              : _buildParkingMarkers(),
+          markers: {
+            if (_isLowZoom)
+              ..._buildClusterMarkers()
+            else
+              ..._buildParkingMarkers(),
+            if (_driverLocationIcon != null)
+              _buildDriverLocationMarker(),
+          },
           clusterManagers: _clusterManagers,
-          myLocationEnabled: true,
-          myLocationButtonEnabled: true,
+          myLocationEnabled: false,
+          myLocationButtonEnabled: false,
           compassEnabled: true,
           mapToolbarEnabled: false,
           zoomControlsEnabled: true,
