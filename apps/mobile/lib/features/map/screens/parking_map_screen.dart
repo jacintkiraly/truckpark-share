@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../localization/generated/app_localizations.dart';
+import '../../parking/domain/entities/parking_spot.dart';
 import '../../../shared/widgets/primary_button.dart';
 
+import '../../parking/domain/value_objects/parking_map_cluster.dart';
+import '../../parking/domain/value_objects/parking_viewport.dart';
 import '../../parking/presentation/enums/parking_view_mode.dart';
 import '../../parking/presentation/providers/parking_provider.dart';
 import '../../parking/presentation/state/parking_state.dart';
@@ -34,8 +37,6 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _locationController.loadCurrentLocation();
-
-      ref.read(parkingViewModelProvider.notifier).watchParkingSpots();
     });
   }
 
@@ -56,7 +57,6 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
     final parkingState = ref.watch(parkingViewModelProvider);
 
     return Scaffold(
@@ -68,7 +68,9 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
             icon: const Icon(Icons.add_location_alt),
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const AddParkingScreen()),
+                MaterialPageRoute(
+                  builder: (_) => const AddParkingScreen(),
+                ),
               );
             },
           ),
@@ -97,7 +99,13 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
           ),
         ],
       ),
-      body: SafeArea(child: _buildParkingContent(context, l10n, parkingState)),
+      body: SafeArea(
+        child: _buildParkingContent(
+          context,
+          l10n,
+          parkingState,
+        ),
+      ),
     );
   }
 
@@ -117,23 +125,32 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
         message: parkingState.errorMessage!,
         actionText: l10n.retry,
         onPressed: () {
-          ref.read(parkingViewModelProvider.notifier).watchParkingSpots();
+          ref
+              .read(parkingViewModelProvider.notifier)
+              .watchParkingSpots();
         },
       );
     }
 
     if (parkingState.viewMode == ParkingViewMode.list) {
       if (parkingState.parkingSpots.isEmpty) {
-        return Center(child: Text(l10n.parkingNoSpots));
+        return Center(
+          child: Text(l10n.parkingNoSpots),
+        );
       }
 
-      return ParkingList(parkingSpots: parkingState.parkingSpots);
+      return ParkingList(
+        parkingSpots: parkingState.parkingSpots,
+      );
     }
 
     return AnimatedBuilder(
       animation: _locationController,
       builder: (context, child) {
-        return _buildMapContent(context, l10n, parkingState);
+        return _buildMapContent(
+          context,
+          l10n,
+        );
       },
     );
   }
@@ -141,12 +158,13 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
   Widget _buildMapContent(
     BuildContext context,
     AppLocalizations l10n,
-    ParkingState parkingState,
   ) {
     switch (_locationController.status) {
       case LocationStatus.initial:
       case LocationStatus.loading:
-        return _LoadingState(message: l10n.locationLoading);
+        return _LoadingState(
+          message: l10n.locationLoading,
+        );
 
       case LocationStatus.serviceDisabled:
         return _MessageState(
@@ -199,7 +217,16 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
 
         return _LocationAvailableState(
           location: location,
-          parkingState: parkingState,
+          onViewportChanged: (viewport) {
+            return ref
+                .read(parkingViewModelProvider.notifier)
+                .queryParkingSpotsInViewport(viewport);
+          },
+          onClusterViewportChanged: (viewport) {
+            return ref
+                .read(parkingViewModelProvider.notifier)
+                .queryParkingClustersInViewport(viewport);
+          },
         );
     }
   }
@@ -214,23 +241,22 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
 }
 
 class _LoadingState extends StatelessWidget {
-  const _LoadingState({required this.message});
+  const _LoadingState({
+    required this.message,
+  });
 
   final String message;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(height: 24),
-            Text(message, textAlign: TextAlign.center),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const CircularProgressIndicator(),
+          const SizedBox(height: 16),
+          Text(message),
+        ],
       ),
     );
   }
@@ -254,22 +280,28 @@ class _MessageState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 64),
-            const SizedBox(height: 24),
+            Icon(icon, size: 48),
+            const SizedBox(height: 16),
             Text(
               title,
+              style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall,
             ),
-            const SizedBox(height: 12),
-            Text(message, textAlign: TextAlign.center),
-            const SizedBox(height: 32),
-            PrimaryButton(text: actionText, onPressed: onPressed),
+            const SizedBox(height: 8),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            PrimaryButton(
+              text: actionText,
+              onPressed: onPressed,
+            ),
           ],
         ),
       ),
@@ -280,17 +312,24 @@ class _MessageState extends StatelessWidget {
 class _LocationAvailableState extends StatelessWidget {
   const _LocationAvailableState({
     required this.location,
-    required this.parkingState,
+    required this.onViewportChanged,
+    required this.onClusterViewportChanged,
   });
 
   final DriverLocation location;
-  final ParkingState parkingState;
+  final Future<List<ParkingSpot>> Function(
+    ParkingViewport viewport,
+  ) onViewportChanged;
+  final Future<List<ParkingMapCluster>> Function(
+    ParkingViewport viewport,
+  ) onClusterViewportChanged;
 
   @override
   Widget build(BuildContext context) {
     return ParkingGoogleMap(
       location: location,
-      parkingSpots: parkingState.parkingSpots,
+      onViewportChanged: onViewportChanged,
+      onClusterViewportChanged: onClusterViewportChanged,
     );
   }
 }

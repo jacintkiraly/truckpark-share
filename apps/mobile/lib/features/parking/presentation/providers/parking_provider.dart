@@ -4,6 +4,8 @@ import '../../../../core/di/service_locator.dart';
 import '../../../auth/services/auth_service.dart';
 import '../../domain/usecases/add_parking_spot_use_case.dart';
 import '../../domain/usecases/delete_parking_spot_use_case.dart';
+import '../../domain/usecases/query_parking_clusters_in_viewport_use_case.dart';
+import '../../domain/usecases/query_parking_spots_in_viewport_use_case.dart';
 import '../../domain/usecases/update_parking_spot_use_case.dart';
 import '../../domain/usecases/watch_parking_live_status_use_case.dart';
 import '../../domain/usecases/watch_parking_spots_use_case.dart';
@@ -14,6 +16,8 @@ final parkingViewModelProvider =
     StateNotifierProvider<ParkingViewModel, ParkingState>((ref) {
       return ParkingViewModel(
         sl<WatchParkingSpotsUseCase>(),
+        sl<QueryParkingSpotsInViewportUseCase>(),
+        sl<QueryParkingClustersInViewportUseCase>(),
         sl<WatchParkingLiveStatusUseCase>(),
         sl<AddParkingSpotUseCase>(),
         sl<UpdateParkingSpotUseCase>(),

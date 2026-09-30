@@ -10,18 +10,15 @@
 
     For more details:
     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
   -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
   <meta name="description" content="A new Flutter project.">
 
   <!-- iOS meta tags & icons -->
@@ -36,19 +33,21 @@
   <title>mobile</title>
   <link rel="manifest" href="manifest.json">
 
+  <!-- Google Maps JavaScript API -->
   <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuTb6oEI6TU3Q9H2IwjIrEw19v1dRsBAI">
-</script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuTb6oEI6TU3Q9H2IwjIrEw19v1dRsBAI">
+  </script>
 
+  <!-- Google Maps MarkerClusterer -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/@googlemaps/markerclusterer@2.5.3/dist/index.umd.min.js">
+  </script>
 </head>
 <body>
   <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
-
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
+    or to give the user feedback during initialization.
   -->
   <script src="flutter_bootstrap.js" async></script>
 </body>

@@ -9,15 +9,21 @@ import '../../domain/entities/parking_live_status.dart';
 import '../../domain/entities/parking_spot.dart';
 import '../../domain/usecases/add_parking_spot_use_case.dart';
 import '../../domain/usecases/delete_parking_spot_use_case.dart';
+import '../../domain/usecases/query_parking_clusters_in_viewport_use_case.dart';
+import '../../domain/usecases/query_parking_spots_in_viewport_use_case.dart';
 import '../../domain/usecases/update_parking_spot_use_case.dart';
 import '../../domain/usecases/watch_parking_live_status_use_case.dart';
 import '../../domain/usecases/watch_parking_spots_use_case.dart';
+import '../../domain/value_objects/parking_map_cluster.dart';
+import '../../domain/value_objects/parking_viewport.dart';
 import '../enums/parking_view_mode.dart';
 import '../state/parking_state.dart';
 
 class ParkingViewModel extends StateNotifier<ParkingState> {
   ParkingViewModel(
     this._watchParkingSpotsUseCase,
+    this._queryParkingSpotsInViewportUseCase,
+    this._queryParkingClustersInViewportUseCase,
     this._watchParkingLiveStatusUseCase,
     this._addParkingSpotUseCase,
     this._updateParkingSpotUseCase,
@@ -27,6 +33,10 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
   ) : super(const ParkingState());
 
   final WatchParkingSpotsUseCase _watchParkingSpotsUseCase;
+  final QueryParkingSpotsInViewportUseCase
+      _queryParkingSpotsInViewportUseCase;
+  final QueryParkingClustersInViewportUseCase
+      _queryParkingClustersInViewportUseCase;
   final WatchParkingLiveStatusUseCase _watchParkingLiveStatusUseCase;
   final AddParkingSpotUseCase _addParkingSpotUseCase;
   final AuthService _authService;
@@ -77,6 +87,50 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
     );
   }
 
+  Future<List<ParkingSpot>> queryParkingSpotsInViewport(
+    ParkingViewport viewport,
+  ) async {
+    debugPrint(
+      'PARKING MAP: individual marker query START',
+    );
+
+    final spots = await _queryParkingSpotsInViewportUseCase(
+      viewport,
+    );
+
+    debugPrint(
+      'PARKING MAP: individual marker query '
+      'received ${spots.length} parking spots',
+    );
+
+    return spots;
+  }
+
+  Future<List<ParkingMapCluster>> queryParkingClustersInViewport(
+    ParkingViewport viewport,
+  ) async {
+    debugPrint(
+      'PARKING MAP: coarse cluster query START',
+    );
+
+    final clusters = await _queryParkingClustersInViewportUseCase(
+      viewport,
+    );
+
+    final totalParkingSpots = clusters.fold<int>(
+      0,
+      (total, cluster) => total + cluster.count,
+    );
+
+    debugPrint(
+      'PARKING MAP: coarse cluster query '
+      'received ${clusters.length} cells, '
+      'totalCount=$totalParkingSpots',
+    );
+
+    return clusters;
+  }
+
   void _updateLiveSubscriptions(List<ParkingSpot> parkingSpots) {
     final parkingIds = parkingSpots.map((spot) => spot.id).toSet();
 
@@ -110,7 +164,9 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
           state = state.copyWith(liveStatuses: updatedStatuses);
 
           if (liveStatus == null) {
-            debugPrint('PARKING LIVE: $parkingId -> no current status');
+            debugPrint(
+              'PARKING LIVE: $parkingId -> no current status',
+            );
           } else {
             debugPrint(
               'PARKING LIVE: $parkingId -> '
@@ -122,7 +178,9 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
           }
         },
         onError: (error) {
-          debugPrint('PARKING LIVE ERROR [$parkingId]: $error');
+          debugPrint(
+            'PARKING LIVE ERROR [$parkingId]: $error',
+          );
         },
       );
 
@@ -130,15 +188,46 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
     }
   }
 
+  void _stopGlobalParkingWatch() {
+    _subscription?.cancel();
+    _subscription = null;
+
+    for (final subscription in _liveSubscriptions.values) {
+      subscription.cancel();
+    }
+
+    _liveSubscriptions.clear();
+  }
+
   void setViewMode(ParkingViewMode viewMode) {
+    if (state.viewMode == viewMode) {
+      return;
+    }
+
+    if (viewMode == ParkingViewMode.map) {
+      _stopGlobalParkingWatch();
+
+      state = state.copyWith(
+        parkingSpots: const <ParkingSpot>[],
+        liveStatuses: const <String, ParkingLiveStatus>{},
+        errorMessage: null,
+      );
+    }
+
     state = state.copyWith(viewMode: viewMode);
+
+    if (viewMode == ParkingViewMode.list) {
+      watchParkingSpots();
+    }
   }
 
   Future<void> addParkingSpot(ParkingSpot parkingSpot) async {
     final user = _authService.currentUser;
 
     if (user == null) {
-      throw StateError('Authenticated user is required to add a parking spot.');
+      throw StateError(
+        'Authenticated user is required to add a parking spot.',
+      );
     }
 
     final parkingSpotWithId = ParkingSpot(
@@ -155,7 +244,8 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
       truckContext: parkingSpot.truckContext,
       source: parkingSpot.source,
       verification: parkingSpot.verification,
-      safeAndSecureTruckParkingArea: parkingSpot.safeAndSecureTruckParkingArea,
+      safeAndSecureTruckParkingArea:
+          parkingSpot.safeAndSecureTruckParkingArea,
       truckParkingConfidence: parkingSpot.truckParkingConfidence,
     );
 
@@ -227,13 +317,7 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
 
   @override
   void dispose() {
-    _subscription?.cancel();
-
-    for (final subscription in _liveSubscriptions.values) {
-      subscription.cancel();
-    }
-
-    _liveSubscriptions.clear();
+    _stopGlobalParkingWatch();
 
     super.dispose();
   }
