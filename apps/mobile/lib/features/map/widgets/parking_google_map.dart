@@ -61,6 +61,9 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
   final Map<int, BitmapDescriptor> _clusterIconCache = {};
   BitmapDescriptor? _driverLocationIcon;
+  BitmapDescriptor? _driverHeadingIcon;
+
+  static const double _maxDriverHeadingAccuracy = 45.0;
 
   bool _isLowZoom = false;
 
@@ -155,8 +158,92 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     );
   }
 
+  Future<BitmapDescriptor> _createDriverHeadingIcon() async {
+    const double size = 96;
+    const double centerCoordinate = size / 2;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final center = const Offset(
+      centerCoordinate,
+      centerCoordinate,
+    );
+
+    // Soft blue halo.
+    final haloPaint = Paint()
+      ..color = const Color(0x553A86FF)
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(
+      center,
+      30,
+      haloPaint,
+    );
+
+    // White outer ring.
+    final outerPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(
+      center,
+      22,
+      outerPaint,
+    );
+
+    // TruckPark Share blue directional arrow.
+    final arrowPaint = Paint()
+      ..color = Colors.blue.shade700
+      ..style = PaintingStyle.fill;
+
+    final arrowPath = Path()
+      ..moveTo(center.dx, center.dy - 19)
+      ..lineTo(center.dx + 14, center.dy + 15)
+      ..lineTo(center.dx, center.dy + 9)
+      ..lineTo(center.dx - 14, center.dy + 15)
+      ..close();
+
+    canvas.drawPath(
+      arrowPath,
+      arrowPaint,
+    );
+
+    // White center.
+    final centerPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(
+      center,
+      5,
+      centerPaint,
+    );
+
+    final image = await recorder.endRecording().toImage(
+      size.toInt(),
+      size.toInt(),
+    );
+
+    final byteData = await image.toByteData(
+      format: ui.ImageByteFormat.png,
+    );
+
+    image.dispose();
+
+    if (byteData == null) {
+      return BitmapDescriptor.defaultMarker;
+    }
+
+    return BitmapDescriptor.bytes(
+      byteData.buffer.asUint8List(),
+      width: 40,
+      height: 40,
+    );
+  }
+
   Future<void> _prepareDriverLocationIcon() async {
     final icon = await _createDriverLocationIcon();
+    final headingIcon = await _createDriverHeadingIcon();
 
     if (!mounted) {
       return;
@@ -164,6 +251,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
     setState(() {
       _driverLocationIcon = icon;
+      _driverHeadingIcon = headingIcon;
     });
   }
 
@@ -176,15 +264,35 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       );
     }
 
+    final heading = widget.location.heading;
+    final headingAccuracy = widget.location.headingAccuracy;
+
+    final useHeading =
+        heading != null &&
+        heading.isFinite &&
+        heading >= 0 &&
+        heading < 360 &&
+        headingAccuracy != null &&
+        headingAccuracy.isFinite &&
+        headingAccuracy >= 0 &&
+        headingAccuracy <= _maxDriverHeadingAccuracy &&
+        _driverHeadingIcon != null;
+
     return Marker(
       markerId: const MarkerId('driver_location'),
       position: LatLng(
         widget.location.latitude,
         widget.location.longitude,
       ),
-      icon: icon,
+      icon: useHeading
+          ? _driverHeadingIcon!
+          : icon,
+      rotation: useHeading
+          ? heading
+          : 0,
       anchor: const Offset(0.5, 0.5),
       zIndexInt: 10000,
+      flat: true,
     );
   }
   Set<Circle> _buildDriverAccuracyCircle() {

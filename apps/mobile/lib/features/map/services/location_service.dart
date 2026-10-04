@@ -65,11 +65,24 @@ class LocationService {
   DriverLocation _toDriverLocation(
     Position position,
   ) {
+    final headingIsValid =
+        position.heading.isFinite &&
+        position.heading >= 0 &&
+        position.heading < 360 &&
+        position.headingAccuracy.isFinite &&
+        position.headingAccuracy >= 0;
+
     return DriverLocation(
       latitude: position.latitude,
       longitude: position.longitude,
       accuracy: position.accuracy,
       timestamp: position.timestamp,
+      heading:
+          headingIsValid ? position.heading : null,
+      headingAccuracy:
+          headingIsValid
+              ? position.headingAccuracy
+              : null,
     );
   }
 
