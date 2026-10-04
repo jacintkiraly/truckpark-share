@@ -5,14 +5,19 @@ import 'package:flutter/foundation.dart';
 import '../models/driver_location.dart';
 import '../models/location_status.dart';
 import '../services/location_service.dart';
+import 'driver_location_filter.dart';
 
 class LocationController extends ChangeNotifier {
   LocationController({
     LocationService? locationService,
-  }) : _locationService =
-            locationService ?? LocationService();
+    DriverLocationFilter? locationFilter,
+  })  : _locationService =
+            locationService ?? LocationService(),
+        _locationFilter =
+            locationFilter ?? const DriverLocationFilter();
 
   final LocationService _locationService;
+  final DriverLocationFilter _locationFilter;
 
   LocationStatus _status =
       LocationStatus.initial;
@@ -69,6 +74,24 @@ class LocationController extends ChangeNotifier {
     _locationSubscription =
         _locationService.watchLocation().listen(
       (location) {
+        final previous = _location;
+
+        final accepted =
+            _locationFilter.shouldAccept(
+          previous: previous,
+          candidate: location,
+        );
+
+        if (!accepted) {
+          debugPrint(
+            'LOCATION: rejected '
+            'lat=${location.latitude} '
+            'lon=${location.longitude} '
+            'accuracy=${location.accuracy}',
+          );
+          return;
+        }
+
         _location = location;
 
         if (_status != LocationStatus.available) {
@@ -76,7 +99,7 @@ class LocationController extends ChangeNotifier {
         }
 
         debugPrint(
-          'LOCATION: updated '
+          'LOCATION: accepted '
           'lat=${location.latitude} '
           'lon=${location.longitude} '
           'accuracy=${location.accuracy}',
