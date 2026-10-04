@@ -187,6 +187,30 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       zIndexInt: 10000,
     );
   }
+  Set<Circle> _buildDriverAccuracyCircle() {
+    final accuracy = widget.location.accuracy;
+
+    if (!accuracy.isFinite || accuracy <= 0) {
+      return const <Circle>{};
+    }
+
+    final radius = accuracy.clamp(1.0, 100.0);
+
+    return {
+      Circle(
+        circleId: const CircleId('driver_accuracy'),
+        center: LatLng(
+          widget.location.latitude,
+          widget.location.longitude,
+        ),
+        radius: radius,
+        fillColor: const Color(0x263A86FF),
+        strokeColor: const Color(0x883A86FF),
+        strokeWidth: 1,
+        zIndex: 999,
+      ),
+    };
+  }
   Set<Marker> _buildParkingMarkers() {
     return _visibleParkingSpots.map((parkingSpot) {
       return Marker(
@@ -643,7 +667,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
             if (_driverLocationIcon != null)
               _buildDriverLocationMarker(),
           },
-          clusterManagers: _clusterManagers,
+          circles: _buildDriverAccuracyCircle(),          clusterManagers: _clusterManagers,
           myLocationEnabled: false,
           myLocationButtonEnabled: false,
           compassEnabled: true,
