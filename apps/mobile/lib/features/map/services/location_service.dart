@@ -5,6 +5,12 @@ import '../models/driver_location.dart';
 import '../models/location_result.dart';
 
 class LocationService {
+  static const LocationSettings _locationSettings =
+      LocationSettings(
+    accuracy: LocationAccuracy.high,
+    distanceFilter: 10,
+  );
+
   Future<LocationResult> getCurrentLocation() async {
     try {
       final serviceEnabled =
@@ -14,7 +20,8 @@ class LocationService {
         return const LocationResult.serviceDisabled();
       }
 
-      var permission = await Geolocator.checkPermission();
+      var permission =
+          await Geolocator.checkPermission();
 
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
@@ -24,23 +31,18 @@ class LocationService {
         return const LocationResult.permissionDenied();
       }
 
-      if (permission == LocationPermission.deniedForever) {
+      if (permission ==
+          LocationPermission.deniedForever) {
         return const LocationResult.permissionDeniedForever();
       }
 
-      final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.high,
-        ),
+      final position =
+          await Geolocator.getCurrentPosition(
+        locationSettings: _locationSettings,
       );
 
       return LocationResult.available(
-        DriverLocation(
-          latitude: position.latitude,
-          longitude: position.longitude,
-          accuracy: position.accuracy,
-          timestamp: position.timestamp,
-        ),
+        _toDriverLocation(position),
       );
     } catch (error, stackTrace) {
       debugPrint(
@@ -52,6 +54,23 @@ class LocationService {
 
       return const LocationResult.error();
     }
+  }
+
+  Stream<DriverLocation> watchLocation() {
+    return Geolocator.getPositionStream(
+      locationSettings: _locationSettings,
+    ).map(_toDriverLocation);
+  }
+
+  DriverLocation _toDriverLocation(
+    Position position,
+  ) {
+    return DriverLocation(
+      latitude: position.latitude,
+      longitude: position.longitude,
+      accuracy: position.accuracy,
+      timestamp: position.timestamp,
+    );
   }
 
   Future<bool> openLocationSettings() {

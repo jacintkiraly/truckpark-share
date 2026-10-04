@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../models/driver_location.dart';
@@ -12,8 +14,13 @@ class LocationController extends ChangeNotifier {
 
   final LocationService _locationService;
 
-  LocationStatus _status = LocationStatus.initial;
+  LocationStatus _status =
+      LocationStatus.initial;
+
   DriverLocation? _location;
+
+  StreamSubscription<DriverLocation>?
+      _locationSubscription;
 
   LocationStatus get status => _status;
 
@@ -36,6 +43,12 @@ class LocationController extends ChangeNotifier {
 
     _location = result.location;
     _setStatus(result.status);
+
+    if (result.hasLocation) {
+      await _startWatchingLocation();
+    } else {
+      await _stopWatchingLocation();
+    }
   }
 
   Future<void> retry() {
@@ -50,10 +63,60 @@ class LocationController extends ChangeNotifier {
     return _locationService.openAppSettings();
   }
 
+  Future<void> _startWatchingLocation() async {
+    await _locationSubscription?.cancel();
+
+    _locationSubscription =
+        _locationService.watchLocation().listen(
+      (location) {
+        _location = location;
+
+        if (_status != LocationStatus.available) {
+          _status = LocationStatus.available;
+        }
+
+        debugPrint(
+          'LOCATION: updated '
+          'lat=${location.latitude} '
+          'lon=${location.longitude} '
+          'accuracy=${location.accuracy}',
+        );
+
+        notifyListeners();
+      },
+      onError: (
+        Object error,
+        StackTrace stackTrace,
+      ) {
+        debugPrint(
+          'Failed to watch location: $error',
+        );
+        debugPrintStack(
+          stackTrace: stackTrace,
+        );
+
+        _setStatus(LocationStatus.error);
+      },
+    );
+  }
+
+  Future<void> _stopWatchingLocation() async {
+    await _locationSubscription?.cancel();
+    _locationSubscription = null;
+  }
+
   void _setStatus(LocationStatus value) {
     if (_status == value) return;
 
     _status = value;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _locationSubscription?.cancel();
+    _locationSubscription = null;
+
+    super.dispose();
   }
 }
