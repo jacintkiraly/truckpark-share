@@ -22,13 +22,11 @@ class ParkingGoogleMap extends StatefulWidget {
 
   final DriverLocation location;
 
-  final Future<List<ParkingSpot>> Function(
-    ParkingViewport viewport,
-  ) onViewportChanged;
+  final Future<List<ParkingSpot>> Function(ParkingViewport viewport)
+  onViewportChanged;
 
-  final Future<List<ParkingMapCluster>> Function(
-    ParkingViewport viewport,
-  ) onClusterViewportChanged;
+  final Future<List<ParkingMapCluster>> Function(ParkingViewport viewport)
+  onClusterViewportChanged;
 
   @override
   State<ParkingGoogleMap> createState() => _ParkingGoogleMapState();
@@ -37,8 +35,9 @@ class ParkingGoogleMap extends StatefulWidget {
 class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   static const double _individualMarkerMinZoom = 8.0;
 
-  static const ClusterManagerId _parkingClusterManagerId =
-      ClusterManagerId('parking');
+  static const ClusterManagerId _parkingClusterManagerId = ClusterManagerId(
+    'parking',
+  );
 
   late final Set<ClusterManager> _clusterManagers = {
     ClusterManager(
@@ -51,8 +50,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
   GoogleMapController? _mapController;
 
-  static const Duration _viewportDebounceDuration =
-      Duration(milliseconds: 250);
+  static const Duration _viewportDebounceDuration = Duration(milliseconds: 250);
 
   Timer? _viewportDebounceTimer;
 
@@ -64,6 +62,13 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   BitmapDescriptor? _driverHeadingIcon;
 
   static const double _maxDriverHeadingAccuracy = 45.0;
+
+  bool _followDriver = true;
+  bool _programmaticCameraMove = false;
+  bool _followCameraUpdateInProgress = false;
+  bool _followCameraUpdateQueued = false;
+
+  CameraPosition? _lastCameraPosition;
 
   bool _isLowZoom = false;
 
@@ -87,63 +92,42 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
-    final center = const Offset(
-      centerCoordinate,
-      centerCoordinate,
-    );
+    final center = const Offset(centerCoordinate, centerCoordinate);
 
     // Soft blue halo.
     final haloPaint = Paint()
       ..color = const Color(0x553A86FF)
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      center,
-      29,
-      haloPaint,
-    );
+    canvas.drawCircle(center, 29, haloPaint);
 
     // White outer ring.
     final outerPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      center,
-      21,
-      outerPaint,
-    );
+    canvas.drawCircle(center, 21, outerPaint);
 
     // TruckPark Share blue center.
     final bluePaint = Paint()
       ..color = Colors.blue.shade700
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      center,
-      17,
-      bluePaint,
-    );
+    canvas.drawCircle(center, 17, bluePaint);
 
     // White center dot.
     final centerPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      center,
-      6,
-      centerPaint,
-    );
+    canvas.drawCircle(center, 6, centerPaint);
 
     final image = await recorder.endRecording().toImage(
       size.toInt(),
       size.toInt(),
     );
 
-    final byteData = await image.toByteData(
-      format: ui.ImageByteFormat.png,
-    );
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
 
     image.dispose();
 
@@ -164,32 +148,21 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
-    final center = const Offset(
-      centerCoordinate,
-      centerCoordinate,
-    );
+    final center = const Offset(centerCoordinate, centerCoordinate);
 
     // Soft blue halo.
     final haloPaint = Paint()
       ..color = const Color(0x553A86FF)
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      center,
-      30,
-      haloPaint,
-    );
+    canvas.drawCircle(center, 30, haloPaint);
 
     // White outer ring.
     final outerPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      center,
-      22,
-      outerPaint,
-    );
+    canvas.drawCircle(center, 22, outerPaint);
 
     // TruckPark Share blue directional arrow.
     final arrowPaint = Paint()
@@ -203,30 +176,21 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       ..lineTo(center.dx - 14, center.dy + 15)
       ..close();
 
-    canvas.drawPath(
-      arrowPath,
-      arrowPaint,
-    );
+    canvas.drawPath(arrowPath, arrowPaint);
 
     // White center.
     final centerPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(
-      center,
-      5,
-      centerPaint,
-    );
+    canvas.drawCircle(center, 5, centerPaint);
 
     final image = await recorder.endRecording().toImage(
       size.toInt(),
       size.toInt(),
     );
 
-    final byteData = await image.toByteData(
-      format: ui.ImageByteFormat.png,
-    );
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
 
     image.dispose();
 
@@ -259,9 +223,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     final icon = _driverLocationIcon;
 
     if (icon == null) {
-      throw StateError(
-        'Driver location icon is not ready.',
-      );
+      throw StateError('Driver location icon is not ready.');
     }
 
     final heading = widget.location.heading;
@@ -280,21 +242,15 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
     return Marker(
       markerId: const MarkerId('driver_location'),
-      position: LatLng(
-        widget.location.latitude,
-        widget.location.longitude,
-      ),
-      icon: useHeading
-          ? _driverHeadingIcon!
-          : icon,
-      rotation: useHeading
-          ? heading
-          : 0,
+      position: LatLng(widget.location.latitude, widget.location.longitude),
+      icon: useHeading ? _driverHeadingIcon! : icon,
+      rotation: useHeading ? heading : 0,
       anchor: const Offset(0.5, 0.5),
       zIndexInt: 10000,
       flat: true,
     );
   }
+
   Set<Circle> _buildDriverAccuracyCircle() {
     final accuracy = widget.location.accuracy;
 
@@ -307,10 +263,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     return {
       Circle(
         circleId: const CircleId('driver_accuracy'),
-        center: LatLng(
-          widget.location.latitude,
-          widget.location.longitude,
-        ),
+        center: LatLng(widget.location.latitude, widget.location.longitude),
         radius: radius,
         fillColor: const Color(0x263A86FF),
         strokeColor: const Color(0x883A86FF),
@@ -319,6 +272,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       ),
     };
   }
+
   Set<Marker> _buildParkingMarkers() {
     return _visibleParkingSpots.map((parkingSpot) {
       return Marker(
@@ -328,9 +282,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
           parkingSpot.location.longitude,
         ),
         clusterManagerId: _parkingClusterManagerId,
-        infoWindow: InfoWindow(
-          title: parkingSpot.name,
-        ),
+        infoWindow: InfoWindow(title: parkingSpot.name),
         onTap: () {
           setState(() {
             _selectedParkingSpot = parkingSpot;
@@ -346,15 +298,10 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
       return Marker(
         markerId: MarkerId('cluster_${cluster.id}'),
-        position: LatLng(
-          cluster.latitude,
-          cluster.longitude,
-        ),
+        position: LatLng(cluster.latitude, cluster.longitude),
         anchor: const Offset(0.5, 0.5),
         icon: icon ?? BitmapDescriptor.defaultMarker,
-        infoWindow: InfoWindow(
-          title: '${cluster.count} parking spots',
-        ),
+        infoWindow: InfoWindow(title: '${cluster.count} parking spots'),
       );
     }).toSet();
   }
@@ -375,22 +322,14 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
     try {
       await controller.animateCamera(
-        CameraUpdate.newLatLngBounds(
-          cluster.bounds,
-          80,
-        ),
+        CameraUpdate.newLatLngBounds(cluster.bounds, 80),
       );
     } catch (error) {
-      debugPrint(
-        'PARKING MAP CLUSTER ZOOM ERROR: $error',
-      );
+      debugPrint('PARKING MAP CLUSTER ZOOM ERROR: $error');
 
       try {
         await controller.animateCamera(
-          CameraUpdate.newLatLngZoom(
-            cluster.position,
-            11.0,
-          ),
+          CameraUpdate.newLatLngZoom(cluster.position, 11.0),
         );
       } catch (fallbackError) {
         debugPrint(
@@ -427,23 +366,11 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3;
 
-    canvas.drawCircle(
-      center,
-      size / 2,
-      outerPaint,
-    );
+    canvas.drawCircle(center, size / 2, outerPaint);
 
-    canvas.drawCircle(
-      center,
-      size / 2 - 4,
-      circlePaint,
-    );
+    canvas.drawCircle(center, size / 2 - 4, circlePaint);
 
-    canvas.drawCircle(
-      center,
-      size / 2 - 4,
-      borderPaint,
-    );
+    canvas.drawCircle(center, size / 2 - 4, borderPaint);
 
     final countText = count.toString();
 
@@ -469,9 +396,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
         ),
       ),
       textDirection: TextDirection.ltr,
-    )..layout(
-        maxWidth: size - 8,
-      );
+    )..layout(maxWidth: size - 8);
 
     textPainter.paint(
       canvas,
@@ -486,9 +411,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       size.toInt(),
     );
 
-    final byteData = await image.toByteData(
-      format: ui.ImageByteFormat.png,
-    );
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
 
     image.dispose();
 
@@ -507,23 +430,16 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     return icon;
   }
 
-  Future<void> _prepareClusterIcons(
-    List<ParkingMapCluster> clusters,
-  ) async {
+  Future<void> _prepareClusterIcons(List<ParkingMapCluster> clusters) async {
     final counts = clusters
         .map((cluster) => cluster.count)
         .where((count) => count > 0)
         .toSet();
 
-    await Future.wait(
-      counts.map(_createClusterIcon),
-    );
+    await Future.wait(counts.map(_createClusterIcon));
   }
 
-  String _buildViewportKey(
-    ParkingViewport viewport,
-    double zoom,
-  ) {
+  String _buildViewportKey(ParkingViewport viewport, double zoom) {
     final int coordinatePrecision;
 
     if (zoom >= 12) {
@@ -536,18 +452,10 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
     return [
       zoom.toStringAsFixed(1),
-      viewport.southWestLatitude.toStringAsFixed(
-        coordinatePrecision,
-      ),
-      viewport.southWestLongitude.toStringAsFixed(
-        coordinatePrecision,
-      ),
-      viewport.northEastLatitude.toStringAsFixed(
-        coordinatePrecision,
-      ),
-      viewport.northEastLongitude.toStringAsFixed(
-        coordinatePrecision,
-      ),
+      viewport.southWestLatitude.toStringAsFixed(coordinatePrecision),
+      viewport.southWestLongitude.toStringAsFixed(coordinatePrecision),
+      viewport.northEastLatitude.toStringAsFixed(coordinatePrecision),
+      viewport.northEastLongitude.toStringAsFixed(coordinatePrecision),
     ].join('|');
   }
 
@@ -580,15 +488,10 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
         northEastLongitude: bounds.northeast.longitude,
       );
 
-      final viewportKey = _buildViewportKey(
-        viewport,
-        zoom,
-      );
+      final viewportKey = _buildViewportKey(viewport, zoom);
 
       if (_lastViewportKey == viewportKey) {
-        debugPrint(
-          'PARKING MAP VIEWPORT: duplicate viewport ignored',
-        );
+        debugPrint('PARKING MAP VIEWPORT: duplicate viewport ignored');
         return;
       }
 
@@ -619,20 +522,15 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
         final requestId = ++_clusterRequestId;
 
         try {
-          final clusters =
-              await widget.onClusterViewportChanged(viewport);
+          final clusters = await widget.onClusterViewportChanged(viewport);
 
-          if (!mounted ||
-              requestId != _clusterRequestId ||
-              !_isLowZoom) {
+          if (!mounted || requestId != _clusterRequestId || !_isLowZoom) {
             return;
           }
 
           await _prepareClusterIcons(clusters);
 
-          if (!mounted ||
-              requestId != _clusterRequestId ||
-              !_isLowZoom) {
+          if (!mounted || requestId != _clusterRequestId || !_isLowZoom) {
             return;
           }
 
@@ -653,9 +551,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
             'totalCount=$totalParkingSpots)',
           );
         } catch (error) {
-          debugPrint(
-            'PARKING MAP CLUSTER ERROR: $error',
-          );
+          debugPrint('PARKING MAP CLUSTER ERROR: $error');
         }
 
         return;
@@ -666,9 +562,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       try {
         final spots = await widget.onViewportChanged(viewport);
 
-        if (!mounted ||
-            requestId != _spotRequestId ||
-            _isLowZoom) {
+        if (!mounted || requestId != _spotRequestId || _isLowZoom) {
           return;
         }
 
@@ -680,9 +574,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
           final selectedId = _selectedParkingSpot?.id;
 
           if (selectedId != null &&
-              !spots.any(
-                (parkingSpot) => parkingSpot.id == selectedId,
-              )) {
+              !spots.any((parkingSpot) => parkingSpot.id == selectedId)) {
             _selectedParkingSpot = null;
           }
         });
@@ -692,9 +584,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
           '(${spots.length})',
         );
       } catch (error) {
-        debugPrint(
-          'PARKING MAP MARKER ERROR: $error',
-        );
+        debugPrint('PARKING MAP MARKER ERROR: $error');
       }
     } finally {
       _viewportReadInProgress = false;
@@ -709,27 +599,126 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   void _scheduleViewportRefresh() {
     _viewportDebounceTimer?.cancel();
 
-    _viewportDebounceTimer = Timer(
-      _viewportDebounceDuration,
-      () {
-        _viewportDebounceTimer = null;
+    _viewportDebounceTimer = Timer(_viewportDebounceDuration, () {
+      _viewportDebounceTimer = null;
 
-        if (!mounted) {
-          return;
-        }
+      if (!mounted) {
+        return;
+      }
 
-        unawaited(_emitCurrentViewport());
-      },
-    );
+      unawaited(_emitCurrentViewport());
+    });
   }
 
-  void _handleMapCreated(
-    GoogleMapController controller,
-  ) {
+  void _handleCameraMoveStarted() {
+    if (_programmaticCameraMove) {
+      return;
+    }
+
+    if (!_followDriver || !mounted) {
+      return;
+    }
+
+    setState(() {
+      _followDriver = false;
+    });
+
+    debugPrint('PARKING MAP: follow driver disabled by user gesture');
+  }
+
+  void _handleCameraMove(CameraPosition position) {
+    _lastCameraPosition = position;
+  }
+
+  void _scheduleFollowCameraUpdate() {
+    if (!_followDriver || !mounted || _mapController == null) {
+      return;
+    }
+
+    if (_followCameraUpdateInProgress) {
+      _followCameraUpdateQueued = true;
+      return;
+    }
+
+    unawaited(_updateFollowCamera());
+  }
+
+  Future<void> _updateFollowCamera() async {
+    final controller = _mapController;
+
+    if (controller == null || !_followDriver || !mounted) {
+      return;
+    }
+
+    _followCameraUpdateInProgress = true;
+    _programmaticCameraMove = true;
+
+    try {
+      final currentCamera = _lastCameraPosition;
+
+      final heading = widget.location.hasReliableHeading
+          ? widget.location.heading!
+          : currentCamera?.bearing ?? 0;
+
+      final zoom = currentCamera?.zoom ?? 15;
+      final tilt = currentCamera?.tilt ?? 0;
+
+      await controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(widget.location.latitude, widget.location.longitude),
+            zoom: zoom,
+            bearing: heading,
+            tilt: tilt,
+          ),
+        ),
+      );
+
+      if (mounted && _followDriver) {
+        _scheduleViewportRefresh();
+      }
+    } catch (error) {
+      debugPrint('PARKING MAP FOLLOW CAMERA ERROR: $error');
+    } finally {
+      _programmaticCameraMove = false;
+      _followCameraUpdateInProgress = false;
+
+      if (_followCameraUpdateQueued) {
+        _followCameraUpdateQueued = false;
+
+        if (_followDriver && mounted) {
+          unawaited(_updateFollowCamera());
+        }
+      }
+    }
+  }
+
+  void _enableFollowDriver() {
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _followDriver = true;
+      _lastViewportKey = null;
+    });
+
+    debugPrint('PARKING MAP: follow driver enabled by user');
+
+    _scheduleFollowCameraUpdate();
+  }
+
+  void _handleMapCreated(GoogleMapController controller) {
     _mapController = controller;
+
+    _scheduleFollowCameraUpdate();
   }
 
   void _handleCameraIdle() {
+    if (_programmaticCameraMove) {
+      return;
+    }
+
     _scheduleViewportRefresh();
   }
 
@@ -737,6 +726,24 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     setState(() {
       _selectedParkingSpot = null;
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant ParkingGoogleMap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (!_followDriver) {
+      return;
+    }
+
+    final locationChanged =
+        oldWidget.location.latitude != widget.location.latitude ||
+        oldWidget.location.longitude != widget.location.longitude ||
+        oldWidget.location.heading != widget.location.heading;
+
+    if (locationChanged) {
+      _scheduleFollowCameraUpdate();
+    }
   }
 
   @override
@@ -761,10 +768,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       children: [
         GoogleMap(
           initialCameraPosition: CameraPosition(
-            target: LatLng(
-              widget.location.latitude,
-              widget.location.longitude,
-            ),
+            target: LatLng(widget.location.latitude, widget.location.longitude),
             zoom: 15,
           ),
           markers: {
@@ -772,16 +776,18 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
               ..._buildClusterMarkers()
             else
               ..._buildParkingMarkers(),
-            if (_driverLocationIcon != null)
-              _buildDriverLocationMarker(),
+            if (_driverLocationIcon != null) _buildDriverLocationMarker(),
           },
-          circles: _buildDriverAccuracyCircle(),          clusterManagers: _clusterManagers,
+          circles: _buildDriverAccuracyCircle(),
+          clusterManagers: _clusterManagers,
           myLocationEnabled: false,
           myLocationButtonEnabled: false,
           compassEnabled: true,
           mapToolbarEnabled: false,
           zoomControlsEnabled: true,
           onMapCreated: _handleMapCreated,
+          onCameraMoveStarted: _handleCameraMoveStarted,
+          onCameraMove: _handleCameraMove,
           onCameraIdle: _handleCameraIdle,
           onTap: (_) {
             if (_selectedParkingSpot != null) {
@@ -789,6 +795,19 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
             }
           },
         ),
+        if (!_followDriver)
+          Positioned(
+            right: 16,
+            bottom: 104,
+            child: SafeArea(
+              child: FloatingActionButton.small(
+                heroTag: 'follow_driver_button',
+                tooltip: 'Follow driver',
+                onPressed: _enableFollowDriver,
+                child: const Icon(Icons.my_location),
+              ),
+            ),
+          ),
         if (_selectedParkingSpot != null)
           Positioned(
             left: 24,
@@ -797,9 +816,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
             child: SafeArea(
               child: Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxWidth: 420,
-                  ),
+                  constraints: const BoxConstraints(maxWidth: 420),
                   child: Material(
                     elevation: 8,
                     borderRadius: BorderRadius.circular(16),
@@ -807,15 +824,12 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
                     child: Stack(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                            right: 36,
-                          ),
+                          padding: const EdgeInsets.only(right: 36),
                           child: ParkingCard(
                             parkingSpot: _selectedParkingSpot!,
                             driverLocation: widget.location,
                             onEdit: () {
-                              final parkingSpot =
-                                  _selectedParkingSpot;
+                              final parkingSpot = _selectedParkingSpot;
 
                               if (parkingSpot == null) {
                                 return;
@@ -823,8 +837,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (_) =>
-                                      EditParkingScreen(
+                                  builder: (_) => EditParkingScreen(
                                     parkingSpot: parkingSpot,
                                   ),
                                 ),
