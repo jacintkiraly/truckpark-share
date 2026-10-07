@@ -3,3 +3,6 @@
 
 # Generated tool output
 /tool/output/
+
+# External source datasets
+/tool/data/*.csv
