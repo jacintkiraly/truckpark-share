@@ -16,6 +16,7 @@ import '../../features/parking/domain/repositories/parking_live_status_repositor
 import '../../features/parking/domain/repositories/parking_repository.dart';
 import '../../features/parking/domain/repositories/parking_session_repository.dart';
 import '../../features/parking/domain/services/parking_live_status_calculator.dart';
+import '../../features/parking/domain/services/parking_session_state_machine.dart';
 import '../../features/parking/domain/usecases/add_parking_spot_use_case.dart';
 import '../../features/parking/domain/usecases/create_parking_report_use_case.dart';
 import '../../features/parking/domain/usecases/delete_parking_spot_use_case.dart';
@@ -29,6 +30,13 @@ import '../../features/parking/domain/usecases/update_parking_session_use_case.d
 import '../../features/parking/domain/usecases/watch_parking_session_use_case.dart';
 
 void registerParkingModule(GetIt sl) {
+  // Parking session state machine.
+  if (!sl.isRegistered<ParkingSessionStateMachine>()) {
+    sl.registerLazySingleton(
+      () => const ParkingSessionStateMachine(),
+    );
+  }
+
   if (!sl.isRegistered<ParkingSpotMapper>()) {
     sl.registerLazySingleton(() => const ParkingSpotMapper());
   }
