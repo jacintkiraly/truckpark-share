@@ -396,6 +396,21 @@ class AppLocalizationsTr extends AppLocalizations {
   String get parkingNavigate => 'Buraya navigasyon';
 
   @override
+  String get parkingSessionStart => 'Park etme oturumunu başlat';
+
+  @override
+  String get parkingSessionActive => 'Park etme oturumu etkin';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Yakında ayrılış';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Yakında ayrılacağım';
+
+  @override
+  String get parkingSessionClose => 'Park etme oturumunu bitir';
+
+  @override
   String get parkingEditButton => 'Düzenle';
 
   @override

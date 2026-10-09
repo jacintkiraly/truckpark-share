@@ -398,6 +398,21 @@ class AppLocalizationsNl extends AppLocalizations {
   String get parkingNavigate => 'Navigeer hierheen';
 
   @override
+  String get parkingSessionStart => 'Parkeersessie starten';
+
+  @override
+  String get parkingSessionActive => 'Parkeersessie actief';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Vertrek binnenkort';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Ik vertrek binnenkort';
+
+  @override
+  String get parkingSessionClose => 'Parkeersessie beëindigen';
+
+  @override
   String get parkingEditButton => 'Bewerken';
 
   @override

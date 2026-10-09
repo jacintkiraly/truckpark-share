@@ -400,6 +400,21 @@ class AppLocalizationsLt extends AppLocalizations {
   String get parkingNavigate => 'Naviguoti čia';
 
   @override
+  String get parkingSessionStart => 'Pradėti parkavimo sesiją';
+
+  @override
+  String get parkingSessionActive => 'Parkavimo sesija aktyvi';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Netrukus išvykstama';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Netrukus išvyksiu';
+
+  @override
+  String get parkingSessionClose => 'Baigti parkavimo sesiją';
+
+  @override
   String get parkingEditButton => 'Redaguoti';
 
   @override

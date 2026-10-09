@@ -396,6 +396,21 @@ class AppLocalizationsBg extends AppLocalizations {
   String get parkingNavigate => 'Навигирай дотук';
 
   @override
+  String get parkingSessionStart => 'Започни сесия за паркиране';
+
+  @override
+  String get parkingSessionActive => 'Сесията за паркиране е активна';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Скоро заминавам';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Ще замина скоро';
+
+  @override
+  String get parkingSessionClose => 'Завърши сесията за паркиране';
+
+  @override
   String get parkingEditButton => 'Редактирай';
 
   @override

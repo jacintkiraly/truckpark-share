@@ -400,6 +400,21 @@ class AppLocalizationsMt extends AppLocalizations {
   String get parkingNavigate => 'Naviga hawn';
 
   @override
+  String get parkingSessionStart => 'Ibda sessjoni tal-parkeġġ';
+
+  @override
+  String get parkingSessionActive => 'Is-sessjoni tal-parkeġġ hija attiva';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Tluq dalwaqt';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Se nitlaq dalwaqt';
+
+  @override
+  String get parkingSessionClose => 'Agħlaq is-sessjoni tal-parkeġġ';
+
+  @override
   String get parkingEditButton => 'Editja';
 
   @override

@@ -862,6 +862,36 @@ abstract class AppLocalizations {
   /// **'Navigate here'**
   String get parkingNavigate;
 
+  /// No description provided for @parkingSessionStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start parking session'**
+  String get parkingSessionStart;
+
+  /// No description provided for @parkingSessionActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking session active'**
+  String get parkingSessionActive;
+
+  /// No description provided for @parkingSessionLeavingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaving soon'**
+  String get parkingSessionLeavingSoon;
+
+  /// No description provided for @parkingSessionMarkLeavingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m leaving soon'**
+  String get parkingSessionMarkLeavingSoon;
+
+  /// No description provided for @parkingSessionClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close parking session'**
+  String get parkingSessionClose;
+
   /// No description provided for @parkingEditButton.
   ///
   /// In en, this message translates to:

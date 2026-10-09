@@ -394,6 +394,21 @@ class AppLocalizationsCs extends AppLocalizations {
   String get parkingNavigate => 'Navigovat sem';
 
   @override
+  String get parkingSessionStart => 'Zahájit parkovací relaci';
+
+  @override
+  String get parkingSessionActive => 'Parkovací relace je aktivní';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Brzy odjezd';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Brzy odjedu';
+
+  @override
+  String get parkingSessionClose => 'Ukončit parkovací relaci';
+
+  @override
   String get parkingEditButton => 'Upravit';
 
   @override

@@ -403,6 +403,21 @@ class AppLocalizationsEl extends AppLocalizations {
   String get parkingNavigate => 'Πλοήγηση εδώ';
 
   @override
+  String get parkingSessionStart => 'Έναρξη στάθμευσης';
+
+  @override
+  String get parkingSessionActive => 'Η στάθμευση είναι ενεργή';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Αναχώρηση σύντομα';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Θα αναχωρήσω σύντομα';
+
+  @override
+  String get parkingSessionClose => 'Ολοκλήρωση στάθμευσης';
+
+  @override
   String get parkingEditButton => 'Επεξεργασία';
 
   @override

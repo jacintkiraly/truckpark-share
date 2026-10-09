@@ -8,7 +8,9 @@ import '../../../localization/generated/app_localizations.dart';
 import '../../parking/domain/entities/parking_spot.dart';
 import '../../parking/domain/value_objects/parking_map_cluster.dart';
 import '../../parking/domain/value_objects/parking_viewport.dart';
+import '../../parking/domain/enums/parking_session_status.dart';
 import '../../parking/presentation/screens/edit_parking_screen.dart';
+import '../../parking/presentation/state/parking_session_state.dart';
 import '../../parking/presentation/widgets/parking_card.dart';
 import '../models/driver_location.dart';
 
@@ -16,17 +18,21 @@ class ParkingGoogleMap extends StatefulWidget {
   const ParkingGoogleMap({
     super.key,
     required this.location,
+    required this.sessionState,
+    required this.onStartParkingSession,
     required this.onViewportChanged,
     required this.onClusterViewportChanged,
   });
 
   final DriverLocation location;
+  final ParkingSessionState sessionState;
+  final Future<void> Function(String parkingId) onStartParkingSession;
 
   final Future<List<ParkingSpot>> Function(ParkingViewport viewport)
-  onViewportChanged;
+      onViewportChanged;
 
   final Future<List<ParkingMapCluster>> Function(ParkingViewport viewport)
-  onClusterViewportChanged;
+      onClusterViewportChanged;
 
   @override
   State<ParkingGoogleMap> createState() => _ParkingGoogleMapState();
@@ -219,6 +225,117 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     });
   }
 
+  bool get _hasOpenParkingSession {
+    final session = widget.sessionState.session;
+    return session != null && session.status != ParkingSessionStatus.closed;
+  }
+
+  Widget? _buildParkingSessionAction(
+    BuildContext context,
+    AppLocalizations l10n,
+    ParkingSpot parkingSpot,
+  ) {
+    final sessionState = widget.sessionState;
+
+    if (_hasOpenParkingSession) {
+      return null;
+    }
+
+    final isBusy = sessionState.isLoading || sessionState.isSaving;
+
+    final button = SizedBox(
+      width: double.infinity,
+      child: FilledButton.icon(
+        onPressed: isBusy
+            ? null
+            : () => widget.onStartParkingSession(parkingSpot.id),
+        icon: sessionState.isSaving
+            ? const SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : const Icon(Icons.local_parking),
+        label: Text(l10n.parkingSessionStart),
+      ),
+    );
+
+    if (sessionState.errorMessage == null) {
+      return button;
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          sessionState.errorMessage!,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.error,
+              ),
+        ),
+        const SizedBox(height: 8),
+        button,
+      ],
+    );
+  }
+  Widget _buildParkingSessionBanner(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) {
+    final session = widget.sessionState.session;
+
+    if (session == null || session.status == ParkingSessionStatus.closed) {
+      return const SizedBox.shrink();
+    }
+
+    final isLeavingSoon = session.status == ParkingSessionStatus.leavingSoon;
+    final theme = Theme.of(context);
+
+    return Positioned(
+      top: 12,
+      left: 16,
+      right: 16,
+      child: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 420),
+            child: Material(
+              elevation: 6,
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(14),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      isLeavingSoon
+                          ? Icons.departure_board
+                          : Icons.local_parking,
+                      color: theme.colorScheme.primary,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        isLeavingSoon
+                            ? l10n.parkingSessionLeavingSoon
+                            : l10n.parkingSessionActive,
+                        style: theme.textTheme.titleSmall,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Marker _buildDriverLocationMarker() {
     final icon = _driverLocationIcon;
 
@@ -367,9 +484,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       ..strokeWidth = 3;
 
     canvas.drawCircle(center, size / 2, outerPaint);
-
     canvas.drawCircle(center, size / 2 - 4, circlePaint);
-
     canvas.drawCircle(center, size / 2 - 4, borderPaint);
 
     final countText = count.toString();
@@ -808,6 +923,8 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
               ),
             ),
           ),
+        if (_hasOpenParkingSession)
+          _buildParkingSessionBanner(context, l10n),
         if (_selectedParkingSpot != null)
           Positioned(
             left: 24,
@@ -828,6 +945,11 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
                           child: ParkingCard(
                             parkingSpot: _selectedParkingSpot!,
                             driverLocation: widget.location,
+                            parkingSessionAction: _buildParkingSessionAction(
+                              context,
+                              l10n,
+                              _selectedParkingSpot!,
+                            ),
                             onEdit: () {
                               final parkingSpot = _selectedParkingSpot;
 

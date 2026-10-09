@@ -394,6 +394,21 @@ class AppLocalizationsSv extends AppLocalizations {
   String get parkingNavigate => 'Navigera hit';
 
   @override
+  String get parkingSessionStart => 'Starta parkeringssession';
+
+  @override
+  String get parkingSessionActive => 'Parkeringssession aktiv';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Avfärd snart';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Jag åker snart';
+
+  @override
+  String get parkingSessionClose => 'Avsluta parkeringssession';
+
+  @override
   String get parkingEditButton => 'Redigera';
 
   @override

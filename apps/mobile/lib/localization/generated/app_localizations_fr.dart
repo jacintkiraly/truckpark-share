@@ -403,6 +403,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get parkingNavigate => 'Itinéraire';
 
   @override
+  String get parkingSessionStart => 'Démarrer la session de stationnement';
+
+  @override
+  String get parkingSessionActive => 'Session de stationnement active';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Départ imminent';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Je pars bientôt';
+
+  @override
+  String get parkingSessionClose => 'Terminer la session de stationnement';
+
+  @override
   String get parkingEditButton => 'Modifier';
 
   @override

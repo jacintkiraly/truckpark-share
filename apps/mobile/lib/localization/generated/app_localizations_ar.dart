@@ -389,6 +389,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get parkingNavigate => 'التنقل إلى هنا';
 
   @override
+  String get parkingSessionStart => 'ابدأ جلسة الوقوف';
+
+  @override
+  String get parkingSessionActive => 'جلسة الوقوف نشطة';
+
+  @override
+  String get parkingSessionLeavingSoon => 'المغادرة قريبًا';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'سأغادر قريبًا';
+
+  @override
+  String get parkingSessionClose => 'إنهاء جلسة الوقوف';
+
+  @override
   String get parkingEditButton => 'تعديل';
 
   @override

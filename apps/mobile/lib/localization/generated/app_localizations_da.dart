@@ -397,6 +397,21 @@ class AppLocalizationsDa extends AppLocalizations {
   String get parkingNavigate => 'Navigér hertil';
 
   @override
+  String get parkingSessionStart => 'Start parkeringssession';
+
+  @override
+  String get parkingSessionActive => 'Parkeringssession aktiv';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Snart afgang';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Jeg kører snart';
+
+  @override
+  String get parkingSessionClose => 'Afslut parkeringssession';
+
+  @override
   String get parkingEditButton => 'Rediger';
 
   @override

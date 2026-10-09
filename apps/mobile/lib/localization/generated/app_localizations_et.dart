@@ -391,6 +391,21 @@ class AppLocalizationsEt extends AppLocalizations {
   String get parkingNavigate => 'Navigeeri siia';
 
   @override
+  String get parkingSessionStart => 'Alusta parkimisseanssi';
+
+  @override
+  String get parkingSessionActive => 'Parkimisseanss on aktiivne';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Peagi lahkumine';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Lahkun peagi';
+
+  @override
+  String get parkingSessionClose => 'Lõpeta parkimisseanss';
+
+  @override
   String get parkingEditButton => 'Muuda';
 
   @override

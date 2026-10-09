@@ -400,6 +400,21 @@ class AppLocalizationsGa extends AppLocalizations {
   String get parkingNavigate => 'Nascleanúint chuig seo';
 
   @override
+  String get parkingSessionStart => 'Tosaigh seisiún páirceála';
+
+  @override
+  String get parkingSessionActive => 'Tá an seisiún páirceála gníomhach';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Imeacht go luath';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Fágfaidh mé go luath';
+
+  @override
+  String get parkingSessionClose => 'Críochnaigh an seisiún páirceála';
+
+  @override
   String get parkingEditButton => 'Cuir in eagar';
 
   @override

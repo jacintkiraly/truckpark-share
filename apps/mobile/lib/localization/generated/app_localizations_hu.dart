@@ -397,6 +397,21 @@ class AppLocalizationsHu extends AppLocalizations {
   String get parkingNavigate => 'Navigálás ide';
 
   @override
+  String get parkingSessionStart => 'Parkolás indítása';
+
+  @override
+  String get parkingSessionActive => 'Aktív parkolás';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Hamarosan indulás';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Jelzem, hogy hamarosan indulok';
+
+  @override
+  String get parkingSessionClose => 'Parkolás lezárása';
+
+  @override
   String get parkingEditButton => 'Szerkesztés';
 
   @override

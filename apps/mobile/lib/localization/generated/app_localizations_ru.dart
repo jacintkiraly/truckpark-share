@@ -398,6 +398,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get parkingNavigate => 'Навигация сюда';
 
   @override
+  String get parkingSessionStart => 'Начать парковочную сессию';
+
+  @override
+  String get parkingSessionActive => 'Парковочная сессия активна';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Скоро отъезд';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Скоро уеду';
+
+  @override
+  String get parkingSessionClose => 'Завершить парковочную сессию';
+
+  @override
   String get parkingEditButton => 'Изменить';
 
   @override

@@ -9,6 +9,8 @@ import '../../parking/domain/value_objects/parking_map_cluster.dart';
 import '../../parking/domain/value_objects/parking_viewport.dart';
 import '../../parking/presentation/enums/parking_view_mode.dart';
 import '../../parking/presentation/providers/parking_provider.dart';
+import '../../parking/presentation/providers/parking_session_provider.dart';
+import '../../parking/presentation/state/parking_session_state.dart';
 import '../../parking/presentation/state/parking_state.dart';
 import '../../parking/presentation/widgets/parking_list.dart';
 import '../../parking/presentation/screens/add_parking_screen.dart';
@@ -37,6 +39,7 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _locationController.loadCurrentLocation();
+      ref.read(parkingSessionViewModelProvider.notifier).watchCurrentSession();
     });
   }
 
@@ -58,6 +61,7 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final parkingState = ref.watch(parkingViewModelProvider);
+    final parkingSessionState = ref.watch(parkingSessionViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -104,6 +108,7 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
           context,
           l10n,
           parkingState,
+          parkingSessionState,
         ),
       ),
     );
@@ -113,6 +118,7 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
     BuildContext context,
     AppLocalizations l10n,
     ParkingState parkingState,
+    ParkingSessionState parkingSessionState,
   ) {
     if (parkingState.isLoading) {
       return _LoadingState(message: l10n.parkingLoading);
@@ -150,6 +156,7 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
         return _buildMapContent(
           context,
           l10n,
+          parkingSessionState,
         );
       },
     );
@@ -158,6 +165,7 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
   Widget _buildMapContent(
     BuildContext context,
     AppLocalizations l10n,
+    ParkingSessionState parkingSessionState,
   ) {
     switch (_locationController.status) {
       case LocationStatus.initial:
@@ -217,6 +225,8 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
 
         return _LocationAvailableState(
           location: location,
+          sessionState: parkingSessionState,
+          onStartParkingSession: _startParkingSession,
           onViewportChanged: (viewport) {
             return ref
                 .read(parkingViewModelProvider.notifier)
@@ -228,6 +238,24 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
                 .queryParkingClustersInViewport(viewport);
           },
         );
+    }
+  }
+
+  Future<void> _startParkingSession(String parkingId) async {
+    try {
+      await ref
+          .read(parkingSessionViewModelProvider.notifier)
+          .startSession(parkingId);
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+        ),
+      );
     }
   }
 
@@ -312,11 +340,15 @@ class _MessageState extends StatelessWidget {
 class _LocationAvailableState extends StatelessWidget {
   const _LocationAvailableState({
     required this.location,
+    required this.sessionState,
+    required this.onStartParkingSession,
     required this.onViewportChanged,
     required this.onClusterViewportChanged,
   });
 
   final DriverLocation location;
+  final ParkingSessionState sessionState;
+  final Future<void> Function(String parkingId) onStartParkingSession;
   final Future<List<ParkingSpot>> Function(
     ParkingViewport viewport,
   ) onViewportChanged;
@@ -328,6 +360,8 @@ class _LocationAvailableState extends StatelessWidget {
   Widget build(BuildContext context) {
     return ParkingGoogleMap(
       location: location,
+      sessionState: sessionState,
+      onStartParkingSession: onStartParkingSession,
       onViewportChanged: onViewportChanged,
       onClusterViewportChanged: onClusterViewportChanged,
     );

@@ -395,6 +395,21 @@ class AppLocalizationsFi extends AppLocalizations {
   String get parkingNavigate => 'Navigoi tänne';
 
   @override
+  String get parkingSessionStart => 'Aloita pysäköinti-istunto';
+
+  @override
+  String get parkingSessionActive => 'Pysäköinti-istunto aktiivinen';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Lähtö pian';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Lähden pian';
+
+  @override
+  String get parkingSessionClose => 'Päätä pysäköinti-istunto';
+
+  @override
   String get parkingEditButton => 'Muokkaa';
 
   @override

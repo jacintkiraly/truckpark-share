@@ -394,6 +394,21 @@ class AppLocalizationsHr extends AppLocalizations {
   String get parkingNavigate => 'Navigiraj ovamo';
 
   @override
+  String get parkingSessionStart => 'Pokreni parkirnu sesiju';
+
+  @override
+  String get parkingSessionActive => 'Parkirna sesija je aktivna';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Uskoro odlazim';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'Uskoro ću otići';
+
+  @override
+  String get parkingSessionClose => 'Završi parkirnu sesiju';
+
+  @override
   String get parkingEditButton => 'Uredi';
 
   @override

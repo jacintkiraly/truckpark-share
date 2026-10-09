@@ -12,11 +12,13 @@ class ParkingCard extends StatelessWidget {
     required this.parkingSpot,
     this.driverLocation,
     this.onEdit,
+    this.parkingSessionAction,
   });
 
   final ParkingSpot parkingSpot;
   final DriverLocation? driverLocation;
   final VoidCallback? onEdit;
+  final Widget? parkingSessionAction;
 
   String _facilityTypeLabel(
     ParkingFacilityType type,
@@ -256,6 +258,11 @@ class ParkingCard extends StatelessWidget {
                     ),
                 ],
               ),
+            ],
+
+            if (parkingSessionAction != null) ...[
+              const SizedBox(height: 12),
+              parkingSessionAction!,
             ],
 
             const SizedBox(height: 12),

@@ -390,6 +390,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get parkingNavigate => 'Navigate here';
 
   @override
+  String get parkingSessionStart => 'Start parking session';
+
+  @override
+  String get parkingSessionActive => 'Parking session active';
+
+  @override
+  String get parkingSessionLeavingSoon => 'Leaving soon';
+
+  @override
+  String get parkingSessionMarkLeavingSoon => 'I\'m leaving soon';
+
+  @override
+  String get parkingSessionClose => 'Close parking session';
+
+  @override
   String get parkingEditButton => 'Edit';
 
   @override
