@@ -94,8 +94,14 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
       'PARKING MAP: individual marker query START',
     );
 
+    final viewportStopwatch = Stopwatch()..start();
+
     final spots = await _queryParkingSpotsInViewportUseCase(
       viewport,
+    );
+    viewportStopwatch.stop();
+    debugPrint(
+      'PARKING PERF: viewport query ${viewportStopwatch.elapsedMilliseconds} ms; spots=${spots.length}',
     );
 
     debugPrint(
@@ -113,8 +119,14 @@ class ParkingViewModel extends StateNotifier<ParkingState> {
       'PARKING MAP: coarse cluster query START',
     );
 
+    final clusterStopwatch = Stopwatch()..start();
+
     final clusters = await _queryParkingClustersInViewportUseCase(
       viewport,
+    );
+    clusterStopwatch.stop();
+    debugPrint(
+      'PARKING PERF: cluster query ${clusterStopwatch.elapsedMilliseconds} ms; cells=${clusters.length}',
     );
 
     final totalParkingSpots = clusters.fold<int>(

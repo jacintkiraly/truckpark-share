@@ -227,6 +227,8 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
           location: location,
           sessionState: parkingSessionState,
           onStartParkingSession: _startParkingSession,
+          onMarkLeavingSoon: _markParkingSessionLeavingSoon,
+          onCloseParkingSession: _closeParkingSession,
           onViewportChanged: (viewport) {
             return ref
                 .read(parkingViewModelProvider.notifier)
@@ -246,6 +248,42 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
       await ref
           .read(parkingSessionViewModelProvider.notifier)
           .startSession(parkingId);
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+        ),
+      );
+    }
+  }
+
+  Future<void> _markParkingSessionLeavingSoon() async {
+    try {
+      await ref
+          .read(parkingSessionViewModelProvider.notifier)
+          .markLeavingSoon();
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+        ),
+      );
+    }
+  }
+
+  Future<void> _closeParkingSession() async {
+    try {
+      await ref
+          .read(parkingSessionViewModelProvider.notifier)
+          .closeSession();
     } catch (error) {
       if (!mounted) {
         return;
@@ -342,6 +380,8 @@ class _LocationAvailableState extends StatelessWidget {
     required this.location,
     required this.sessionState,
     required this.onStartParkingSession,
+    required this.onMarkLeavingSoon,
+    required this.onCloseParkingSession,
     required this.onViewportChanged,
     required this.onClusterViewportChanged,
   });
@@ -349,6 +389,8 @@ class _LocationAvailableState extends StatelessWidget {
   final DriverLocation location;
   final ParkingSessionState sessionState;
   final Future<void> Function(String parkingId) onStartParkingSession;
+  final Future<void> Function() onMarkLeavingSoon;
+  final Future<void> Function() onCloseParkingSession;
   final Future<List<ParkingSpot>> Function(
     ParkingViewport viewport,
   ) onViewportChanged;
@@ -362,6 +404,8 @@ class _LocationAvailableState extends StatelessWidget {
       location: location,
       sessionState: sessionState,
       onStartParkingSession: onStartParkingSession,
+      onMarkLeavingSoon: onMarkLeavingSoon,
+      onCloseParkingSession: onCloseParkingSession,
       onViewportChanged: onViewportChanged,
       onClusterViewportChanged: onClusterViewportChanged,
     );

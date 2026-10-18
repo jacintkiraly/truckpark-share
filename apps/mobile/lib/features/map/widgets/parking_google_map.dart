@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class ParkingGoogleMap extends StatefulWidget {
     required this.location,
     required this.sessionState,
     required this.onStartParkingSession,
+    required this.onMarkLeavingSoon,
+    required this.onCloseParkingSession,
     required this.onViewportChanged,
     required this.onClusterViewportChanged,
   });
@@ -27,6 +30,8 @@ class ParkingGoogleMap extends StatefulWidget {
   final DriverLocation location;
   final ParkingSessionState sessionState;
   final Future<void> Function(String parkingId) onStartParkingSession;
+  final Future<void> Function() onMarkLeavingSoon;
+  final Future<void> Function() onCloseParkingSession;
 
   final Future<List<ParkingSpot>> Function(ParkingViewport viewport)
       onViewportChanged;
@@ -68,13 +73,16 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   BitmapDescriptor? _driverHeadingIcon;
 
   static const double _maxDriverHeadingAccuracy = 45.0;
+  static const double _minDriverMovementForViewportRefreshMeters = 300.0;
 
   bool _followDriver = true;
   bool _programmaticCameraMove = false;
+  bool _programmaticCameraIdlePending = false;
   bool _followCameraUpdateInProgress = false;
   bool _followCameraUpdateQueued = false;
 
   CameraPosition? _lastCameraPosition;
+  LatLng? _lastViewportDriverLocation;
 
   bool _isLowZoom = false;
 
@@ -283,13 +291,15 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     BuildContext context,
     AppLocalizations l10n,
   ) {
-    final session = widget.sessionState.session;
+    final sessionState = widget.sessionState;
+    final session = sessionState.session;
 
     if (session == null || session.status == ParkingSessionStatus.closed) {
       return const SizedBox.shrink();
     }
 
     final isLeavingSoon = session.status == ParkingSessionStatus.leavingSoon;
+    final isBusy = sessionState.isLoading || sessionState.isSaving;
     final theme = Theme.of(context);
 
     return Positioned(
@@ -307,24 +317,76 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 14,
-                  vertical: 10,
+                  vertical: 12,
                 ),
-                child: Row(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Icon(
-                      isLeavingSoon
-                          ? Icons.departure_board
-                          : Icons.local_parking,
-                      color: theme.colorScheme.primary,
+                    Row(
+                      children: [
+                        Icon(
+                          isLeavingSoon
+                              ? Icons.departure_board
+                              : Icons.local_parking,
+                          color: theme.colorScheme.primary,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            isLeavingSoon
+                                ? l10n.parkingSessionLeavingSoon
+                                : l10n.parkingSessionActive,
+                            style: theme.textTheme.titleSmall,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        isLeavingSoon
-                            ? l10n.parkingSessionLeavingSoon
-                            : l10n.parkingSessionActive,
-                        style: theme.textTheme.titleSmall,
+                    if (sessionState.errorMessage != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        sessionState.errorMessage!,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.error,
+                        ),
                       ),
+                    ],
+                    if (sessionState.isSaving) ...[
+                      const SizedBox(height: 10),
+                      const LinearProgressIndicator(),
+                    ],
+                    const SizedBox(height: 12),
+                    Wrap(
+                      alignment: WrapAlignment.end,
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        if (!isLeavingSoon)
+                          OutlinedButton.icon(
+                            onPressed: isBusy
+                                ? null
+                                : () {
+                                    unawaited(
+                                      widget.onMarkLeavingSoon(),
+                                    );
+                                  },
+                            icon: const Icon(Icons.departure_board),
+                            label: Text(
+                              l10n.parkingSessionMarkLeavingSoon,
+                            ),
+                          ),
+                        FilledButton.icon(
+                          onPressed: isBusy
+                              ? null
+                              : () {
+                                  unawaited(
+                                    widget.onCloseParkingSession(),
+                                  );
+                                },
+                          icon: const Icon(Icons.check_circle_outline),
+                          label: Text(l10n.parkingSessionClose),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -605,12 +667,20 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
       final viewportKey = _buildViewportKey(viewport, zoom);
 
+      final driverLocationAtViewport = LatLng(
+        widget.location.latitude,
+        widget.location.longitude,
+      );
+
       if (_lastViewportKey == viewportKey) {
+        _lastViewportDriverLocation = driverLocationAtViewport;
+
         debugPrint('PARKING MAP VIEWPORT: duplicate viewport ignored');
         return;
       }
 
       _lastViewportKey = viewportKey;
+      _lastViewportDriverLocation = driverLocationAtViewport;
 
       final lowZoom = zoom < _individualMarkerMinZoom;
 
@@ -730,6 +800,9 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       return;
     }
 
+    // Clear a stale idle flag when a new non-programmatic move starts.
+    _programmaticCameraIdlePending = false;
+
     if (!_followDriver || !mounted) {
       return;
     }
@@ -743,6 +816,24 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
   void _handleCameraMove(CameraPosition position) {
     _lastCameraPosition = position;
+  }
+
+  double _distanceBetweenMeters(LatLng first, LatLng second) {
+    final meanLatitudeRadians =
+        (first.latitude + second.latitude) / 2 * math.pi / 180;
+
+    final latitudeMeters =
+        (second.latitude - first.latitude) * 111320;
+
+    final longitudeMeters =
+        (second.longitude - first.longitude) *
+        111320 *
+        math.cos(meanLatitudeRadians);
+
+    return math.sqrt(
+      latitudeMeters * latitudeMeters +
+          longitudeMeters * longitudeMeters,
+    );
   }
 
   void _scheduleFollowCameraUpdate() {
@@ -767,6 +858,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
     _followCameraUpdateInProgress = true;
     _programmaticCameraMove = true;
+    _programmaticCameraIdlePending = true;
 
     try {
       final currentCamera = _lastCameraPosition;
@@ -790,7 +882,26 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       );
 
       if (mounted && _followDriver) {
-        _scheduleViewportRefresh();
+        final lastLocation = _lastViewportDriverLocation;
+
+        final currentLocation = LatLng(
+          widget.location.latitude,
+          widget.location.longitude,
+        );
+
+        final movedEnough = lastLocation == null ||
+            _distanceBetweenMeters(
+              lastLocation,
+              currentLocation,
+            ) >= _minDriverMovementForViewportRefreshMeters;
+
+        if (movedEnough) {
+          debugPrint(
+            'PARKING MAP: driver moved enough to refresh viewport',
+          );
+
+          _scheduleViewportRefresh();
+        }
       }
     } catch (error) {
       debugPrint('PARKING MAP FOLLOW CAMERA ERROR: $error');
@@ -816,6 +927,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     setState(() {
       _followDriver = true;
       _lastViewportKey = null;
+      _lastViewportDriverLocation = null;
     });
 
     debugPrint('PARKING MAP: follow driver enabled by user');
@@ -830,7 +942,8 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   }
 
   void _handleCameraIdle() {
-    if (_programmaticCameraMove) {
+    if (_programmaticCameraMove || _programmaticCameraIdlePending) {
+      _programmaticCameraIdlePending = false;
       return;
     }
 
