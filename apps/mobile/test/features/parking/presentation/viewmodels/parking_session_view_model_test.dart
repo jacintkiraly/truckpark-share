@@ -154,6 +154,13 @@ class FakeParkingSessionRepository implements ParkingSessionRepository {
   }
 
   @override
+  Stream<List<ParkingSession>> watchLeavingSoonSessions(
+    List<String> parkingIds,
+  ) {
+    return Stream.value(const <ParkingSession>[]);
+  }
+
+  @override
   Future<void> updateSession(ParkingSession session) async {
     updatedSessions.add(session);
   }

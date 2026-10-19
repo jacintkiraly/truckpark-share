@@ -23,6 +23,15 @@ class ParkingSessionRepositoryImpl implements ParkingSessionRepository {
   }
 
   @override
+  Stream<List<ParkingSession>> watchLeavingSoonSessions(
+    List<String> parkingIds,
+  ) {
+    return _dataSource
+        .watchLeavingSoonSessions(parkingIds)
+        .map((dtos) => dtos.map(ParkingSessionMapper.toDomain).toList());
+  }
+
+  @override
   Future<void> updateSession(ParkingSession session) async {
     final dto = ParkingSessionMapper.toDto(session);
 

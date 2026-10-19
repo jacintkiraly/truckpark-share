@@ -28,13 +28,12 @@ import '../../features/parking/domain/usecases/watch_parking_spots_use_case.dart
 import '../../features/parking/domain/usecases/create_parking_session_use_case.dart';
 import '../../features/parking/domain/usecases/update_parking_session_use_case.dart';
 import '../../features/parking/domain/usecases/watch_parking_session_use_case.dart';
+import '../../features/parking/domain/usecases/watch_leaving_soon_parking_sessions_use_case.dart';
 
 void registerParkingModule(GetIt sl) {
   // Parking session state machine.
   if (!sl.isRegistered<ParkingSessionStateMachine>()) {
-    sl.registerLazySingleton(
-      () => const ParkingSessionStateMachine(),
-    );
+    sl.registerLazySingleton(() => const ParkingSessionStateMachine());
   }
 
   if (!sl.isRegistered<ParkingSpotMapper>()) {
@@ -101,15 +100,11 @@ void registerParkingModule(GetIt sl) {
   }
 
   if (!sl.isRegistered<QueryParkingSpotsInViewportUseCase>()) {
-    sl.registerLazySingleton(
-      () => QueryParkingSpotsInViewportUseCase(sl()),
-    );
+    sl.registerLazySingleton(() => QueryParkingSpotsInViewportUseCase(sl()));
   }
 
   if (!sl.isRegistered<QueryParkingClustersInViewportUseCase>()) {
-    sl.registerLazySingleton(
-      () => QueryParkingClustersInViewportUseCase(sl()),
-    );
+    sl.registerLazySingleton(() => QueryParkingClustersInViewportUseCase(sl()));
   }
 
   if (!sl.isRegistered<AddParkingSpotUseCase>()) {
@@ -140,6 +135,12 @@ void registerParkingModule(GetIt sl) {
 
   if (!sl.isRegistered<UpdateParkingSessionUseCase>()) {
     sl.registerLazySingleton(() => UpdateParkingSessionUseCase(sl()));
+  }
+
+  if (!sl.isRegistered<WatchLeavingSoonParkingSessionsUseCase>()) {
+    sl.registerLazySingleton(
+      () => WatchLeavingSoonParkingSessionsUseCase(sl()),
+    );
   }
 
   // Derived live status use case.

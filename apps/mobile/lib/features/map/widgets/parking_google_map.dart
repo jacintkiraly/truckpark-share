@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../localization/generated/app_localizations.dart';
+import '../../parking/domain/entities/parking_session.dart';
 import '../../parking/domain/entities/parking_spot.dart';
 import '../../parking/domain/value_objects/parking_map_cluster.dart';
 import '../../parking/domain/value_objects/parking_viewport.dart';
@@ -25,6 +27,7 @@ class ParkingGoogleMap extends StatefulWidget {
     required this.onCloseParkingSession,
     required this.onViewportChanged,
     required this.onClusterViewportChanged,
+    required this.watchLeavingSoonSessions,
   });
 
   final DriverLocation location;
@@ -34,10 +37,13 @@ class ParkingGoogleMap extends StatefulWidget {
   final Future<void> Function() onCloseParkingSession;
 
   final Future<List<ParkingSpot>> Function(ParkingViewport viewport)
-      onViewportChanged;
+  onViewportChanged;
 
   final Future<List<ParkingMapCluster>> Function(ParkingViewport viewport)
-      onClusterViewportChanged;
+  onClusterViewportChanged;
+
+  final Stream<List<ParkingSession>> Function(List<String> parkingIds)
+  watchLeavingSoonSessions;
 
   @override
   State<ParkingGoogleMap> createState() => _ParkingGoogleMapState();
@@ -68,9 +74,15 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   final List<ParkingSpot> _visibleParkingSpots = [];
   final List<ParkingMapCluster> _clusters = [];
 
+  StreamSubscription<List<ParkingSession>>? _leavingSoonSubscription;
+  final Set<String> _leavingSoonParkingIds = <String>{};
+  String? _leavingSoonParkingIdsKey;
+  int _leavingSoonRequestId = 0;
+
   final Map<int, BitmapDescriptor> _clusterIconCache = {};
   BitmapDescriptor? _driverLocationIcon;
   BitmapDescriptor? _driverHeadingIcon;
+  BitmapDescriptor? _leavingSoonWebIcon;
 
   static const double _maxDriverHeadingAccuracy = 45.0;
   static const double _minDriverMovementForViewportRefreshMeters = 300.0;
@@ -98,6 +110,29 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   void initState() {
     super.initState();
     unawaited(_prepareDriverLocationIcon());
+
+    if (kIsWeb) {
+      unawaited(_prepareLeavingSoonWebIcon());
+    }
+  }
+
+  Future<void> _prepareLeavingSoonWebIcon() async {
+    try {
+      final icon = await BitmapDescriptor.asset(
+        const ImageConfiguration(size: Size(36, 48)),
+        'assets/markers/leaving_soon.png',
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _leavingSoonWebIcon = icon;
+      });
+    } catch (error) {
+      debugPrint('PARKING MAP LEAVING-SOON ICON ERROR: $error');
+    }
   }
 
   Future<BitmapDescriptor> _createDriverLocationIcon() async {
@@ -279,14 +314,15 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
         Text(
           sessionState.errorMessage!,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.error,
-              ),
+            color: Theme.of(context).colorScheme.error,
+          ),
         ),
         const SizedBox(height: 8),
         button,
       ],
     );
   }
+
   Widget _buildParkingSessionBanner(
     BuildContext context,
     AppLocalizations l10n,
@@ -366,22 +402,16 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
                             onPressed: isBusy
                                 ? null
                                 : () {
-                                    unawaited(
-                                      widget.onMarkLeavingSoon(),
-                                    );
+                                    unawaited(widget.onMarkLeavingSoon());
                                   },
                             icon: const Icon(Icons.departure_board),
-                            label: Text(
-                              l10n.parkingSessionMarkLeavingSoon,
-                            ),
+                            label: Text(l10n.parkingSessionMarkLeavingSoon),
                           ),
                         FilledButton.icon(
                           onPressed: isBusy
                               ? null
                               : () {
-                                  unawaited(
-                                    widget.onCloseParkingSession(),
-                                  );
+                                  unawaited(widget.onCloseParkingSession());
                                 },
                           icon: const Icon(Icons.check_circle_outline),
                           label: Text(l10n.parkingSessionClose),
@@ -452,8 +482,83 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     };
   }
 
+  Future<void> _watchLeavingSoonForVisibleSpots(List<ParkingSpot> spots) async {
+    final parkingIds = spots.map((spot) => spot.id).toSet().toList()..sort();
+
+    final parkingIdsKey = parkingIds.join('|');
+
+    if (_leavingSoonParkingIdsKey == parkingIdsKey) {
+      return;
+    }
+
+    _leavingSoonParkingIdsKey = parkingIdsKey;
+    final requestId = ++_leavingSoonRequestId;
+
+    final previousSubscription = _leavingSoonSubscription;
+    _leavingSoonSubscription = null;
+
+    if (previousSubscription != null) {
+      await previousSubscription.cancel();
+    }
+
+    if (!mounted || requestId != _leavingSoonRequestId) {
+      return;
+    }
+
+    if (_leavingSoonParkingIds.isNotEmpty) {
+      setState(_leavingSoonParkingIds.clear);
+    }
+
+    if (parkingIds.isEmpty) {
+      return;
+    }
+
+    try {
+      final subscription = widget
+          .watchLeavingSoonSessions(parkingIds)
+          .listen(
+            (sessions) {
+              if (!mounted || requestId != _leavingSoonRequestId) {
+                return;
+              }
+
+              final updatedParkingIds = sessions
+                  .map((session) => session.parkingId)
+                  .toSet();
+
+              if (_leavingSoonParkingIds.length == updatedParkingIds.length &&
+                  _leavingSoonParkingIds.containsAll(updatedParkingIds)) {
+                return;
+              }
+
+              setState(() {
+                _leavingSoonParkingIds
+                  ..clear()
+                  ..addAll(updatedParkingIds);
+              });
+            },
+            onError: (Object error, StackTrace stackTrace) {
+              if (requestId == _leavingSoonRequestId) {
+                debugPrint('PARKING MAP LEAVING-SOON STREAM ERROR: $error');
+              }
+            },
+          );
+
+      if (!mounted || requestId != _leavingSoonRequestId) {
+        await subscription.cancel();
+        return;
+      }
+
+      _leavingSoonSubscription = subscription;
+    } catch (error) {
+      debugPrint('PARKING MAP LEAVING-SOON SUBSCRIBE ERROR: $error');
+    }
+  }
+
   Set<Marker> _buildParkingMarkers() {
     return _visibleParkingSpots.map((parkingSpot) {
+      final isLeavingSoon = _leavingSoonParkingIds.contains(parkingSpot.id);
+
       return Marker(
         markerId: MarkerId(parkingSpot.id),
         position: LatLng(
@@ -461,7 +566,19 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
           parkingSpot.location.longitude,
         ),
         clusterManagerId: _parkingClusterManagerId,
-        infoWindow: InfoWindow(title: parkingSpot.name),
+        icon: isLeavingSoon
+            ? (kIsWeb
+                  ? (_leavingSoonWebIcon ?? BitmapDescriptor.defaultMarker)
+                  : BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueOrange,
+                    ))
+            : BitmapDescriptor.defaultMarker,
+        infoWindow: InfoWindow(
+          title: parkingSpot.name,
+          snippet: isLeavingSoon
+              ? 'Driver leaving soon â€” not a reservation'
+              : null,
+        ),
         onTap: () {
           setState(() {
             _selectedParkingSpot = parkingSpot;
@@ -701,6 +818,10 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
             _clusters.clear();
           }
         });
+
+        if (lowZoom) {
+          unawaited(_watchLeavingSoonForVisibleSpots(const <ParkingSpot>[]));
+        }
       }
 
       if (lowZoom) {
@@ -764,6 +885,8 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
           }
         });
 
+        unawaited(_watchLeavingSoonForVisibleSpots(spots));
+
         debugPrint(
           'PARKING MAP: individual markers displayed '
           '(${spots.length})',
@@ -822,8 +945,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     final meanLatitudeRadians =
         (first.latitude + second.latitude) / 2 * math.pi / 180;
 
-    final latitudeMeters =
-        (second.latitude - first.latitude) * 111320;
+    final latitudeMeters = (second.latitude - first.latitude) * 111320;
 
     final longitudeMeters =
         (second.longitude - first.longitude) *
@@ -831,8 +953,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
         math.cos(meanLatitudeRadians);
 
     return math.sqrt(
-      latitudeMeters * latitudeMeters +
-          longitudeMeters * longitudeMeters,
+      latitudeMeters * latitudeMeters + longitudeMeters * longitudeMeters,
     );
   }
 
@@ -889,16 +1010,13 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
           widget.location.longitude,
         );
 
-        final movedEnough = lastLocation == null ||
-            _distanceBetweenMeters(
-              lastLocation,
-              currentLocation,
-            ) >= _minDriverMovementForViewportRefreshMeters;
+        final movedEnough =
+            lastLocation == null ||
+            _distanceBetweenMeters(lastLocation, currentLocation) >=
+                _minDriverMovementForViewportRefreshMeters;
 
         if (movedEnough) {
-          debugPrint(
-            'PARKING MAP: driver moved enough to refresh viewport',
-          );
+          debugPrint('PARKING MAP: driver moved enough to refresh viewport');
 
           _scheduleViewportRefresh();
         }
@@ -978,9 +1096,20 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   void dispose() {
     _spotRequestId++;
     _clusterRequestId++;
+    _leavingSoonRequestId++;
 
     _viewportDebounceTimer?.cancel();
     _viewportDebounceTimer = null;
+
+    final leavingSoonSubscription = _leavingSoonSubscription;
+    _leavingSoonSubscription = null;
+
+    if (leavingSoonSubscription != null) {
+      unawaited(leavingSoonSubscription.cancel());
+    }
+
+    _leavingSoonParkingIds.clear();
+    _leavingSoonParkingIdsKey = null;
 
     _clusterIconCache.clear();
 
@@ -1036,8 +1165,7 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
               ),
             ),
           ),
-        if (_hasOpenParkingSession)
-          _buildParkingSessionBanner(context, l10n),
+        if (_hasOpenParkingSession) _buildParkingSessionBanner(context, l10n),
         if (_selectedParkingSpot != null)
           Positioned(
             left: 24,

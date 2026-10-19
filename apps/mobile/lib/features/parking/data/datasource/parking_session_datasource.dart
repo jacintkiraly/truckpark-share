@@ -5,5 +5,9 @@ abstract class ParkingSessionDataSource {
 
   Stream<ParkingSessionDto?> watchOpenSession(String driverId);
 
+  Stream<List<ParkingSessionDto>> watchLeavingSoonSessions(
+    List<String> parkingIds,
+  );
+
   Future<void> updateSession(ParkingSessionDto session);
 }

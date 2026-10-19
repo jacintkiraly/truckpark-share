@@ -11,6 +11,8 @@ class FakeParkingSessionDataSource implements ParkingSessionDataSource {
   ParkingSessionDto? updatedSession;
   String? watchedDriverId;
   ParkingSessionDto? sessionToEmit;
+  List<String>? watchedParkingIds;
+  List<ParkingSessionDto> leavingSoonSessionsToEmit = [];
 
   @override
   Future<void> createSession(ParkingSessionDto session) async {
@@ -21,6 +23,14 @@ class FakeParkingSessionDataSource implements ParkingSessionDataSource {
   Stream<ParkingSessionDto?> watchOpenSession(String driverId) {
     watchedDriverId = driverId;
     return Stream.value(sessionToEmit);
+  }
+
+  @override
+  Stream<List<ParkingSessionDto>> watchLeavingSoonSessions(
+    List<String> parkingIds,
+  ) {
+    watchedParkingIds = parkingIds;
+    return Stream.value(leavingSoonSessionsToEmit);
   }
 
   @override
@@ -98,6 +108,48 @@ void main() {
 
       expect(dataSource.watchedDriverId, 'driver-1');
       expect(result, isNull);
+    });
+
+    test(
+      'maps leaving-soon sessions for the requested parking spots',
+      () async {
+        final dataSource = FakeParkingSessionDataSource();
+        dataSource.leavingSoonSessionsToEmit = [
+          ParkingSessionDto(
+            id: 'session-2',
+            parkingId: 'parking-2',
+            driverId: 'driver-2',
+            status: 'leavingSoon',
+            startedAt: startedAt,
+            updatedAt: updatedAt,
+          ),
+        ];
+
+        final repository = ParkingSessionRepositoryImpl(dataSource);
+
+        final result = await repository.watchLeavingSoonSessions([
+          'parking-2',
+          'parking-3',
+        ]).first;
+
+        expect(dataSource.watchedParkingIds, ['parking-2', 'parking-3']);
+        expect(result, hasLength(1));
+        expect(result.single.id, 'session-2');
+        expect(result.single.parkingId, 'parking-2');
+        expect(result.single.driverId, 'driver-2');
+        expect(result.single.status, ParkingSessionStatus.leavingSoon);
+      },
+    );
+
+    test('returns an empty list when no leaving-soon sessions exist', () async {
+      final dataSource = FakeParkingSessionDataSource();
+      final repository = ParkingSessionRepositoryImpl(dataSource);
+
+      final result = await repository.watchLeavingSoonSessions([
+        'parking-1',
+      ]).first;
+
+      expect(result, isEmpty);
     });
 
     test('updates a session through the datasource', () async {

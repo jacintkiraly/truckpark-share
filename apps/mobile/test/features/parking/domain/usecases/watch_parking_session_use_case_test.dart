@@ -5,28 +5,31 @@ import 'package:truckpark_share/features/parking/domain/enums/parking_session_st
 import 'package:truckpark_share/features/parking/domain/repositories/parking_session_repository.dart';
 import 'package:truckpark_share/features/parking/domain/usecases/watch_parking_session_use_case.dart';
 
-class FakeParkingSessionRepository
-    implements ParkingSessionRepository {
+class FakeParkingSessionRepository implements ParkingSessionRepository {
   String? watchedDriverId;
   ParkingSession? sessionToEmit;
+  List<String>? watchedParkingIds;
+  List<ParkingSession> leavingSoonSessionsToEmit = [];
 
   @override
-  Future<void> createSession(
-    ParkingSession session,
-  ) async {}
+  Future<void> createSession(ParkingSession session) async {}
 
   @override
-  Stream<ParkingSession?> watchOpenSession(
-    String driverId,
-  ) {
+  Stream<ParkingSession?> watchOpenSession(String driverId) {
     watchedDriverId = driverId;
     return Stream.value(sessionToEmit);
   }
 
   @override
-  Future<void> updateSession(
-    ParkingSession session,
-  ) async {}
+  Stream<List<ParkingSession>> watchLeavingSoonSessions(
+    List<String> parkingIds,
+  ) {
+    watchedParkingIds = parkingIds;
+    return Stream.value(leavingSoonSessionsToEmit);
+  }
+
+  @override
+  Future<void> updateSession(ParkingSession session) async {}
 }
 
 void main() {
@@ -45,9 +48,7 @@ void main() {
 
       repository.sessionToEmit = session;
 
-      final useCase = WatchParkingSessionUseCase(
-        repository,
-      );
+      final useCase = WatchParkingSessionUseCase(repository);
 
       final result = await useCase('driver-1').first;
 
@@ -57,9 +58,7 @@ void main() {
 
     test('returns null when there is no open session', () async {
       final repository = FakeParkingSessionRepository();
-      final useCase = WatchParkingSessionUseCase(
-        repository,
-      );
+      final useCase = WatchParkingSessionUseCase(repository);
 
       final result = await useCase('driver-1').first;
 

@@ -5,31 +5,31 @@ import 'package:truckpark_share/features/parking/domain/enums/parking_session_st
 import 'package:truckpark_share/features/parking/domain/repositories/parking_session_repository.dart';
 import 'package:truckpark_share/features/parking/domain/usecases/create_parking_session_use_case.dart';
 
-class FakeParkingSessionRepository
-    implements ParkingSessionRepository {
+class FakeParkingSessionRepository implements ParkingSessionRepository {
   ParkingSession? createdSession;
   String? watchedDriverId;
   ParkingSession? updatedSession;
 
   @override
-  Future<void> createSession(
-    ParkingSession session,
-  ) async {
+  Future<void> createSession(ParkingSession session) async {
     createdSession = session;
   }
 
   @override
-  Stream<ParkingSession?> watchOpenSession(
-    String driverId,
-  ) {
+  Stream<ParkingSession?> watchOpenSession(String driverId) {
     watchedDriverId = driverId;
     return const Stream.empty();
   }
 
   @override
-  Future<void> updateSession(
-    ParkingSession session,
-  ) async {
+  Stream<List<ParkingSession>> watchLeavingSoonSessions(
+    List<String> parkingIds,
+  ) {
+    return Stream.value(const <ParkingSession>[]);
+  }
+
+  @override
+  Future<void> updateSession(ParkingSession session) async {
     updatedSession = session;
   }
 }
@@ -38,9 +38,7 @@ void main() {
   group('CreateParkingSessionUseCase', () {
     test('creates the session through the repository', () async {
       final repository = FakeParkingSessionRepository();
-      final useCase = CreateParkingSessionUseCase(
-        repository,
-      );
+      final useCase = CreateParkingSessionUseCase(repository);
 
       final session = ParkingSession(
         id: 'session-1',

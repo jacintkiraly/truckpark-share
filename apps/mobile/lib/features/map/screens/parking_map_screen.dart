@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/di/service_locator.dart';
 import '../../../localization/generated/app_localizations.dart';
+import '../../parking/domain/entities/parking_session.dart';
 import '../../parking/domain/entities/parking_spot.dart';
 import '../../../shared/widgets/primary_button.dart';
 
 import '../../parking/domain/value_objects/parking_map_cluster.dart';
 import '../../parking/domain/value_objects/parking_viewport.dart';
+import '../../parking/domain/usecases/watch_leaving_soon_parking_sessions_use_case.dart';
 import '../../parking/presentation/enums/parking_view_mode.dart';
 import '../../parking/presentation/providers/parking_provider.dart';
 import '../../parking/presentation/providers/parking_session_provider.dart';
@@ -72,9 +75,7 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
             icon: const Icon(Icons.add_location_alt),
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const AddParkingScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const AddParkingScreen()),
               );
             },
           ),
@@ -131,33 +132,23 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
         message: parkingState.errorMessage!,
         actionText: l10n.retry,
         onPressed: () {
-          ref
-              .read(parkingViewModelProvider.notifier)
-              .watchParkingSpots();
+          ref.read(parkingViewModelProvider.notifier).watchParkingSpots();
         },
       );
     }
 
     if (parkingState.viewMode == ParkingViewMode.list) {
       if (parkingState.parkingSpots.isEmpty) {
-        return Center(
-          child: Text(l10n.parkingNoSpots),
-        );
+        return Center(child: Text(l10n.parkingNoSpots));
       }
 
-      return ParkingList(
-        parkingSpots: parkingState.parkingSpots,
-      );
+      return ParkingList(parkingSpots: parkingState.parkingSpots);
     }
 
     return AnimatedBuilder(
       animation: _locationController,
       builder: (context, child) {
-        return _buildMapContent(
-          context,
-          l10n,
-          parkingSessionState,
-        );
+        return _buildMapContent(context, l10n, parkingSessionState);
       },
     );
   }
@@ -170,9 +161,7 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
     switch (_locationController.status) {
       case LocationStatus.initial:
       case LocationStatus.loading:
-        return _LoadingState(
-          message: l10n.locationLoading,
-        );
+        return _LoadingState(message: l10n.locationLoading);
 
       case LocationStatus.serviceDisabled:
         return _MessageState(
@@ -229,6 +218,8 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
           onStartParkingSession: _startParkingSession,
           onMarkLeavingSoon: _markParkingSessionLeavingSoon,
           onCloseParkingSession: _closeParkingSession,
+          watchLeavingSoonSessions:
+              sl<WatchLeavingSoonParkingSessionsUseCase>().call,
           onViewportChanged: (viewport) {
             return ref
                 .read(parkingViewModelProvider.notifier)
@@ -253,11 +244,9 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
         return;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.toString()),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
     }
   }
 
@@ -271,29 +260,23 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
         return;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.toString()),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
     }
   }
 
   Future<void> _closeParkingSession() async {
     try {
-      await ref
-          .read(parkingSessionViewModelProvider.notifier)
-          .closeSession();
+      await ref.read(parkingSessionViewModelProvider.notifier).closeSession();
     } catch (error) {
       if (!mounted) {
         return;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.toString()),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error.toString())));
     }
   }
 
@@ -307,9 +290,7 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
 }
 
 class _LoadingState extends StatelessWidget {
-  const _LoadingState({
-    required this.message,
-  });
+  const _LoadingState({required this.message});
 
   final String message;
 
@@ -359,15 +340,9 @@ class _MessageState extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-            ),
+            Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 20),
-            PrimaryButton(
-              text: actionText,
-              onPressed: onPressed,
-            ),
+            PrimaryButton(text: actionText, onPressed: onPressed),
           ],
         ),
       ),
@@ -382,6 +357,7 @@ class _LocationAvailableState extends StatelessWidget {
     required this.onStartParkingSession,
     required this.onMarkLeavingSoon,
     required this.onCloseParkingSession,
+    required this.watchLeavingSoonSessions,
     required this.onViewportChanged,
     required this.onClusterViewportChanged,
   });
@@ -391,12 +367,12 @@ class _LocationAvailableState extends StatelessWidget {
   final Future<void> Function(String parkingId) onStartParkingSession;
   final Future<void> Function() onMarkLeavingSoon;
   final Future<void> Function() onCloseParkingSession;
-  final Future<List<ParkingSpot>> Function(
-    ParkingViewport viewport,
-  ) onViewportChanged;
-  final Future<List<ParkingMapCluster>> Function(
-    ParkingViewport viewport,
-  ) onClusterViewportChanged;
+  final Stream<List<ParkingSession>> Function(List<String> parkingIds)
+  watchLeavingSoonSessions;
+  final Future<List<ParkingSpot>> Function(ParkingViewport viewport)
+  onViewportChanged;
+  final Future<List<ParkingMapCluster>> Function(ParkingViewport viewport)
+  onClusterViewportChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -406,6 +382,7 @@ class _LocationAvailableState extends StatelessWidget {
       onStartParkingSession: onStartParkingSession,
       onMarkLeavingSoon: onMarkLeavingSoon,
       onCloseParkingSession: onCloseParkingSession,
+      watchLeavingSoonSessions: watchLeavingSoonSessions,
       onViewportChanged: onViewportChanged,
       onClusterViewportChanged: onClusterViewportChanged,
     );
