@@ -415,6 +415,16 @@ class AppLocalizationsMt extends AppLocalizations {
   String get parkingSessionClose => 'Agħlaq is-sessjoni tal-parkeġġ';
 
   @override
+  String get parkingSessionSwitchTitle => 'Tibda sessjoni ġdida ta\' parkeġġ?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Diġà għandek sessjoni ta\' parkeġġ miftuħa. Jekk tibda waħda ġdida hawn, dik attwali tingħalaq u tibda sessjoni ġdida għal dan il-post tal-parkeġġ.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Agħlaq dik attwali u ibda oħra';
+
+  @override
   String get parkingEditButton => 'Editja';
 
   @override

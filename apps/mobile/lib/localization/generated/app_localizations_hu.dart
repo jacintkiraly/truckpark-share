@@ -412,6 +412,16 @@ class AppLocalizationsHu extends AppLocalizations {
   String get parkingSessionClose => 'Parkolás lezárása';
 
   @override
+  String get parkingSessionSwitchTitle => 'Új parkolási munkamenetet indítasz?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Már van egy nyitott parkolási munkameneted. Ha itt újat indítasz, a jelenlegi lezárul, és új munkamenet indul ezen a parkolóhelyen.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Régi lezárása és új indítása';
+
+  @override
   String get parkingEditButton => 'Szerkesztés';
 
   @override

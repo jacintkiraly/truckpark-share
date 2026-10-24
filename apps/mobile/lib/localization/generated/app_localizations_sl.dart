@@ -412,6 +412,16 @@ class AppLocalizationsSl extends AppLocalizations {
   String get parkingSessionClose => 'Končaj parkirno sejo';
 
   @override
+  String get parkingSessionSwitchTitle => 'Začeti novo parkirno sejo?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Že imate odprto parkirno sejo. Če tukaj začnete novo, se bo trenutna zaprla in za to parkirišče se bo začela nova.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Zapri trenutno in začni novo';
+
+  @override
   String get parkingEditButton => 'Uredi';
 
   @override

@@ -405,6 +405,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get parkingSessionClose => 'Close parking session';
 
   @override
+  String get parkingSessionSwitchTitle => 'Start a new parking session?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'You already have a parking session open. Starting a new one here will close the current session and start a new one at this parking spot.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Close and start new session';
+
+  @override
   String get parkingEditButton => 'Edit';
 
   @override

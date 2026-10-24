@@ -409,6 +409,16 @@ class AppLocalizationsSk extends AppLocalizations {
   String get parkingSessionClose => 'Ukončiť parkovaciu reláciu';
 
   @override
+  String get parkingSessionSwitchTitle => 'Spustiť novú parkovaciu reláciu?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Už máte otvorenú parkovaciu reláciu. Ak tu spustíte novú, aktuálna sa zatvorí a pre toto parkovacie miesto sa začne nová.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Zatvoriť aktuálnu a spustiť novú';
+
+  @override
   String get parkingEditButton => 'Upraviť';
 
   @override

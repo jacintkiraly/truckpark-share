@@ -892,6 +892,24 @@ abstract class AppLocalizations {
   /// **'Close parking session'**
   String get parkingSessionClose;
 
+  /// No description provided for @parkingSessionSwitchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a new parking session?'**
+  String get parkingSessionSwitchTitle;
+
+  /// No description provided for @parkingSessionSwitchMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have a parking session open. Starting a new one here will close the current session and start a new one at this parking spot.'**
+  String get parkingSessionSwitchMessage;
+
+  /// No description provided for @parkingSessionSwitchConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Close and start new session'**
+  String get parkingSessionSwitchConfirm;
+
   /// No description provided for @parkingEditButton.
   ///
   /// In en, this message translates to:

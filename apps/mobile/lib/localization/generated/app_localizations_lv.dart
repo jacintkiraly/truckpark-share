@@ -413,6 +413,16 @@ class AppLocalizationsLv extends AppLocalizations {
   String get parkingSessionClose => 'Beigt stāvēšanas sesiju';
 
   @override
+  String get parkingSessionSwitchTitle => 'Sākt jaunu stāvēšanas sesiju?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Jums jau ir atvērta stāvēšanas sesija. Ja sāksiet jaunu šeit, pašreizējā tiks aizvērta un šai stāvvietai sāksies jauna sesija.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Aizvērt pašreizējo un sākt jaunu';
+
+  @override
   String get parkingEditButton => 'Rediģēt';
 
   @override

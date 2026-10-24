@@ -418,6 +418,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get parkingSessionClose => 'Parkvorgang beenden';
 
   @override
+  String get parkingSessionSwitchTitle => 'Neue Parksitzung starten?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Du hast bereits eine offene Parksitzung. Wenn du hier eine neue startest, wird die aktuelle geschlossen und eine neue für diesen Parkplatz gestartet.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Alte schließen und neue starten';
+
+  @override
   String get parkingEditButton => 'Bearbeiten';
 
   @override

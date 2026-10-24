@@ -418,6 +418,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get parkingSessionClose => 'Terminer la session de stationnement';
 
   @override
+  String get parkingSessionSwitchTitle =>
+      'Démarrer une nouvelle session de stationnement ?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Vous avez déjà une session de stationnement ouverte. En démarrant une nouvelle ici, la session actuelle sera fermée et une nouvelle commencera sur cette aire de stationnement.';
+
+  @override
+  String get parkingSessionSwitchConfirm =>
+      'Fermer l’actuelle et démarrer la nouvelle';
+
+  @override
   String get parkingEditButton => 'Modifier';
 
   @override

@@ -414,6 +414,17 @@ class AppLocalizationsRo extends AppLocalizations {
   String get parkingSessionClose => 'Încheie sesiunea de parcare';
 
   @override
+  String get parkingSessionSwitchTitle => 'Începeți o nouă sesiune de parcare?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Aveți deja o sesiune de parcare deschisă. Dacă începeți una nouă aici, cea actuală va fi închisă și va începe una nouă pentru această parcare.';
+
+  @override
+  String get parkingSessionSwitchConfirm =>
+      'Închide sesiunea actuală și începe una nouă';
+
+  @override
   String get parkingEditButton => 'Editați';
 
   @override

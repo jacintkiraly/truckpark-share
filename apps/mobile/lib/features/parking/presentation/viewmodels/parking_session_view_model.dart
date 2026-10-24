@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entities/parking_session.dart';
 import '../../domain/enums/parking_session_status.dart';
+import '../../domain/services/parking_session_expiration_policy.dart';
 import '../../domain/services/parking_session_state_machine.dart';
 import '../../domain/usecases/create_parking_session_use_case.dart';
 import '../../domain/usecases/update_parking_session_use_case.dart';
@@ -20,6 +21,7 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
     this._currentDriverIdProvider,
     this._sessionIdGenerator, {
     DateTime Function()? nowProvider,
+    this._expirationPolicy = const ParkingSessionExpirationPolicy(),
   }) : _now = nowProvider ?? DateTime.now,
        super(const ParkingSessionState());
 
@@ -27,17 +29,21 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
   final WatchParkingSessionUseCase _watchParkingSessionUseCase;
   final UpdateParkingSessionUseCase _updateParkingSessionUseCase;
   final ParkingSessionStateMachine _stateMachine;
+  final ParkingSessionExpirationPolicy _expirationPolicy;
 
   final String? Function() _currentDriverIdProvider;
   final String Function() _sessionIdGenerator;
   final DateTime Function() _now;
 
   StreamSubscription<ParkingSession?>? _subscription;
+  Timer? _sessionExpiryTimer;
 
   void watchCurrentSession() {
     final driverId = _currentDriverIdProvider();
 
     if (driverId == null) {
+      _cancelSessionExpiryTimer();
+
       state = state.copyWith(
         isLoading: false,
         errorMessage:
@@ -52,12 +58,24 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
 
     _subscription = _watchParkingSessionUseCase(driverId).listen(
       (session) {
+        if (session == null || _isExpiredOpenSession(session, _now())) {
+          _cancelSessionExpiryTimer();
+
+          state = state.copyWith(
+            isLoading: false,
+            clearSession: true,
+            errorMessage: null,
+          );
+          return;
+        }
+
         state = state.copyWith(
           isLoading: false,
           session: session,
           errorMessage: null,
-          clearSession: session == null,
         );
+
+        _scheduleSessionExpiry(session);
       },
       onError: (error) {
         debugPrint('PARKING SESSION WATCH ERROR: $error');
@@ -82,10 +100,18 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
     final currentSession = state.session;
 
     if (currentSession != null &&
-        currentSession.status != ParkingSessionStatus.closed) {
+        currentSession.status != ParkingSessionStatus.closed &&
+        !_expirationPolicy.isOpenSessionExpired(currentSession, _now())) {
       throw StateError(
         'An open parking session already exists for this driver.',
       );
+    }
+
+    if (currentSession != null &&
+        _isExpiredOpenSession(currentSession, _now())) {
+      _cancelSessionExpiryTimer();
+
+      state = state.copyWith(clearSession: true, errorMessage: null);
     }
 
     state = state.copyWith(isSaving: true, errorMessage: null);
@@ -114,6 +140,8 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
         session: activeSession,
         errorMessage: null,
       );
+
+      _scheduleSessionExpiry(activeSession);
 
       debugPrint(
         'PARKING SESSION: started ${activeSession.id} '
@@ -162,6 +190,8 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
         errorMessage: null,
       );
 
+      _scheduleSessionExpiry(updatedSession);
+
       debugPrint('PARKING SESSION: ${session.id} -> ${nextStatus.name}');
     } catch (error) {
       debugPrint('PARKING SESSION TRANSITION ERROR: $error');
@@ -172,8 +202,56 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
     }
   }
 
+  bool _isExpiredOpenSession(ParkingSession session, DateTime now) {
+    return session.status != ParkingSessionStatus.closed &&
+        _expirationPolicy.isOpenSessionExpired(session, now);
+  }
+
+  void _scheduleSessionExpiry(ParkingSession session) {
+    _cancelSessionExpiryTimer();
+
+    if (session.status == ParkingSessionStatus.closed) {
+      return;
+    }
+
+    final expiresAt = session.updatedAt.add(
+      _expirationPolicy.openSessionDuration,
+    );
+    final delay = expiresAt.difference(_now());
+
+    _sessionExpiryTimer = Timer(delay.isNegative ? Duration.zero : delay, () {
+      if (!mounted) {
+        return;
+      }
+
+      final currentSession = state.session;
+
+      if (currentSession == null || currentSession.id != session.id) {
+        return;
+      }
+
+      if (_isExpiredOpenSession(currentSession, _now())) {
+        _sessionExpiryTimer = null;
+
+        state = state.copyWith(clearSession: true, errorMessage: null);
+
+        debugPrint('PARKING SESSION: expired locally ${currentSession.id}');
+        return;
+      }
+
+      // Recheck if the timer fired slightly before the expiration boundary.
+      _scheduleSessionExpiry(currentSession);
+    });
+  }
+
+  void _cancelSessionExpiryTimer() {
+    _sessionExpiryTimer?.cancel();
+    _sessionExpiryTimer = null;
+  }
+
   @override
   void dispose() {
+    _cancelSessionExpiryTimer();
     _subscription?.cancel();
     super.dispose();
   }

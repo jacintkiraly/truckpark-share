@@ -415,6 +415,17 @@ class AppLocalizationsLt extends AppLocalizations {
   String get parkingSessionClose => 'Baigti parkavimo sesiją';
 
   @override
+  String get parkingSessionSwitchTitle => 'Pradėti naują parkavimo sesiją?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Jau turite atvirą parkavimo sesiją. Pradėjus naują čia, dabartinė bus uždaryta ir prasidės nauja šioje stovėjimo vietoje.';
+
+  @override
+  String get parkingSessionSwitchConfirm =>
+      'Uždaryti dabartinę ir pradėti naują';
+
+  @override
   String get parkingEditButton => 'Redaguoti';
 
   @override

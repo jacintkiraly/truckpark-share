@@ -404,6 +404,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get parkingSessionClose => 'إنهاء جلسة الوقوف';
 
   @override
+  String get parkingSessionSwitchTitle => 'بدء جلسة ركن جديدة؟';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'لديك بالفعل جلسة ركن مفتوحة. إذا بدأت جلسة جديدة هنا، فسيتم إغلاق الجلسة الحالية وبدء جلسة جديدة في هذا المكان.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'أغلق الحالية وابدأ الجديدة';
+
+  @override
   String get parkingEditButton => 'تعديل';
 
   @override

@@ -412,6 +412,16 @@ class AppLocalizationsDa extends AppLocalizations {
   String get parkingSessionClose => 'Afslut parkeringssession';
 
   @override
+  String get parkingSessionSwitchTitle => 'Starte en ny parkeringssession?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Du har allerede en åben parkeringssession. Hvis du starter en ny her, lukkes den aktuelle, og en ny startes for denne parkeringsplads.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Luk den aktuelle, og start en ny';
+
+  @override
   String get parkingEditButton => 'Rediger';
 
   @override

@@ -134,6 +134,68 @@ void main() {
     expect(viewModel.state.session, session);
     expect(viewModel.state.errorMessage, isNull);
   });
+
+  test('watchCurrentSession clears an expired open session', () async {
+    final controller = StreamController<ParkingSession?>.broadcast();
+    repository.watchController = controller;
+
+    viewModel.watchCurrentSession();
+
+    final staleUpdatedAt = fixedNow.subtract(const Duration(hours: 25));
+
+    controller.add(
+      ParkingSession(
+        id: 'stale-session',
+        parkingId: 'parking-1',
+        driverId: 'driver-1',
+        status: ParkingSessionStatus.active,
+        startedAt: staleUpdatedAt.subtract(const Duration(hours: 1)),
+        updatedAt: staleUpdatedAt,
+      ),
+    );
+
+    await Future<void>.delayed(Duration.zero);
+
+    expect(viewModel.state.isLoading, isFalse);
+    expect(viewModel.state.session, isNull);
+    expect(viewModel.state.errorMessage, isNull);
+  });
+
+  test(
+    'startSession allows a new session after an expired session is observed',
+    () async {
+      final controller = StreamController<ParkingSession?>.broadcast();
+      repository.watchController = controller;
+
+      viewModel.watchCurrentSession();
+
+      final staleUpdatedAt = fixedNow.subtract(const Duration(hours: 25));
+
+      controller.add(
+        ParkingSession(
+          id: 'stale-session',
+          parkingId: 'parking-1',
+          driverId: 'driver-1',
+          status: ParkingSessionStatus.active,
+          startedAt: staleUpdatedAt.subtract(const Duration(hours: 1)),
+          updatedAt: staleUpdatedAt,
+        ),
+      );
+
+      await Future<void>.delayed(Duration.zero);
+
+      expect(viewModel.state.session, isNull);
+
+      await viewModel.startSession('parking-2');
+
+      expect(repository.createdSessions, hasLength(1));
+      expect(repository.createdSessions.single.parkingId, 'parking-2');
+      expect(
+        repository.createdSessions.single.status,
+        ParkingSessionStatus.active,
+      );
+    },
+  );
 }
 
 class FakeParkingSessionRepository implements ParkingSessionRepository {

@@ -415,6 +415,17 @@ class AppLocalizationsGa extends AppLocalizations {
   String get parkingSessionClose => 'Críochnaigh an seisiún páirceála';
 
   @override
+  String get parkingSessionSwitchTitle => 'Tosaigh seisiún páirceála nua?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Tá seisiún páirceála oscailte agat cheana féin. Má thosaíonn tú seisiún nua anseo, dúnfar an ceann reatha agus tosóidh ceann nua don láthair pháirceála seo.';
+
+  @override
+  String get parkingSessionSwitchConfirm =>
+      'Dún an ceann reatha agus tosaigh ceann nua';
+
+  @override
   String get parkingEditButton => 'Cuir in eagar';
 
   @override

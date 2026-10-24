@@ -413,6 +413,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get parkingSessionClose => 'Завершить парковочную сессию';
 
   @override
+  String get parkingSessionSwitchTitle => 'Начать новый сеанс парковки?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'У вас уже есть открытый сеанс парковки. Если начать новый здесь, текущий будет закрыт и для этого парковочного места начнётся новый сеанс.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Закрыть текущий и начать новый';
+
+  @override
   String get parkingEditButton => 'Изменить';
 
   @override

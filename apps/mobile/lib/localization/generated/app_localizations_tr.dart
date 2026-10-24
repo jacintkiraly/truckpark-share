@@ -411,6 +411,18 @@ class AppLocalizationsTr extends AppLocalizations {
   String get parkingSessionClose => 'Park etme oturumunu bitir';
 
   @override
+  String get parkingSessionSwitchTitle =>
+      'Yeni bir park etme oturumu başlatılsın mı?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Zaten açık bir park etme oturumunuz var. Burada yeni bir oturum başlatırsanız mevcut oturum kapatılır ve bu park alanı için yeni bir oturum başlatılır.';
+
+  @override
+  String get parkingSessionSwitchConfirm =>
+      'Mevcut oturumu kapat ve yenisini başlat';
+
+  @override
   String get parkingEditButton => 'Düzenle';
 
   @override

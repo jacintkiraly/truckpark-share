@@ -410,6 +410,17 @@ class AppLocalizationsFi extends AppLocalizations {
   String get parkingSessionClose => 'Päätä pysäköinti-istunto';
 
   @override
+  String get parkingSessionSwitchTitle =>
+      'Aloitetaanko uusi pysäköinti-istunto?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Sinulla on jo avoin pysäköinti-istunto. Jos aloitat uuden tässä, nykyinen suljetaan ja tälle pysäköintipaikalle aloitetaan uusi.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Sulje nykyinen ja aloita uusi';
+
+  @override
   String get parkingEditButton => 'Muokkaa';
 
   @override

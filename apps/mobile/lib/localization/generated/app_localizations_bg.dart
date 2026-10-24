@@ -411,6 +411,17 @@ class AppLocalizationsBg extends AppLocalizations {
   String get parkingSessionClose => 'Завърши сесията за паркиране';
 
   @override
+  String get parkingSessionSwitchTitle =>
+      'Да започнете ли нова сесия за паркиране?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Вече имате отворена сесия за паркиране. Ако започнете нова тук, текущата ще бъде затворена и ще започне нова за това място.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Затвори текущата и започни нова';
+
+  @override
   String get parkingEditButton => 'Редактирай';
 
   @override

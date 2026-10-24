@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/di/service_locator.dart';
 import '../../../localization/generated/app_localizations.dart';
 import '../../parking/domain/entities/parking_session.dart';
+import '../../parking/domain/enums/parking_session_status.dart';
+import '../../parking/domain/services/parking_session_expiration_policy.dart';
 import '../../parking/domain/entities/parking_spot.dart';
 import '../../../shared/widgets/primary_button.dart';
 
@@ -236,9 +238,57 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
 
   Future<void> _startParkingSession(String parkingId) async {
     try {
-      await ref
-          .read(parkingSessionViewModelProvider.notifier)
-          .startSession(parkingId);
+      final sessionViewModel = ref.read(
+        parkingSessionViewModelProvider.notifier,
+      );
+      final currentSession = ref.read(parkingSessionViewModelProvider).session;
+      const expirationPolicy = ParkingSessionExpirationPolicy();
+
+      if (currentSession != null &&
+          currentSession.status != ParkingSessionStatus.closed &&
+          !expirationPolicy.isOpenSessionExpired(
+            currentSession,
+            DateTime.now(),
+          ) &&
+          currentSession.parkingId != parkingId) {
+        final confirmed = await showDialog<bool>(
+          context: context,
+          builder: (dialogContext) {
+            final dialogL10n = AppLocalizations.of(dialogContext)!;
+
+            return AlertDialog(
+              title: Text(dialogL10n.parkingSessionSwitchTitle),
+              content: Text(dialogL10n.parkingSessionSwitchMessage),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(false),
+                  child: Text(dialogL10n.cancel),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(true),
+                  child: Text(dialogL10n.parkingSessionSwitchConfirm),
+                ),
+              ],
+            );
+          },
+        );
+
+        if (confirmed != true || !mounted) {
+          return;
+        }
+
+        final latestSession = ref.read(parkingSessionViewModelProvider).session;
+
+        if (latestSession == null || latestSession.id != currentSession.id) {
+          throw StateError(
+            'The current parking session changed. Please try again.',
+          );
+        }
+
+        await sessionViewModel.closeSession();
+      }
+
+      await sessionViewModel.startSession(parkingId);
     } catch (error) {
       if (!mounted) {
         return;

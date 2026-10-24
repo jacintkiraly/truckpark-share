@@ -406,6 +406,16 @@ class AppLocalizationsEt extends AppLocalizations {
   String get parkingSessionClose => 'Lõpeta parkimisseanss';
 
   @override
+  String get parkingSessionSwitchTitle => 'Kas alustada uut parkimisseanssi?';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Sul on juba avatud parkimisseanss. Kui alustad siin uut, suletakse praegune ja selles parkimiskohas alustatakse uut seanssi.';
+
+  @override
+  String get parkingSessionSwitchConfirm => 'Sulge praegune ja alusta uut';
+
+  @override
   String get parkingEditButton => 'Muuda';
 
   @override

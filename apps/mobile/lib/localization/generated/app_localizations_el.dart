@@ -418,6 +418,17 @@ class AppLocalizationsEl extends AppLocalizations {
   String get parkingSessionClose => 'Ολοκλήρωση στάθμευσης';
 
   @override
+  String get parkingSessionSwitchTitle => 'Έναρξη νέας συνεδρίας στάθμευσης;';
+
+  @override
+  String get parkingSessionSwitchMessage =>
+      'Έχετε ήδη μια ανοιχτή συνεδρία στάθμευσης. Αν ξεκινήσετε νέα εδώ, η τρέχουσα θα κλείσει και θα ξεκινήσει νέα για αυτόν τον χώρο στάθμευσης.';
+
+  @override
+  String get parkingSessionSwitchConfirm =>
+      'Κλείσιμο τρέχουσας και έναρξη νέας';
+
+  @override
   String get parkingEditButton => 'Επεξεργασία';
 
   @override

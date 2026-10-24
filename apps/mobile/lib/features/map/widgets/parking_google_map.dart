@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../localization/generated/app_localizations.dart';
 import '../../parking/domain/entities/parking_session.dart';
+import '../../parking/domain/services/parking_session_expiration_policy.dart';
 import '../../parking/domain/entities/parking_spot.dart';
 import '../../parking/domain/value_objects/parking_map_cluster.dart';
 import '../../parking/domain/value_objects/parking_viewport.dart';
@@ -76,6 +77,11 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
 
   StreamSubscription<List<ParkingSession>>? _leavingSoonSubscription;
   final Set<String> _leavingSoonParkingIds = <String>{};
+  final Map<String, ParkingSession> _leavingSoonSessionsById =
+      <String, ParkingSession>{};
+  final ParkingSessionExpirationPolicy _expirationPolicy =
+      const ParkingSessionExpirationPolicy();
+  Timer? _leavingSoonExpiryTimer;
   String? _leavingSoonParkingIdsKey;
   int _leavingSoonRequestId = 0;
 
@@ -280,7 +286,11 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
   ) {
     final sessionState = widget.sessionState;
 
-    if (_hasOpenParkingSession) {
+    final currentSession = sessionState.session;
+
+    if (currentSession != null &&
+        currentSession.status != ParkingSessionStatus.closed &&
+        currentSession.parkingId == parkingSpot.id) {
       return null;
     }
 
@@ -482,6 +492,55 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     };
   }
 
+  void _refreshLeavingSoonParkingIds() {
+    _leavingSoonExpiryTimer?.cancel();
+    _leavingSoonExpiryTimer = null;
+
+    final now = DateTime.now();
+    final freshParkingIds = <String>{};
+    DateTime? nextExpiry;
+
+    for (final session in _leavingSoonSessionsById.values) {
+      if (!_expirationPolicy.isLeavingSoonSignalFresh(session, now)) {
+        continue;
+      }
+
+      freshParkingIds.add(session.parkingId);
+
+      final signalAt = session.leavingSoonAt ?? session.updatedAt;
+      final expiresAt = signalAt.add(_expirationPolicy.leavingSoonDuration);
+
+      if (nextExpiry == null || expiresAt.isBefore(nextExpiry)) {
+        nextExpiry = expiresAt;
+      }
+    }
+
+    final hasChanged =
+        _leavingSoonParkingIds.length != freshParkingIds.length ||
+        !_leavingSoonParkingIds.containsAll(freshParkingIds);
+
+    if (hasChanged && mounted) {
+      setState(() {
+        _leavingSoonParkingIds
+          ..clear()
+          ..addAll(freshParkingIds);
+      });
+    }
+
+    if (nextExpiry != null && mounted) {
+      final delay = nextExpiry.difference(DateTime.now());
+
+      _leavingSoonExpiryTimer = Timer(
+        delay.isNegative ? Duration.zero : delay,
+        () {
+          if (mounted) {
+            _refreshLeavingSoonParkingIds();
+          }
+        },
+      );
+    }
+  }
+
   Future<void> _watchLeavingSoonForVisibleSpots(List<ParkingSpot> spots) async {
     final parkingIds = spots.map((spot) => spot.id).toSet().toList()..sort();
 
@@ -505,6 +564,10 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
       return;
     }
 
+    _leavingSoonExpiryTimer?.cancel();
+    _leavingSoonExpiryTimer = null;
+    _leavingSoonSessionsById.clear();
+
     if (_leavingSoonParkingIds.isNotEmpty) {
       setState(_leavingSoonParkingIds.clear);
     }
@@ -522,20 +585,13 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
                 return;
               }
 
-              final updatedParkingIds = sessions
-                  .map((session) => session.parkingId)
-                  .toSet();
+              _leavingSoonSessionsById
+                ..clear()
+                ..addEntries(
+                  sessions.map((session) => MapEntry(session.id, session)),
+                );
 
-              if (_leavingSoonParkingIds.length == updatedParkingIds.length &&
-                  _leavingSoonParkingIds.containsAll(updatedParkingIds)) {
-                return;
-              }
-
-              setState(() {
-                _leavingSoonParkingIds
-                  ..clear()
-                  ..addAll(updatedParkingIds);
-              });
+              _refreshLeavingSoonParkingIds();
             },
             onError: (Object error, StackTrace stackTrace) {
               if (requestId == _leavingSoonRequestId) {
@@ -1097,6 +1153,10 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     _spotRequestId++;
     _clusterRequestId++;
     _leavingSoonRequestId++;
+
+    _leavingSoonExpiryTimer?.cancel();
+    _leavingSoonExpiryTimer = null;
+    _leavingSoonSessionsById.clear();
 
     _viewportDebounceTimer?.cancel();
     _viewportDebounceTimer = null;
