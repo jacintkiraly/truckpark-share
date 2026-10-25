@@ -34,8 +34,23 @@
   <link rel="manifest" href="manifest.json">
 
   <!-- Google Maps JavaScript API -->
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFuS-Cykyk6enF_amlME_ZoqMf37upXJ4">
+  <script src="maps_config.js"></script>
+  <script>
+    (function () {
+      const key = window.TRUCKPARK_MAPS_API_KEY;
+      if (!key) {
+        console.error('TruckPark Share: Google Maps API key is not configured.');
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://maps.googleapis.com/maps/api/js?key='
+        + encodeURIComponent(key);
+      script.async = true;
+      script.onerror = function () {
+        console.error('TruckPark Share: Google Maps JavaScript API failed to load.');
+      };
+      document.head.appendChild(script);
+    })();
   </script>
 
   <!-- Google Maps MarkerClusterer -->
