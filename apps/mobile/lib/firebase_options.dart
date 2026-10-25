@@ -25,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -57,13 +51,12 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCnfx_nK7C3anP5Fth2OjQLivtFY-VZkVs',
-    appId: '1:1025014149435:android:c457943153b36d7845871e',
+    apiKey: 'AIzaSyDp7rEJQObw2BE1PY-XMiIUm78riiyc_HI',
+    appId: '1:1025014149435:android:38aec23351aa381645871e',
     messagingSenderId: '1025014149435',
     projectId: 'truckpark-share',
     storageBucket: 'truckpark-share.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBTqvVDRJvfT-AGbwvUC6Wq9Gk3_Kf_znY',
     appId: '1:1025014149435:ios:2b32af47cccfc19f45871e',
@@ -71,5 +64,23 @@ class DefaultFirebaseOptions {
     projectId: 'truckpark-share',
     storageBucket: 'truckpark-share.firebasestorage.app',
     iosBundleId: 'com.example.mobile',
+  );
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBTqvVDRJvfT-AGbwvUC6Wq9Gk3_Kf_znY',
+    appId: '1:1025014149435:ios:2b32af47cccfc19f45871e',
+    messagingSenderId: '1025014149435',
+    projectId: 'truckpark-share',
+    storageBucket: 'truckpark-share.firebasestorage.app',
+    iosBundleId: 'com.example.mobile',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBJXgq4R5u87bHx39U9EhMb69HFj7ZYYX8',
+    appId: '1:1025014149435:web:5767735b0580d32645871e',
+    messagingSenderId: '1025014149435',
+    projectId: 'truckpark-share',
+    authDomain: 'truckpark-share.firebaseapp.com',
+    storageBucket: 'truckpark-share.firebasestorage.app',
+    measurementId: 'G-7TP57EQBFP',
   );
 }
