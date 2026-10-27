@@ -546,22 +546,22 @@ class AppLocalizationsPl extends AppLocalizations {
   String get hidePassword => 'Ukryj hasło';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle => 'Ustaw planowany czas parkowania';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Godziny';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Minuty';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Wprowadź czas większy od zera. Minuty muszą mieścić się w zakresie od 0 do 59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Zastosuj czas';
 
   @override
   String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+      'Zakończę parkowanie ręcznie';
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "sv",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Välj språk",
@@ -182,5 +182,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Ange planerad parkeringstid",
+  "parkingSessionDurationHours": "Timmar",
+  "parkingSessionDurationMinutes": "Minuter",
+  "parkingSessionDurationInvalid": "Ange en varaktighet längre än noll. Minuter måste vara mellan 0 och 59.",
+  "parkingSessionDurationConfirm": "Använd varaktighet",
+  "parkingSessionDurationNoPlannedEnd": "Jag avslutar parkeringen manuellt"
 }

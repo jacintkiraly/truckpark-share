@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "et",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Valige keel",
@@ -182,5 +182,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Määra kavandatud parkimisaeg",
+  "parkingSessionDurationHours": "Tunnid",
+  "parkingSessionDurationMinutes": "Minutid",
+  "parkingSessionDurationInvalid": "Sisesta nullist suurem kestus. Minutid peavad olema vahemikus 0–59.",
+  "parkingSessionDurationConfirm": "Rakenda kestus",
+  "parkingSessionDurationNoPlannedEnd": "Lõpetan parkimise käsitsi"
 }

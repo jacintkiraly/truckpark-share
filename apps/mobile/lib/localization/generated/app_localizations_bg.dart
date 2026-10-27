@@ -542,22 +542,23 @@ class AppLocalizationsBg extends AppLocalizations {
   String get hidePassword => 'Скрий паролата';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle =>
+      'Задаване на планирана продължителност на паркиране';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Часове';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Минути';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Въведете продължителност, по-голяма от нула. Минутите трябва да са между 0 и 59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Приложи продължителността';
 
   @override
   String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+      'Ще приключа паркирането ръчно';
 }

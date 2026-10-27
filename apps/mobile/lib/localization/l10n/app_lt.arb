@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "lt",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Pasirinkite kalbą",
@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Nustatyti numatomą stovėjimo trukmę",
+  "parkingSessionDurationHours": "Valandos",
+  "parkingSessionDurationMinutes": "Minutės",
+  "parkingSessionDurationInvalid": "Įveskite ilgesnę nei nulis trukmę. Minutės turi būti nuo 0 iki 59.",
+  "parkingSessionDurationConfirm": "Taikyti trukmę",
+  "parkingSessionDurationNoPlannedEnd": "Stovėjimą baigsiu rankiniu būdu"
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "sk",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Vyberte jazyk",
@@ -182,5 +182,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Nastaviť plánované trvanie parkovania",
+  "parkingSessionDurationHours": "Hodiny",
+  "parkingSessionDurationMinutes": "Minúty",
+  "parkingSessionDurationInvalid": "Zadajte trvanie dlhšie ako nula. Počet minút musí byť od 0 do 59.",
+  "parkingSessionDurationConfirm": "Použiť trvanie",
+  "parkingSessionDurationNoPlannedEnd": "Parkovanie ukončím ručne"
 }

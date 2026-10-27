@@ -540,22 +540,23 @@ class AppLocalizationsHr extends AppLocalizations {
   String get hidePassword => 'Sakrij lozinku';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle =>
+      'Postavi planirano trajanje parkiranja';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Sati';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Minute';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Unesite trajanje veće od nule. Minute moraju biti između 0 i 59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Primijeni trajanje';
 
   @override
   String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+      'Ručno ću završiti parkiranje';
 }

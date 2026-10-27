@@ -549,22 +549,22 @@ class AppLocalizationsGa extends AppLocalizations {
   String get hidePassword => 'Folaigh an pasfhocal';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle => 'Socraigh fad páirceála beartaithe';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Uaireanta';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Nóiméid';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Cuir isteach fad níos mó ná nialas. Caithfidh na nóiméid a bheith idir 0 agus 59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Cuir an fad i bhfeidhm';
 
   @override
   String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+      'Cuirfidh mé deireadh leis an bpáirceáil de láimh';
 }

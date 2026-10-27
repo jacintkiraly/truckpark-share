@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "tr",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Dilinizi seçin",
@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Planlanan park etme süresini ayarla",
+  "parkingSessionDurationHours": "Saat",
+  "parkingSessionDurationMinutes": "Dakika",
+  "parkingSessionDurationInvalid": "Sıfırdan büyük bir süre girin. Dakika değeri 0 ile 59 arasında olmalıdır.",
+  "parkingSessionDurationConfirm": "Süreyi uygula",
+  "parkingSessionDurationNoPlannedEnd": "Park etmeyi elle sonlandıracağım"
 }

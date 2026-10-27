@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "ru",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Выберите язык",
@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Задать планируемую продолжительность парковки",
+  "parkingSessionDurationHours": "Часы",
+  "parkingSessionDurationMinutes": "Минуты",
+  "parkingSessionDurationInvalid": "Укажите длительность больше нуля. Минуты должны быть от 0 до 59.",
+  "parkingSessionDurationConfirm": "Применить длительность",
+  "parkingSessionDurationNoPlannedEnd": "Я завершу парковку вручную"
 }

@@ -543,22 +543,23 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hidePassword => 'Şifreyi gizle';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle =>
+      'Planlanan park etme süresini ayarla';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Saat';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Dakika';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Sıfırdan büyük bir süre girin. Dakika değeri 0 ile 59 arasında olmalıdır.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Süreyi uygula';
 
   @override
   String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+      'Park etmeyi elle sonlandıracağım';
 }

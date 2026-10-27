@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "mt",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Agħżel il-lingwa tiegħek",
@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Issettja t-tul ta\u0027 parkeġġ ippjanat",
+  "parkingSessionDurationHours": "Sigħat",
+  "parkingSessionDurationMinutes": "Minuti",
+  "parkingSessionDurationInvalid": "Daħħal tul akbar minn żero. Il-minuti jridu jkunu bejn 0 u 59.",
+  "parkingSessionDurationConfirm": "Applika t-tul",
+  "parkingSessionDurationNoPlannedEnd": "Se ntemm il-parkeġġ manwalment"
 }

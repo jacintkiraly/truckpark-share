@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "el",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Επιλέξτε τη γλώσσα σας",
@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Ορισμός προγραμματισμένης διάρκειας στάθμευσης",
+  "parkingSessionDurationHours": "Ώρες",
+  "parkingSessionDurationMinutes": "Λεπτά",
+  "parkingSessionDurationInvalid": "Εισαγάγετε διάρκεια μεγαλύτερη από μηδέν. Τα λεπτά πρέπει να είναι από 0 έως 59.",
+  "parkingSessionDurationConfirm": "Εφαρμογή διάρκειας",
+  "parkingSessionDurationNoPlannedEnd": "Θα τερματίσω τη στάθμευση χειροκίνητα"
 }

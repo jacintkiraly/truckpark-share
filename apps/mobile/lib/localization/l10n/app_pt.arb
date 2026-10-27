@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "pt",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Escolha o seu idioma",
@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Definir duração prevista do estacionamento",
+  "parkingSessionDurationHours": "Horas",
+  "parkingSessionDurationMinutes": "Minutos",
+  "parkingSessionDurationInvalid": "Introduza uma duração superior a zero. Os minutos devem estar entre 0 e 59.",
+  "parkingSessionDurationConfirm": "Aplicar duração",
+  "parkingSessionDurationNoPlannedEnd": "Vou terminar o estacionamento manualmente"
 }

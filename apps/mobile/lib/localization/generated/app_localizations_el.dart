@@ -551,22 +551,23 @@ class AppLocalizationsEl extends AppLocalizations {
   String get hidePassword => 'Απόκρυψη κωδικού πρόσβασης';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle =>
+      'Ορισμός προγραμματισμένης διάρκειας στάθμευσης';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Ώρες';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Λεπτά';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Εισαγάγετε διάρκεια μεγαλύτερη από μηδέν. Τα λεπτά πρέπει να είναι από 0 έως 59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Εφαρμογή διάρκειας';
 
   @override
   String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+      'Θα τερματίσω τη στάθμευση χειροκίνητα';
 }

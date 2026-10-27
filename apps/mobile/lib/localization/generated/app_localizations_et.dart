@@ -536,22 +536,21 @@ class AppLocalizationsEt extends AppLocalizations {
   String get hidePassword => 'Peida parool';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle => 'Määra kavandatud parkimisaeg';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Tunnid';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Minutid';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Sisesta nullist suurem kestus. Minutid peavad olema vahemikus 0–59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Rakenda kestus';
 
   @override
-  String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+  String get parkingSessionDurationNoPlannedEnd => 'Lõpetan parkimise käsitsi';
 }

@@ -557,22 +557,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String get hidePassword => 'Masquer le mot de passe';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle =>
+      'Définir la durée de stationnement prévue';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Heures';
 
   @override
   String get parkingSessionDurationMinutes => 'Minutes';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Saisissez une durée supérieure à zéro. Les minutes doivent être comprises entre 0 et 59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Appliquer la durée';
 
   @override
   String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+      'Je terminerai le stationnement manuellement';
 }

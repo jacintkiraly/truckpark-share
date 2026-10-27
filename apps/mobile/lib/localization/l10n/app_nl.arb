@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "nl",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Kies een taal",
@@ -182,5 +182,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Geplande parkeerduur instellen",
+  "parkingSessionDurationHours": "Uren",
+  "parkingSessionDurationMinutes": "Minuten",
+  "parkingSessionDurationInvalid": "Voer een duur groter dan nul in. Minuten moeten tussen 0 en 59 liggen.",
+  "parkingSessionDurationConfirm": "Duur toepassen",
+  "parkingSessionDurationNoPlannedEnd": "Ik beëindig het parkeren handmatig"
 }

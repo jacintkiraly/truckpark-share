@@ -542,22 +542,22 @@ class AppLocalizationsSk extends AppLocalizations {
   String get hidePassword => 'Skryť heslo';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle =>
+      'Nastaviť plánované trvanie parkovania';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Hodiny';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Minúty';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Zadajte trvanie dlhšie ako nula. Počet minút musí byť od 0 do 59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Použiť trvanie';
 
   @override
-  String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+  String get parkingSessionDurationNoPlannedEnd => 'Parkovanie ukončím ručne';
 }

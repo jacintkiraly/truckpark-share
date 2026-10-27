@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "ro",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Alegeți limba",
@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Setează durata planificată a parcării",
+  "parkingSessionDurationHours": "Ore",
+  "parkingSessionDurationMinutes": "Minute",
+  "parkingSessionDurationInvalid": "Introdu o durată mai mare decât zero. Minutele trebuie să fie între 0 și 59.",
+  "parkingSessionDurationConfirm": "Aplică durata",
+  "parkingSessionDurationNoPlannedEnd": "Voi încheia parcarea manual"
 }

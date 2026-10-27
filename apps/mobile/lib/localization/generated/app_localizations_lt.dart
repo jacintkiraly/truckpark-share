@@ -548,22 +548,23 @@ class AppLocalizationsLt extends AppLocalizations {
   String get hidePassword => 'Slėpti slaptažodį';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle =>
+      'Nustatyti numatomą stovėjimo trukmę';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Valandos';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Minutės';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Įveskite ilgesnę nei nulis trukmę. Minutės turi būti nuo 0 iki 59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Taikyti trukmę';
 
   @override
   String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+      'Stovėjimą baigsiu rankiniu būdu';
 }

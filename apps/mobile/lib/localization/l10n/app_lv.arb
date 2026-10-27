@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "lv",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Izvēlieties valodu",
@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Iestatīt plānoto stāvēšanas ilgumu",
+  "parkingSessionDurationHours": "Stundas",
+  "parkingSessionDurationMinutes": "Minūtes",
+  "parkingSessionDurationInvalid": "Ievadiet ilgumu, kas ir lielāks par nulli. Minūtēm jābūt no 0 līdz 59.",
+  "parkingSessionDurationConfirm": "Lietot ilgumu",
+  "parkingSessionDurationNoPlannedEnd": "Stāvēšanu beigšu manuāli"
 }

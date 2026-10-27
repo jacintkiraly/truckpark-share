@@ -549,22 +549,23 @@ class AppLocalizationsMt extends AppLocalizations {
   String get hidePassword => 'Aħbi l-password';
 
   @override
-  String get parkingSessionDurationTitle => 'Set planned parking duration';
+  String get parkingSessionDurationTitle =>
+      'Issettja t-tul ta\' parkeġġ ippjanat';
 
   @override
-  String get parkingSessionDurationHours => 'Hours';
+  String get parkingSessionDurationHours => 'Sigħat';
 
   @override
-  String get parkingSessionDurationMinutes => 'Minutes';
+  String get parkingSessionDurationMinutes => 'Minuti';
 
   @override
   String get parkingSessionDurationInvalid =>
-      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+      'Daħħal tul akbar minn żero. Il-minuti jridu jkunu bejn 0 u 59.';
 
   @override
-  String get parkingSessionDurationConfirm => 'Apply duration';
+  String get parkingSessionDurationConfirm => 'Applika t-tul';
 
   @override
   String get parkingSessionDurationNoPlannedEnd =>
-      'I will close parking manually';
+      'Se ntemm il-parkeġġ manwalment';
 }

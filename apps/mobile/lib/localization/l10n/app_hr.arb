@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "hr",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Odaberite jezik",
@@ -182,5 +182,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Postavi planirano trajanje parkiranja",
+  "parkingSessionDurationHours": "Sati",
+  "parkingSessionDurationMinutes": "Minute",
+  "parkingSessionDurationInvalid": "Unesite trajanje veće od nule. Minute moraju biti između 0 i 59.",
+  "parkingSessionDurationConfirm": "Primijeni trajanje",
+  "parkingSessionDurationNoPlannedEnd": "Ručno ću završiti parkiranje"
 }

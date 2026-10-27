@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "bg",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Изберете език",
@@ -182,5 +182,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Задаване на планирана продължителност на паркиране",
+  "parkingSessionDurationHours": "Часове",
+  "parkingSessionDurationMinutes": "Минути",
+  "parkingSessionDurationInvalid": "Въведете продължителност, по-голяма от нула. Минутите трябва да са между 0 и 59.",
+  "parkingSessionDurationConfirm": "Приложи продължителността",
+  "parkingSessionDurationNoPlannedEnd": "Ще приключа паркирането ръчно"
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "ga",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Roghnaigh do theanga",
@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Socraigh fad páirceála beartaithe",
+  "parkingSessionDurationHours": "Uaireanta",
+  "parkingSessionDurationMinutes": "Nóiméid",
+  "parkingSessionDurationInvalid": "Cuir isteach fad níos mó ná nialas. Caithfidh na nóiméid a bheith idir 0 agus 59.",
+  "parkingSessionDurationConfirm": "Cuir an fad i bhfeidhm",
+  "parkingSessionDurationNoPlannedEnd": "Cuirfidh mé deireadh leis an bpáirceáil de láimh"
 }

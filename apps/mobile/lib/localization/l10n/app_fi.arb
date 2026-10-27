@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "fi",
   "appTitle": "TruckPark Share",
   "chooseLanguage": "Valitse kieli",
@@ -182,5 +182,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Aseta suunniteltu pysäköinnin kesto",
+  "parkingSessionDurationHours": "Tunnit",
+  "parkingSessionDurationMinutes": "Minuutit",
+  "parkingSessionDurationInvalid": "Anna nollaa suurempi kesto. Minuuttien on oltava välillä 0–59.",
+  "parkingSessionDurationConfirm": "Käytä kestoa",
+  "parkingSessionDurationNoPlannedEnd": "Päätän pysäköinnin manuaalisesti"
 }

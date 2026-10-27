@@ -183,5 +183,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "تحديد مدة الوقوف المخططة",
+  "parkingSessionDurationHours": "ساعات",
+  "parkingSessionDurationMinutes": "دقائق",
+  "parkingSessionDurationInvalid": "أدخل مدة أكبر من صفر. يجب أن تكون الدقائق بين 0 و59.",
+  "parkingSessionDurationConfirm": "تطبيق المدة",
+  "parkingSessionDurationNoPlannedEnd": "سأنهي الوقوف يدويًا"
 }
