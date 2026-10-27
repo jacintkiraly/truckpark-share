@@ -501,14 +501,23 @@ class _ParkingGoogleMapState extends State<ParkingGoogleMap> {
     DateTime? nextExpiry;
 
     for (final session in _leavingSoonSessionsById.values) {
-      if (!_expirationPolicy.isLeavingSoonSignalFresh(session, now)) {
+      if (!_expirationPolicy.isLeavingSoonSignalFresh(session, now) ||
+          _expirationPolicy.isOpenSessionExpired(session, now)) {
         continue;
       }
 
       freshParkingIds.add(session.parkingId);
 
       final signalAt = session.leavingSoonAt ?? session.updatedAt;
-      final expiresAt = signalAt.add(_expirationPolicy.leavingSoonDuration);
+      final signalExpiresAt = signalAt.add(
+        _expirationPolicy.leavingSoonDuration,
+      );
+      final plannedEndAt = session.plannedEndAt;
+
+      final expiresAt =
+          plannedEndAt != null && plannedEndAt.isBefore(signalExpiresAt)
+          ? plannedEndAt
+          : signalExpiresAt;
 
       if (nextExpiry == null || expiresAt.isBefore(nextExpiry)) {
         nextExpiry = expiresAt;
