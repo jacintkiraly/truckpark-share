@@ -1,4 +1,4 @@
-﻿import '../entities/parking_session.dart';
+import '../entities/parking_session.dart';
 import '../enums/parking_session_status.dart';
 
 /// Defines when a parking session or its leaving-soon signal is stale.
@@ -21,10 +21,7 @@ class ParkingSessionExpirationPolicy {
   ///
   /// Uses [ParkingSession.leavingSoonAt] when available and falls back to
   /// [ParkingSession.updatedAt] for older session records.
-  bool isLeavingSoonSignalFresh(
-    ParkingSession session,
-    DateTime now,
-  ) {
+  bool isLeavingSoonSignalFresh(ParkingSession session, DateTime now) {
     if (session.status != ParkingSessionStatus.leavingSoon) {
       return false;
     }
@@ -39,15 +36,13 @@ class ParkingSessionExpirationPolicy {
   ///
   /// A session becomes stale at the exact expiration boundary.
   /// Closed sessions are never classified as stale open sessions.
-  bool isOpenSessionExpired(
-    ParkingSession session,
-    DateTime now,
-  ) {
+  bool isOpenSessionExpired(ParkingSession session, DateTime now) {
     if (session.status == ParkingSessionStatus.closed) {
       return false;
     }
 
-    final expiresAt = session.updatedAt.add(openSessionDuration);
+    final expiresAt =
+        session.plannedEndAt ?? session.updatedAt.add(openSessionDuration);
 
     return !now.isBefore(expiresAt);
   }

@@ -1143,6 +1143,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hide password'**
   String get hidePassword;
+
+  /// No description provided for @parkingSessionDurationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set planned parking duration'**
+  String get parkingSessionDurationTitle;
+
+  /// No description provided for @parkingSessionDurationHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get parkingSessionDurationHours;
+
+  /// No description provided for @parkingSessionDurationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get parkingSessionDurationMinutes;
+
+  /// No description provided for @parkingSessionDurationInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a duration greater than zero. Minutes must be between 0 and 59.'**
+  String get parkingSessionDurationInvalid;
+
+  /// No description provided for @parkingSessionDurationConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply duration'**
+  String get parkingSessionDurationConfirm;
 }
 
 class _AppLocalizationsDelegate

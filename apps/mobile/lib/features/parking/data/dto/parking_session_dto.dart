@@ -8,6 +8,7 @@ class ParkingSessionDto {
     required this.status,
     required this.startedAt,
     required this.updatedAt,
+    this.plannedEndAt,
     this.leavingSoonAt,
     this.closedAt,
   });
@@ -18,6 +19,7 @@ class ParkingSessionDto {
   final String status;
   final DateTime startedAt;
   final DateTime updatedAt;
+  final DateTime? plannedEndAt;
   final DateTime? leavingSoonAt;
   final DateTime? closedAt;
 
@@ -36,8 +38,15 @@ class ParkingSessionDto {
       throw StateError('Parking session "$id" has an invalid updatedAt value.');
     }
 
+    final plannedEndAtValue = data['plannedEndAt'];
     final leavingSoonAtValue = data['leavingSoonAt'];
     final closedAtValue = data['closedAt'];
+
+    if (plannedEndAtValue != null && plannedEndAtValue is! Timestamp) {
+      throw StateError(
+        'Parking session "$id" has an invalid plannedEndAt value.',
+      );
+    }
 
     if (leavingSoonAtValue != null && leavingSoonAtValue is! Timestamp) {
       throw StateError(
@@ -56,6 +65,9 @@ class ParkingSessionDto {
       status: data['status'] as String,
       startedAt: startedAtValue.toDate(),
       updatedAt: updatedAtValue.toDate(),
+      plannedEndAt: plannedEndAtValue == null
+          ? null
+          : (plannedEndAtValue as Timestamp).toDate(),
       leavingSoonAt: leavingSoonAtValue == null
           ? null
           : (leavingSoonAtValue as Timestamp).toDate(),
@@ -72,6 +84,9 @@ class ParkingSessionDto {
       'status': status,
       'startedAt': Timestamp.fromDate(startedAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
+      'plannedEndAt': plannedEndAt == null
+          ? null
+          : Timestamp.fromDate(plannedEndAt!),
       'leavingSoonAt': leavingSoonAt == null
           ? null
           : Timestamp.fromDate(leavingSoonAt!),

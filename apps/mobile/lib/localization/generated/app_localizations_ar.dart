@@ -531,4 +531,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get hidePassword => 'إخفاء كلمة المرور';
+
+  @override
+  String get parkingSessionDurationTitle => 'Set planned parking duration';
+
+  @override
+  String get parkingSessionDurationHours => 'Hours';
+
+  @override
+  String get parkingSessionDurationMinutes => 'Minutes';
+
+  @override
+  String get parkingSessionDurationInvalid =>
+      'Enter a duration greater than zero. Minutes must be between 0 and 59.';
+
+  @override
+  String get parkingSessionDurationConfirm => 'Apply duration';
 }

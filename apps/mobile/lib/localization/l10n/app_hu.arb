@@ -182,5 +182,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Tervezett parkolási idő beállítása",
+  "parkingSessionDurationHours": "Óra",
+  "parkingSessionDurationMinutes": "Perc",
+  "parkingSessionDurationInvalid": "Adj meg nullánál nagyobb időtartamot. A perc értéke 0 és 59 közé essen.",
+  "parkingSessionDurationConfirm": "Időtartam beállítása"
 }

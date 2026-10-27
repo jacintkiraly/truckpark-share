@@ -540,4 +540,21 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get hidePassword => 'Jelszó elrejtése';
+
+  @override
+  String get parkingSessionDurationTitle =>
+      'Tervezett parkolási idő beállítása';
+
+  @override
+  String get parkingSessionDurationHours => 'Óra';
+
+  @override
+  String get parkingSessionDurationMinutes => 'Perc';
+
+  @override
+  String get parkingSessionDurationInvalid =>
+      'Adj meg nullánál nagyobb időtartamot. A perc értéke 0 és 59 közé essen.';
+
+  @override
+  String get parkingSessionDurationConfirm => 'Időtartam beállítása';
 }

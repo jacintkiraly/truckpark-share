@@ -11,6 +11,7 @@ void main() {
     ParkingSessionStatus status = ParkingSessionStatus.active,
     DateTime? startedAt,
     DateTime? updatedAt,
+    DateTime? plannedEndAt,
     DateTime? leavingSoonAt,
     DateTime? closedAt,
   }) {
@@ -21,6 +22,7 @@ void main() {
       status: status,
       startedAt: startedAt ?? now.subtract(const Duration(hours: 1)),
       updatedAt: updatedAt ?? now.subtract(const Duration(hours: 1)),
+      plannedEndAt: plannedEndAt,
       leavingSoonAt: leavingSoonAt,
       closedAt: closedAt,
     );
@@ -108,6 +110,23 @@ void main() {
       expect(policy.isOpenSessionExpired(session, now), isTrue);
     });
 
+    test('does not expire a session before its planned end time', () {
+      final session = createSession(
+        updatedAt: now.subtract(const Duration(days: 2)),
+        plannedEndAt: now.add(const Duration(minutes: 1)),
+      );
+
+      expect(policy.isOpenSessionExpired(session, now), isFalse);
+    });
+
+    test('expires a session at its planned end time', () {
+      final session = createSession(
+        updatedAt: now.subtract(const Duration(hours: 1)),
+        plannedEndAt: now,
+      );
+
+      expect(policy.isOpenSessionExpired(session, now), isTrue);
+    });
     test('does not classify a closed session as an expired open session', () {
       final updatedAt = now.subtract(const Duration(days: 3));
 

@@ -183,5 +183,10 @@
         "type": "int"
       }
     }
-  }
+  },
+  "parkingSessionDurationTitle": "Set planned parking duration",
+  "parkingSessionDurationHours": "Hours",
+  "parkingSessionDurationMinutes": "Minutes",
+  "parkingSessionDurationInvalid": "Enter a duration greater than zero. Minutes must be between 0 and 59.",
+  "parkingSessionDurationConfirm": "Apply duration"
 }

@@ -10,6 +10,7 @@ class ParkingSession extends Equatable {
     required this.status,
     required this.startedAt,
     required this.updatedAt,
+    this.plannedEndAt,
     this.leavingSoonAt,
     this.closedAt,
   });
@@ -19,6 +20,7 @@ class ParkingSession extends Equatable {
     required String parkingId,
     required String driverId,
     required DateTime startedAt,
+    DateTime? plannedEndAt,
   }) {
     return ParkingSession(
       id: id,
@@ -27,6 +29,7 @@ class ParkingSession extends Equatable {
       status: ParkingSessionStatus.created,
       startedAt: startedAt,
       updatedAt: startedAt,
+      plannedEndAt: plannedEndAt,
     );
   }
 
@@ -36,6 +39,12 @@ class ParkingSession extends Equatable {
   final ParkingSessionStatus status;
   final DateTime startedAt;
   final DateTime updatedAt;
+
+  /// The driver's planned end time for this parking session.
+  ///
+  /// Null for legacy sessions or sessions without a specified duration.
+  final DateTime? plannedEndAt;
+
   final DateTime? leavingSoonAt;
   final DateTime? closedAt;
 
@@ -46,6 +55,7 @@ class ParkingSession extends Equatable {
     ParkingSessionStatus? status,
     DateTime? startedAt,
     DateTime? updatedAt,
+    DateTime? plannedEndAt,
     DateTime? leavingSoonAt,
     DateTime? closedAt,
   }) {
@@ -56,6 +66,7 @@ class ParkingSession extends Equatable {
       status: status ?? this.status,
       startedAt: startedAt ?? this.startedAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      plannedEndAt: plannedEndAt ?? this.plannedEndAt,
       leavingSoonAt: leavingSoonAt ?? this.leavingSoonAt,
       closedAt: closedAt ?? this.closedAt,
     );
@@ -69,6 +80,7 @@ class ParkingSession extends Equatable {
     status,
     startedAt,
     updatedAt,
+    plannedEndAt,
     leavingSoonAt,
     closedAt,
   ];

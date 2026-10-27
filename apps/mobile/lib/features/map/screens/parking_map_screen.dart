@@ -236,8 +236,103 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
     }
   }
 
+  Future<Duration?> _requestParkingSessionDuration() async {
+    final l10n = AppLocalizations.of(context)!;
+
+    var hoursText = '0';
+    var minutesText = '0';
+    String? validationError;
+
+    return showDialog<Duration>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: Text(l10n.parkingSessionDurationTitle),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: hoursText,
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => hoursText = value,
+                          decoration: InputDecoration(
+                            labelText: l10n.parkingSessionDurationHours,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: minutesText,
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => minutesText = value,
+                          decoration: InputDecoration(
+                            labelText: l10n.parkingSessionDurationMinutes,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (validationError != null) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      validationError!,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: Text(l10n.cancel),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    final hours = int.tryParse(hoursText.trim());
+                    final minutes = int.tryParse(minutesText.trim());
+
+                    if (hours == null ||
+                        minutes == null ||
+                        hours < 0 ||
+                        minutes < 0 ||
+                        minutes > 59 ||
+                        (hours == 0 && minutes == 0)) {
+                      setDialogState(() {
+                        validationError = l10n.parkingSessionDurationInvalid;
+                      });
+                      return;
+                    }
+
+                    Navigator.of(
+                      dialogContext,
+                    ).pop(Duration(hours: hours, minutes: minutes));
+                  },
+                  child: Text(l10n.parkingSessionDurationConfirm),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   Future<void> _startParkingSession(String parkingId) async {
     try {
+      final duration = await _requestParkingSessionDuration();
+
+      if (duration == null || !mounted) {
+        return;
+      }
+
       final sessionViewModel = ref.read(
         parkingSessionViewModelProvider.notifier,
       );
@@ -288,7 +383,10 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
         await sessionViewModel.closeSession();
       }
 
-      await sessionViewModel.startSession(parkingId);
+      await sessionViewModel.startSession(
+        parkingId,
+        plannedEndAt: DateTime.now().add(duration),
+      );
     } catch (error) {
       if (!mounted) {
         return;

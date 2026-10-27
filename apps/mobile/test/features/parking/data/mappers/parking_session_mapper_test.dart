@@ -12,6 +12,7 @@ void main() {
     final updatedAt = DateTime(2026, 10, 7, 11);
     final leavingSoonAt = DateTime(2026, 10, 7, 17);
     final closedAt = DateTime(2026, 10, 7, 18);
+    final plannedEndAt = DateTime(2026, 10, 7, 20);
 
     test('maps domain session to DTO', () {
       final session = ParkingSession(
@@ -21,6 +22,7 @@ void main() {
         status: ParkingSessionStatus.leavingSoon,
         startedAt: startedAt,
         updatedAt: updatedAt,
+        plannedEndAt: plannedEndAt,
         leavingSoonAt: leavingSoonAt,
       );
 
@@ -32,6 +34,7 @@ void main() {
       expect(dto.status, 'leavingSoon');
       expect(dto.startedAt, startedAt);
       expect(dto.updatedAt, updatedAt);
+      expect(dto.plannedEndAt, plannedEndAt);
       expect(dto.leavingSoonAt, leavingSoonAt);
       expect(dto.closedAt, isNull);
     });
@@ -44,6 +47,7 @@ void main() {
         status: 'active',
         startedAt: startedAt,
         updatedAt: updatedAt,
+        plannedEndAt: plannedEndAt,
       );
 
       final session = ParkingSessionMapper.toDomain(dto);
@@ -54,6 +58,7 @@ void main() {
       expect(session.status, ParkingSessionStatus.active);
       expect(session.startedAt, startedAt);
       expect(session.updatedAt, updatedAt);
+      expect(session.plannedEndAt, plannedEndAt);
       expect(session.leavingSoonAt, isNull);
       expect(session.closedAt, isNull);
     });
@@ -65,6 +70,7 @@ void main() {
         'status': 'closed',
         'startedAt': Timestamp.fromDate(startedAt),
         'updatedAt': Timestamp.fromDate(updatedAt),
+        'plannedEndAt': Timestamp.fromDate(plannedEndAt),
         'leavingSoonAt': Timestamp.fromDate(leavingSoonAt),
         'closedAt': Timestamp.fromDate(closedAt),
       };
@@ -77,8 +83,25 @@ void main() {
       expect(dto.status, 'closed');
       expect(dto.startedAt, startedAt);
       expect(dto.updatedAt, updatedAt);
+      expect(dto.plannedEndAt, plannedEndAt);
       expect(dto.leavingSoonAt, leavingSoonAt);
       expect(dto.closedAt, closedAt);
+    });
+
+    test('reads legacy Firestore data without plannedEndAt', () {
+      final data = {
+        'parkingId': 'parking-1',
+        'driverId': 'driver-1',
+        'status': 'active',
+        'startedAt': Timestamp.fromDate(startedAt),
+        'updatedAt': Timestamp.fromDate(updatedAt),
+      };
+
+      final dto = ParkingSessionDto.fromFirestore('session-1', data);
+
+      expect(dto.plannedEndAt, isNull);
+      expect(dto.leavingSoonAt, isNull);
+      expect(dto.closedAt, isNull);
     });
 
     test('writes nullable Firestore timestamps as null', () {
@@ -98,8 +121,32 @@ void main() {
       expect(data['status'], 'active');
       expect(data['startedAt'], Timestamp.fromDate(startedAt));
       expect(data['updatedAt'], Timestamp.fromDate(updatedAt));
+      expect(data['plannedEndAt'], isNull);
       expect(data['leavingSoonAt'], isNull);
       expect(data['closedAt'], isNull);
+    });
+
+    test('round-trips a session with plannedEndAt through Firestore', () {
+      final session = ParkingSession(
+        id: 'session-1',
+        parkingId: 'parking-1',
+        driverId: 'driver-1',
+        status: ParkingSessionStatus.active,
+        startedAt: startedAt,
+        updatedAt: updatedAt,
+        plannedEndAt: plannedEndAt,
+      );
+
+      final dto = ParkingSessionMapper.toDto(session);
+      final firestoreData = dto.toFirestore();
+      final restoredDto = ParkingSessionDto.fromFirestore(
+        dto.id,
+        firestoreData,
+      );
+      final restoredSession = ParkingSessionMapper.toDomain(restoredDto);
+
+      expect(firestoreData['plannedEndAt'], Timestamp.fromDate(plannedEndAt));
+      expect(restoredSession, session);
     });
 
     test('round-trips a closed session through Firestore data', () {

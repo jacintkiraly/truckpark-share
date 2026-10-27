@@ -13,6 +13,7 @@ class ParkingSessionMapper {
       status: _statusFromString(dto.status),
       startedAt: dto.startedAt,
       updatedAt: dto.updatedAt,
+      plannedEndAt: dto.plannedEndAt,
       leavingSoonAt: dto.leavingSoonAt,
       closedAt: dto.closedAt,
     );
@@ -26,6 +27,7 @@ class ParkingSessionMapper {
       status: session.status.name,
       startedAt: session.startedAt,
       updatedAt: session.updatedAt,
+      plannedEndAt: session.plannedEndAt,
       leavingSoonAt: session.leavingSoonAt,
       closedAt: session.closedAt,
     );

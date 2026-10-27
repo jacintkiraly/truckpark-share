@@ -88,7 +88,7 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
     );
   }
 
-  Future<void> startSession(String parkingId) async {
+  Future<void> startSession(String parkingId, {DateTime? plannedEndAt}) async {
     final driverId = _currentDriverIdProvider();
 
     if (driverId == null) {
@@ -125,6 +125,7 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
         parkingId: parkingId,
         driverId: driverId,
         startedAt: now,
+        plannedEndAt: plannedEndAt,
       );
 
       final activeSession = _stateMachine.transition(
@@ -214,9 +215,9 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
       return;
     }
 
-    final expiresAt = session.updatedAt.add(
-      _expirationPolicy.openSessionDuration,
-    );
+    final expiresAt =
+        session.plannedEndAt ??
+        session.updatedAt.add(_expirationPolicy.openSessionDuration);
     final delay = expiresAt.difference(_now());
 
     _sessionExpiryTimer = Timer(delay.isNegative ? Duration.zero : delay, () {
