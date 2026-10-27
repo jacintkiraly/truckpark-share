@@ -84,6 +84,23 @@ void main() {
     expect(viewModel.state.session!.closedAt, fixedNow);
   });
 
+  test('automatically closes a session after its planned end time', () async {
+    await viewModel.startSession(
+      'parking-1',
+      plannedEndAt: fixedNow.subtract(const Duration(seconds: 1)),
+    );
+
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+
+    expect(repository.updatedSessions, hasLength(1));
+    expect(
+      repository.updatedSessions.single.status,
+      ParkingSessionStatus.closed,
+    );
+    expect(repository.updatedSessions.single.closedAt, fixedNow);
+    expect(viewModel.state.session, isNull);
+  });
+
   test('startSession rejects an existing open session', () async {
     await viewModel.startSession('parking-1');
 

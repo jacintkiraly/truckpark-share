@@ -220,29 +220,51 @@ class ParkingSessionViewModel extends StateNotifier<ParkingSessionState> {
         session.updatedAt.add(_expirationPolicy.openSessionDuration);
     final delay = expiresAt.difference(_now());
 
-    _sessionExpiryTimer = Timer(delay.isNegative ? Duration.zero : delay, () {
-      if (!mounted) {
-        return;
-      }
+    _sessionExpiryTimer = Timer(
+      delay.isNegative ? Duration.zero : delay,
+      () async {
+        if (!mounted) {
+          return;
+        }
 
-      final currentSession = state.session;
+        final currentSession = state.session;
 
-      if (currentSession == null || currentSession.id != session.id) {
-        return;
-      }
+        if (currentSession == null || currentSession.id != session.id) {
+          return;
+        }
 
-      if (_isExpiredOpenSession(currentSession, _now())) {
-        _sessionExpiryTimer = null;
+        if (_isExpiredOpenSession(currentSession, _now())) {
+          _sessionExpiryTimer = null;
 
-        state = state.copyWith(clearSession: true, errorMessage: null);
+          try {
+            await _transitionCurrentSession(ParkingSessionStatus.closed);
 
-        debugPrint('PARKING SESSION: expired locally ${currentSession.id}');
-        return;
-      }
+            if (!mounted) {
+              return;
+            }
 
-      // Recheck if the timer fired slightly before the expiration boundary.
-      _scheduleSessionExpiry(currentSession);
-    });
+            final closedSession = state.session;
+
+            if (closedSession != null &&
+                closedSession.id == currentSession.id &&
+                closedSession.status == ParkingSessionStatus.closed) {
+              state = state.copyWith(clearSession: true, errorMessage: null);
+            }
+
+            debugPrint(
+              'PARKING SESSION: expired and closed ${currentSession.id}',
+            );
+          } catch (error) {
+            debugPrint('PARKING SESSION AUTO-CLOSE ERROR: $error');
+          }
+
+          return;
+        }
+
+        // Recheck if the timer fired slightly before the expiration boundary.
+        _scheduleSessionExpiry(currentSession);
+      },
+    );
   }
 
   void _cancelSessionExpiryTimer() {
