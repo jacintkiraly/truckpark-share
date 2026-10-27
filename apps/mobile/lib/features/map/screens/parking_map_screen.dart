@@ -294,6 +294,11 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
                   onPressed: () => Navigator.of(dialogContext).pop(),
                   child: Text(l10n.cancel),
                 ),
+                TextButton(
+                  onPressed: () =>
+                      Navigator.of(dialogContext).pop(Duration.zero),
+                  child: Text(l10n.parkingSessionDurationNoPlannedEnd),
+                ),
                 FilledButton(
                   onPressed: () {
                     final hours = int.tryParse(hoursText.trim());
@@ -385,7 +390,9 @@ class _ParkingMapScreenState extends ConsumerState<ParkingMapScreen>
 
       await sessionViewModel.startSession(
         parkingId,
-        plannedEndAt: DateTime.now().add(duration),
+        plannedEndAt: duration == Duration.zero
+            ? null
+            : DateTime.now().add(duration),
       );
     } catch (error) {
       if (!mounted) {

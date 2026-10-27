@@ -557,4 +557,8 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get parkingSessionDurationConfirm => 'Apply duration';
+
+  @override
+  String get parkingSessionDurationNoPlannedEnd =>
+      'I will close parking manually';
 }

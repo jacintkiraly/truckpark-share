@@ -1173,6 +1173,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply duration'**
   String get parkingSessionDurationConfirm;
+
+  /// No description provided for @parkingSessionDurationNoPlannedEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'I will close parking manually'**
+  String get parkingSessionDurationNoPlannedEnd;
 }
 
 class _AppLocalizationsDelegate

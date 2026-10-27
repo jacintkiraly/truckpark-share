@@ -557,4 +557,8 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get parkingSessionDurationConfirm => 'Időtartam beállítása';
+
+  @override
+  String get parkingSessionDurationNoPlannedEnd =>
+      'Időtartam nélkül, kézzel zárom le';
 }
